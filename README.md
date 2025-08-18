@@ -6,6 +6,7 @@ Prerequisites:
 1. Clone this repo
 
 <ins> To launch iOS emulator: </ins>
+
 2. Download and open xcode on your computer (this should be in app store on Mac)
 3. Run `sudo xcodebuild -license accept` to accept the Xcode license
 4. Navigate to Xcode (top left hand corner) > settings > components > macOS > download iOS 18.4 simulator
@@ -13,6 +14,7 @@ Prerequisites:
 6. Run `npm run: ios` in VSCode terminal
 
 <ins> To launch Android emulator: </ins>
+
 2. Download [android studio](https://developer.android.com/studio) and go through setup, making sure to accept licenses
 3. Add the following to your `.zshrc` file:
 
@@ -24,6 +26,7 @@ export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 ```
 
 This is because Xcode tools auto-install to known macOS locations, while Android needs manual path setup because its SDK can be installed anywhere.
+
 4. Create an android virtual device: Open Android studio, click 'More Actions' > 'Virtual Device Manager' > Click on the play button next to a device
 5. Confirm installation with `adb devices`, you should see your emulator listed if its running
 6. Make sure you refresh your .zshrc file (with `source ~/.zshrc`), then run `npm run: android` in your VSCode terminal. 
