@@ -1,3 +1,44 @@
+Prerequisites:
+- Homebrew
+- npm & node
+
+# Setting up
+1. Clone this repo
+
+<ins> To launch iOS emulator: </ins>
+2. Download and open xcode on your computer (this should be in app store on Mac)
+3. Run `sudo xcodebuild -license accept` to accept the Xcode license
+4. Navigate to Xcode (top left hand corner) > settings > components > macOS > download iOS 18.4 simulator
+5. Confirm that you have installed iOS emulators with `xcrun simctl list devices` and boot any of the simulators manually with `xcrun simctl boot "iPhone 16 Pro"` and open it with `open -a Simulator` (you can also do this step with the GUI)
+6. Run `npm run: ios` in VSCode terminal
+
+<ins> To launch Android emulator: </ins>
+2. Download [android studio](https://developer.android.com/studio) and go through setup, making sure to accept licenses
+3. Add the following to your `.zshrc` file:
+
+```
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+```
+
+This is because Xcode tools auto-install to known macOS locations, while Android needs manual path setup because its SDK can be installed anywhere.
+4. Create an android virtual device: Open Android studio, click 'More Actions' > 'Virtual Device Manager' > Click on the play button next to a device
+5. Confirm installation with `adb devices`, you should see your emulator listed if its running
+6. Make sure you refresh your .zshrc file (with `source ~/.zshrc`), then run `npm run: android` in your VSCode terminal. 
+
+An issue you may run into:
+`[CXX1101] NDK at /Users/rebecca/Library/Android/sdk/ndk/27.1.12297006 did not have a source.properties file`
+Open Android Studio > Search for SDK Tools > Check 'Show Package Details' in the bottom right, find the version specified (in my case 27.1.12297006) and apply it to install
+Try `npm run: android` again
+
+Note: Running step 6 (building the project) will take a while for both iOS and android, this is normal.
+
+^^ Let me know if you run into issues following the above instructions, I'll help troubleshoot 
+
+-------------------------------------------------------------------------------------------
+
 # Welcome to your new ignited app!
 
 > The latest and greatest boilerplate for Infinite Red opinions
