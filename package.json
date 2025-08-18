@@ -47,6 +47,7 @@
     "expo-system-ui": "~5.0.9",
     "i18next": "^23.14.0",
     "intl-pluralrules": "^2.0.1",
+    "ios": "^0.0.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-i18next": "^15.0.1",
