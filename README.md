@@ -11,7 +11,7 @@ Prerequisites:
 3. Run `sudo xcodebuild -license accept` to accept the Xcode license
 4. Navigate to Xcode (top left hand corner) > settings > components > macOS > download iOS 18.4 simulator
 5. Confirm that you have installed iOS emulators with `xcrun simctl list devices` and boot any of the simulators manually with `xcrun simctl boot "iPhone 16 Pro"` and open it with `open -a Simulator` (you can also do this step with the GUI)
-6. Run `npm run: ios` in VSCode terminal
+6. Run `npm run ios` in VSCode terminal
 
 <ins> To launch Android emulator: </ins>
 
@@ -29,7 +29,7 @@ This is because Xcode tools auto-install to known macOS locations, while Android
 
 4. Create an android virtual device: Open Android studio, click 'More Actions' > 'Virtual Device Manager' > Click on the play button next to a device
 5. Confirm installation with `adb devices`, you should see your emulator listed if its running
-6. Make sure you refresh your .zshrc file (with `source ~/.zshrc`), then run `npm run: android` in your VSCode terminal. 
+6. Make sure you refresh your .zshrc file (with `source ~/.zshrc`), then run `npm run android` in your VSCode terminal. 
 
 An issue you may run into:
 `[CXX1101] NDK at /Users/rebecca/Library/Android/sdk/ndk/27.1.12297006 did not have a source.properties file`
