@@ -1,8 +1,10 @@
 Prerequisites:
+
 - Homebrew
 - npm & node
 
 # Setting up
+
 1. Clone this repo
 
 <ins> To launch iOS emulator: </ins>
@@ -29,7 +31,7 @@ This is because Xcode tools auto-install to known macOS locations, while Android
 
 4. Create an android virtual device: Open Android studio, click 'More Actions' > 'Virtual Device Manager' > Click on the play button next to a device
 5. Confirm installation with `adb devices`, you should see your emulator listed if its running
-6. Make sure you refresh your .zshrc file (with `source ~/.zshrc`), then run `npx expo run:android` in your VSCode terminal. 
+6. Make sure you refresh your .zshrc file (with `source ~/.zshrc`), then run `npx expo run:android` in your VSCode terminal.
 
 An issue you may run into:
 `[CXX1101] NDK at /Users/rebecca/Library/Android/sdk/ndk/27.1.12297006 did not have a source.properties file`
@@ -38,9 +40,9 @@ Try `npm run: android` again
 
 Note: Running step 6 (building the project) will take a while for both iOS and android, this is normal.
 
-^^ Let me know if you run into issues following the above instructions, I'll help troubleshoot 
+^^ Let me know if you run into issues following the above instructions, I'll help troubleshoot
 
--------------------------------------------------------------------------------------------
+---
 
 # Welcome to your new ignited app!
 
