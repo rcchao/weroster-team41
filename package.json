@@ -27,7 +27,7 @@
     "build:android:dev": "eas build --profile development:device --platform android --local",
     "build:android:preview": "eas build --profile preview --platform android --local",
     "build:android:prod": "eas build --profile production --platform android --local",
-    "prepare": "husky init"
+    "prepare": "husky"
   },
   "dependencies": {
     "@expo-google-fonts/space-grotesk": "^0.4.0",
