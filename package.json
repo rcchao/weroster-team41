@@ -27,7 +27,7 @@
     "build:android:dev": "eas build --profile development:device --platform android --local",
     "build:android:preview": "eas build --profile preview --platform android --local",
     "build:android:prod": "eas build --profile production --platform android --local",
-    "prepare": "husky install"
+    "prepare": "husky init"
   },
   "dependencies": {
     "@expo-google-fonts/space-grotesk": "^0.4.0",
@@ -90,7 +90,8 @@
     "reactotron-react-native-mmkv": "^0.2.6",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
-    "typescript": "~5.8.3"
+    "typescript": "~5.8.3",
+    "lint-staged": "^16.1.5"
   },
   "engines": {
     "node": ">=20.0.0"
