@@ -5,7 +5,7 @@ import en from "../app/i18n/en"
 // Use this array for keys that for whatever reason aren't greppable so they
 // don't hold your test suite hostage by always failing.
 const EXCEPTIONS: string[] = [
-  // "welcomeScreen:readyForLaunch",
+  // "loginScreen:tapToLogin",
 
   /**
    * This translation key actually shows up in a comment describing the usage of the translate
