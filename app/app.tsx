@@ -49,7 +49,7 @@ const config = {
         },
         DemoDebug: "debug",
         DemoPodcastList: "podcast",
-        DemoCommunity: "community",
+        DashboardRosterScreen: "roster",
       },
     },
   },
