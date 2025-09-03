@@ -7,9 +7,9 @@ import { Icon } from "@/components/Icon"
 import { EpisodeProvider } from "@/context/EpisodeContext"
 import { translate } from "@/i18n/translate"
 import { DashboardHomeScreen } from "@/screens/DashboardHomeScreen"
+import { DashboardRequestsScreen } from "@/screens/DashboardRequestsScreen"
 import { DashboardRosterScreen } from "@/screens/DashboardRosterScreen"
 import { DemoDebugScreen } from "@/screens/DemoDebugScreen"
-import { DemoPodcastListScreen } from "@/screens/DemoPodcastListScreen"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
@@ -19,7 +19,7 @@ export type DemoTabParamList = {
   DashboardRoster: undefined
   DashboardHome: { queryIndex?: string; itemIndex?: string }
   DemoDebug: undefined
-  DemoPodcastList: undefined
+  DashboardRequests: undefined
 }
 
 /**
@@ -92,8 +92,8 @@ export function DemoNavigator() {
         />
 
         <Tab.Screen
-          name="DemoPodcastList"
-          component={DemoPodcastListScreen}
+          name="DashboardRequests"
+          component={DashboardRequestsScreen}
           options={{
             tabBarAccessibilityLabel: translate("demoNavigator:podcastListTab"),
             tabBarLabel: translate("demoNavigator:podcastListTab"),

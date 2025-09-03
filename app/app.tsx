@@ -48,7 +48,7 @@ const config = {
           path: "home/:queryIndex?/:itemIndex?",
         },
         DemoDebug: "debug",
-        DemoPodcastList: "podcast",
+        DashboardRequestsScreen: "podcast",
         DashboardRosterScreen: "roster",
       },
     },

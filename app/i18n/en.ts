@@ -62,7 +62,7 @@ const en = {
     reactotron: "Send to Reactotron",
     reportBugs: "Report Bugs",
     demoList: "Demo List",
-    demoPodcastList: "Demo Podcast List",
+    dashboardRequests: "Dashboard Requests",
     androidReactotronHint:
       "If this doesn't work, ensure the Reactotron desktop app is running, run adb reverse tcp:9090 tcp:9090 from your terminal, and reload the app.",
     iosReactotronHint:
@@ -74,8 +74,10 @@ const en = {
     windowsReactotronHint:
       "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
   },
-  demoPodcastListScreen: {
-    title: "React Native Radio episodes",
+  dashboardRequestsScreen: {
+    title: "Requests",
+    helperText:
+      "Below is an example on how to load in cards from an API response and handle live state updates with favourites",
     onlyFavorites: "Only Show Favorites",
     favoriteButton: "Favorite",
     unfavoriteButton: "Unfavorite",
