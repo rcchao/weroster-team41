@@ -74,7 +74,6 @@ bin/Exponent.app
 expo-env.d.ts
 
 ## Secrets
-.env
 npm-debug.*
 *.jks
 *.p8
@@ -96,3 +95,9 @@ web-build/
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+node_modules
+# Keep environment variables out of version control
+.env
+
+/generated/prisma
