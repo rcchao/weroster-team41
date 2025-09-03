@@ -65,7 +65,7 @@ export function DemoNavigator() {
           name="DashboardHome"
           component={DashboardHomeScreen}
           options={{
-            tabBarLabel: translate("demoNavigator:componentsTab"),
+            tabBarLabel: translate("demoNavigator:homeTab"),
             tabBarIcon: ({ focused }) => (
               <Icon
                 icon="components"
@@ -80,7 +80,7 @@ export function DemoNavigator() {
           name="DashboardRoster"
           component={DashboardRosterScreen}
           options={{
-            tabBarLabel: translate("demoNavigator:communityTab"),
+            tabBarLabel: translate("demoNavigator:rosterTab"),
             tabBarIcon: ({ focused }) => (
               <Icon
                 icon="community"
@@ -95,8 +95,8 @@ export function DemoNavigator() {
           name="DashboardRequests"
           component={DashboardRequestsScreen}
           options={{
-            tabBarAccessibilityLabel: translate("demoNavigator:podcastListTab"),
-            tabBarLabel: translate("demoNavigator:podcastListTab"),
+            tabBarAccessibilityLabel: translate("demoNavigator:requestsTab"),
+            tabBarLabel: translate("demoNavigator:requestsTab"),
             tabBarIcon: ({ focused }) => (
               <Icon icon="podcast" color={focused ? colors.tint : colors.tintInactive} size={30} />
             ),
@@ -107,7 +107,7 @@ export function DemoNavigator() {
           name="DashboardTeams"
           component={DashboardTeamsScreen}
           options={{
-            tabBarLabel: translate("demoNavigator:debugTab"),
+            tabBarLabel: translate("demoNavigator:teamsTab"),
             tabBarIcon: ({ focused }) => (
               <Icon icon="debug" color={focused ? colors.tint : colors.tintInactive} size={30} />
             ),
