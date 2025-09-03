@@ -44,8 +44,8 @@ const config = {
     },
     Demo: {
       screens: {
-        DemoShowroom: {
-          path: "showroom/:queryIndex?/:itemIndex?",
+        DashboardHomeScreen: {
+          path: "home/:queryIndex?/:itemIndex?",
         },
         DemoDebug: "debug",
         DemoPodcastList: "podcast",

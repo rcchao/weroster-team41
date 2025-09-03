@@ -1,5 +1,3 @@
-import demoEn from "./demo-en"
-
 const en = {
   common: {
     ok: "OK!",
@@ -65,8 +63,8 @@ const en = {
       "Whether it's running a full project or getting teams up to speed with our hands-on training, Infinite Red can help with just about any React Native project.",
     hireUsLink: "Send us a message",
   },
-  demoShowroomScreen: {
-    jumpStart: "Components to jump start your project!",
+  dashboardHomeScreen: {
+    jumpStart: "Home",
     lorem2Sentences:
       "Nulla cupidatat deserunt amet quis aliquip nostrud do adipisicing. Adipisicing excepteur elit laborum Lorem adipisicing do duis.",
     demoHeaderTxExample: "Yay",
@@ -114,8 +112,6 @@ const en = {
         "No favorites have been added yet. Tap the heart on an episode to add it to your favorites!",
     },
   },
-
-  ...demoEn,
 }
 
 export default en
