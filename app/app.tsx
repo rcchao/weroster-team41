@@ -47,7 +47,7 @@ const config = {
         DashboardHomeScreen: {
           path: "home/:queryIndex?/:itemIndex?",
         },
-        DemoDebug: "debug",
+        DashboardTeamsScreen: "debug",
         DashboardRequestsScreen: "podcast",
         DashboardRosterScreen: "roster",
       },

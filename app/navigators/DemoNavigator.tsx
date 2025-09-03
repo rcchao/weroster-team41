@@ -9,7 +9,7 @@ import { translate } from "@/i18n/translate"
 import { DashboardHomeScreen } from "@/screens/DashboardHomeScreen"
 import { DashboardRequestsScreen } from "@/screens/DashboardRequestsScreen"
 import { DashboardRosterScreen } from "@/screens/DashboardRosterScreen"
-import { DemoDebugScreen } from "@/screens/DemoDebugScreen"
+import { DashboardTeamsScreen } from "@/screens/DashboardTeamsScreen"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
@@ -18,7 +18,7 @@ import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 export type DemoTabParamList = {
   DashboardRoster: undefined
   DashboardHome: { queryIndex?: string; itemIndex?: string }
-  DemoDebug: undefined
+  DashboardTeams: undefined
   DashboardRequests: undefined
 }
 
@@ -104,8 +104,8 @@ export function DemoNavigator() {
         />
 
         <Tab.Screen
-          name="DemoDebug"
-          component={DemoDebugScreen}
+          name="DashboardTeams"
+          component={DashboardTeamsScreen}
           options={{
             tabBarLabel: translate("demoNavigator:debugTab"),
             tabBarIcon: ({ focused }) => (
