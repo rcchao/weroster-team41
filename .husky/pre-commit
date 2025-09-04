@@ -1,2 +1,3 @@
 npm test
 npx lint-staged
+npx --no-install commitlint --edit "$1"

@@ -11,9 +11,7 @@
   },
   "newArchEnabled": true,
   "jsEngine": "hermes",
-  "assetBundlePatterns": [
-    "**/*"
-  ],
+  "assetBundlePatterns": ["**/*"],
   "android": {
     "backgroundColor": "#ffffff",
     "icon": "./assets/images/app-icon-android-legacy.png",
