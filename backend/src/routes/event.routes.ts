@@ -1,5 +1,6 @@
 import { Router } from "express"
 
+import { HttpStatus } from "../constants/httpResponse"
 import { EventService } from "../services/event.service"
 
 const router = Router()
@@ -10,9 +11,9 @@ router.post("/", async (req, res) => {
     // Use EventService to handle "business logic"
     const service = new EventService(req.app.locals.prisma)
     const event = await service.create(req.body)
-    res.status(201).json(event)
+    res.status(HttpStatus.CREATED).json(event)
   } catch (error: any) {
-    res.status(400).json({ error: error.message })
+    res.status(HttpStatus.BAD_REQUEST).json({ error: error.message })
   }
 })
 
@@ -23,7 +24,7 @@ router.get("/activity/:activityId/events", async (req, res) => {
     const events = await service.getActivityEvents(req.params.activityId)
     res.json(events)
   } catch (error: any) {
-    res.status(500).json({ error: error.message })
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: error.message })
   }
 })
 
