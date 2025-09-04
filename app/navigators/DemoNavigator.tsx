@@ -6,20 +6,20 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "@/components/Icon"
 import { EpisodeProvider } from "@/context/EpisodeContext"
 import { translate } from "@/i18n/translate"
-import { DemoCommunityScreen } from "@/screens/DemoCommunityScreen"
-import { DemoDebugScreen } from "@/screens/DemoDebugScreen"
-import { DemoPodcastListScreen } from "@/screens/DemoPodcastListScreen"
-import { DemoShowroomScreen } from "@/screens/DemoShowroomScreen/DemoShowroomScreen"
+import { DashboardHomeScreen } from "@/screens/DashboardHomeScreen"
+import { DashboardRequestsScreen } from "@/screens/DashboardRequestsScreen"
+import { DashboardRosterScreen } from "@/screens/DashboardRosterScreen"
+import { DashboardTeamsScreen } from "@/screens/DashboardTeamsScreen"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 
 export type DemoTabParamList = {
-  DemoCommunity: undefined
-  DemoShowroom: { queryIndex?: string; itemIndex?: string }
-  DemoDebug: undefined
-  DemoPodcastList: undefined
+  DashboardRoster: undefined
+  DashboardHome: { queryIndex?: string; itemIndex?: string }
+  DashboardTeams: undefined
+  DashboardRequests: undefined
 }
 
 /**
@@ -62,10 +62,10 @@ export function DemoNavigator() {
         }}
       >
         <Tab.Screen
-          name="DemoShowroom"
-          component={DemoShowroomScreen}
+          name="DashboardHome"
+          component={DashboardHomeScreen}
           options={{
-            tabBarLabel: translate("demoNavigator:componentsTab"),
+            tabBarLabel: translate("demoNavigator:homeTab"),
             tabBarIcon: ({ focused }) => (
               <Icon
                 icon="components"
@@ -77,10 +77,10 @@ export function DemoNavigator() {
         />
 
         <Tab.Screen
-          name="DemoCommunity"
-          component={DemoCommunityScreen}
+          name="DashboardRoster"
+          component={DashboardRosterScreen}
           options={{
-            tabBarLabel: translate("demoNavigator:communityTab"),
+            tabBarLabel: translate("demoNavigator:rosterTab"),
             tabBarIcon: ({ focused }) => (
               <Icon
                 icon="community"
@@ -92,11 +92,11 @@ export function DemoNavigator() {
         />
 
         <Tab.Screen
-          name="DemoPodcastList"
-          component={DemoPodcastListScreen}
+          name="DashboardRequests"
+          component={DashboardRequestsScreen}
           options={{
-            tabBarAccessibilityLabel: translate("demoNavigator:podcastListTab"),
-            tabBarLabel: translate("demoNavigator:podcastListTab"),
+            tabBarAccessibilityLabel: translate("demoNavigator:requestsTab"),
+            tabBarLabel: translate("demoNavigator:requestsTab"),
             tabBarIcon: ({ focused }) => (
               <Icon icon="podcast" color={focused ? colors.tint : colors.tintInactive} size={30} />
             ),
@@ -104,10 +104,10 @@ export function DemoNavigator() {
         />
 
         <Tab.Screen
-          name="DemoDebug"
-          component={DemoDebugScreen}
+          name="DashboardTeams"
+          component={DashboardTeamsScreen}
           options={{
-            tabBarLabel: translate("demoNavigator:debugTab"),
+            tabBarLabel: translate("demoNavigator:teamsTab"),
             tabBarIcon: ({ focused }) => (
               <Icon icon="debug" color={focused ? colors.tint : colors.tintInactive} size={30} />
             ),

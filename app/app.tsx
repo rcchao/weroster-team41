@@ -42,15 +42,14 @@ const config = {
     Login: {
       path: "",
     },
-    Welcome: "welcome",
     Demo: {
       screens: {
-        DemoShowroom: {
-          path: "showroom/:queryIndex?/:itemIndex?",
+        DashboardHomeScreen: {
+          path: "home/:queryIndex?/:itemIndex?",
         },
-        DemoDebug: "debug",
-        DemoPodcastList: "podcast",
-        DemoCommunity: "community",
+        DashboardTeamsScreen: "debug",
+        DashboardRequestsScreen: "podcast",
+        DashboardRosterScreen: "roster",
       },
     },
   },

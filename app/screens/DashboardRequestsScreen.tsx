@@ -46,7 +46,7 @@ const rnrImage3 = require("@assets/images/demo/rnr-image-3.png")
 
 const rnrImages = [rnrImage1, rnrImage2, rnrImage3]
 
-export const DemoPodcastListScreen: FC<DemoTabScreenProps<"DemoPodcastList">> = (_props) => {
+export const DashboardRequestsScreen: FC<DemoTabScreenProps<"DashboardRequests">> = (_props) => {
   const { themed } = useAppTheme()
   const {
     totalEpisodes,
@@ -95,10 +95,10 @@ export const DemoPodcastListScreen: FC<DemoTabScreenProps<"DemoPodcastList">> = 
               preset="generic"
               style={themed($emptyState)}
               headingTx={
-                favoritesOnly ? "demoPodcastListScreen:noFavoritesEmptyState.heading" : undefined
+                favoritesOnly ? "dashboardRequestsScreen:noFavoritesEmptyState.heading" : undefined
               }
               contentTx={
-                favoritesOnly ? "demoPodcastListScreen:noFavoritesEmptyState.content" : undefined
+                favoritesOnly ? "dashboardRequestsScreen:noFavoritesEmptyState.content" : undefined
               }
               button={favoritesOnly ? "" : undefined}
               buttonOnPress={manualRefresh}
@@ -109,16 +109,17 @@ export const DemoPodcastListScreen: FC<DemoTabScreenProps<"DemoPodcastList">> = 
         }
         ListHeaderComponent={
           <View style={themed($heading)}>
-            <Text preset="heading" tx="demoPodcastListScreen:title" />
+            <Text preset="heading" tx="dashboardRequestsScreen:title" />
+            <Text tx="dashboardRequestsScreen:helperText" />
             {(favoritesOnly || episodesForList.length > 0) && (
               <View style={themed($toggle)}>
                 <Switch
                   value={favoritesOnly}
                   onValueChange={() => toggleFavoritesOnly()}
-                  labelTx="demoPodcastListScreen:onlyFavorites"
+                  labelTx="dashboardRequestsScreen:onlyFavorites"
                   labelPosition="left"
                   labelStyle={$labelStyle}
-                  accessibilityLabel={translate("demoPodcastListScreen:accessibility.switch")}
+                  accessibilityLabel={translate("dashboardRequestsScreen:accessibility.switch")}
                 />
               </View>
             )}
@@ -188,7 +189,7 @@ const EpisodeCard = ({
       Platform.select<AccessibilityProps>({
         ios: {
           accessibilityLabel: episode.title,
-          accessibilityHint: translate("demoPodcastListScreen:accessibility.cardHint", {
+          accessibilityHint: translate("dashboardRequestsScreen:accessibility.cardHint", {
             action: isFavorite ? "unfavorite" : "favorite",
           }),
         },
@@ -197,7 +198,7 @@ const EpisodeCard = ({
           accessibilityActions: [
             {
               name: "longpress",
-              label: translate("demoPodcastListScreen:accessibility.favoriteAction"),
+              label: translate("dashboardRequestsScreen:accessibility.favoriteAction"),
             },
           ],
           onAccessibilityAction: ({ nativeEvent }) => {
@@ -286,8 +287,8 @@ const EpisodeCard = ({
           style={themed([$favoriteButton, isFavorite && $unFavoriteButton])}
           accessibilityLabel={
             isFavorite
-              ? translate("demoPodcastListScreen:accessibility.unfavoriteIcon")
-              : translate("demoPodcastListScreen:accessibility.favoriteIcon")
+              ? translate("dashboardRequestsScreen:accessibility.unfavoriteIcon")
+              : translate("dashboardRequestsScreen:accessibility.favoriteIcon")
           }
           LeftAccessory={ButtonLeftAccessory}
         >
@@ -297,8 +298,8 @@ const EpisodeCard = ({
             weight="medium"
             text={
               isFavorite
-                ? translate("demoPodcastListScreen:unfavoriteButton")
-                : translate("demoPodcastListScreen:favoriteButton")
+                ? translate("dashboardRequestsScreen:unfavoriteButton")
+                : translate("dashboardRequestsScreen:favoriteButton")
             }
           />
         </Button>

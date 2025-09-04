@@ -1,18 +1,9 @@
-import demoEn from "./demo-en"
-
 const en = {
   common: {
     ok: "OK!",
     cancel: "Cancel",
     back: "Back",
     logOut: "Log Out",
-  },
-  welcomeScreen: {
-    postscript:
-      "psst  — This probably isn't what your app looks like. (Unless your designer handed you these screens, and in that case, ship it!)",
-    readyForLaunch: "Your app, almost ready for launch!",
-    exciting: "(ohh, this is exciting!)",
-    letsGo: "Let's go!",
   },
   errorScreen: {
     title: "Something went wrong!",
@@ -44,51 +35,34 @@ const en = {
     hint: "Hint: you can use any email address and your favorite password :)",
   },
   demoNavigator: {
-    componentsTab: "Components",
-    debugTab: "Debug",
-    communityTab: "Community",
-    podcastListTab: "Podcast",
+    homeTab: "Home",
+    teamsTab: "Teams",
+    rosterTab: "Roster",
+    requestsTab: "Requests",
   },
-  demoCommunityScreen: {
-    title: "Connect with the community",
-    tagLine:
-      "Plug in to Infinite Red's community of React Native engineers and level up your app development with us!",
-    joinUsOnSlackTitle: "Join us on Slack",
-    joinUsOnSlack:
-      "Wish there was a place to connect with React Native engineers around the world? Join the conversation in the Infinite Red Community Slack! Our growing community is a safe space to ask questions, learn from others, and grow your network.",
-    joinSlackLink: "Join the Slack Community",
-    makeIgniteEvenBetterTitle: "Make Ignite even better",
-    makeIgniteEvenBetter:
-      "Have an idea to make Ignite even better? We're happy to hear that! We're always looking for others who want to help us build the best React Native tooling out there. Join us over on GitHub to join us in building the future of Ignite.",
-    contributeToIgniteLink: "Contribute to Ignite",
-    theLatestInReactNativeTitle: "The latest in React Native",
-    theLatestInReactNative: "We're here to keep you current on all React Native has to offer.",
-    reactNativeRadioLink: "React Native Radio",
-    reactNativeNewsletterLink: "React Native Newsletter",
-    reactNativeLiveLink: "React Native Live",
-    chainReactConferenceLink: "Chain React Conference",
-    hireUsTitle: "Hire Infinite Red for your next project",
-    hireUs:
-      "Whether it's running a full project or getting teams up to speed with our hands-on training, Infinite Red can help with just about any React Native project.",
-    hireUsLink: "Send us a message",
+  dashboardRosterScreen: {
+    title: "Roster",
+    externalLinkText:
+      "Below is an example on how to navigate to an external link from the app. This is helpful for navigating to the web view of the team roster.",
+    externalLink: "Go to external link",
   },
-  demoShowroomScreen: {
-    jumpStart: "Components to jump start your project!",
+  dashboardHomeScreen: {
+    jumpStart: "Home",
     lorem2Sentences:
       "Nulla cupidatat deserunt amet quis aliquip nostrud do adipisicing. Adipisicing excepteur elit laborum Lorem adipisicing do duis.",
     demoHeaderTxExample: "Yay",
     demoViaTxProp: "Via `tx` Prop",
     demoViaSpecifiedTxProp: "Via `{{prop}}Tx` Prop",
   },
-  demoDebugScreen: {
+  dashboardTeamsScreen: {
     howTo: "HOW TO",
-    title: "Debug",
+    title: "Teams Page (currently has debugging info)",
     tagLine:
       "Congratulations, you've got a very advanced React Native app template here.  Take advantage of this boilerplate!",
     reactotron: "Send to Reactotron",
     reportBugs: "Report Bugs",
     demoList: "Demo List",
-    demoPodcastList: "Demo Podcast List",
+    dashboardRequests: "Dashboard Requests",
     androidReactotronHint:
       "If this doesn't work, ensure the Reactotron desktop app is running, run adb reverse tcp:9090 tcp:9090 from your terminal, and reload the app.",
     iosReactotronHint:
@@ -100,8 +74,10 @@ const en = {
     windowsReactotronHint:
       "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
   },
-  demoPodcastListScreen: {
-    title: "React Native Radio episodes",
+  dashboardRequestsScreen: {
+    title: "Requests",
+    helperText:
+      "Below is an example on how to load in cards from an API response and handle live state updates with favourites",
     onlyFavorites: "Only Show Favorites",
     favoriteButton: "Favorite",
     unfavoriteButton: "Unfavorite",
@@ -121,8 +97,6 @@ const en = {
         "No favorites have been added yet. Tap the heart on an episode to add it to your favorites!",
     },
   },
-
-  ...demoEn,
 }
 
 export default en

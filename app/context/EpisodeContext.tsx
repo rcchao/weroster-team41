@@ -97,7 +97,7 @@ export const useEpisode = (episode: EpisodeItem) => {
     const formatted = formatDate(episode.pubDate)
     datePublished = {
       textLabel: formatted,
-      accessibilityLabel: translate("demoPodcastListScreen:accessibility.publishLabel", {
+      accessibilityLabel: translate("dashboardRequestsScreen:accessibility.publishLabel", {
         date: formatted,
       }),
     }
@@ -111,7 +111,7 @@ export const useEpisode = (episode: EpisodeItem) => {
   const s = Math.floor((seconds % 3600) % 60)
   const duration = {
     textLabel: `${h > 0 ? `${h}:` : ""}${m > 0 ? `${m}:` : ""}${s}`,
-    accessibilityLabel: translate("demoPodcastListScreen:accessibility.durationLabel", {
+    accessibilityLabel: translate("dashboardRequestsScreen:accessibility.durationLabel", {
       hours: h,
       minutes: m,
       seconds: s,

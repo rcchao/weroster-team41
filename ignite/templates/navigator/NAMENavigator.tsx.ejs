@@ -2,7 +2,7 @@
 destinationDir: app/navigators
 ---
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { WelcomeScreen } from "@/screens/WelcomeScreen"
+import { DashboardHomeScreen } from "@/screens/DashboardHomeScreen"
 
 export type <%= props.pascalCaseName %>NavigatorParamList = {
   Demo: undefined
@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator<<%= props.pascalCaseName %>NavigatorPar
 export const <%= props.pascalCaseName %>Navigator = () => {
   return (
     <Stack.Navigator screenOptions={{ cardStyle: { backgroundColor: "transparent" }, headerShown: false, }}>
-      <Stack.Screen name="Demo" component={WelcomeScreen} />
+      <Stack.Screen name="Demo" component={DashboardHomeScreen} />
     </Stack.Navigator>
   )
 }

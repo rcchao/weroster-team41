@@ -2,7 +2,7 @@
 
 appId: ${MAESTRO_APP_ID}
 env:
-  FAVORITES_TEXT: "Switch on to only show favorites" # en.demoPodcastListScreen.accessibility.switch
+  FAVORITES_TEXT: "Switch on to only show favorites" # en.dashboardRequestsScreen.accessibility.switch
 onFlowStart:
   - runFlow: ../shared/_OnFlowStart.yaml
 ---
