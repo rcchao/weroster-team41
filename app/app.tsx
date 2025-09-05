@@ -44,7 +44,7 @@ const config = {
     Login: {
       path: "",
     },
-    Demo: {
+    Dashboard: {
       screens: {
         DashboardHomeScreen: {
           path: "home/:queryIndex?/:itemIndex?",

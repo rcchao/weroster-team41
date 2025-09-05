@@ -16,7 +16,7 @@ import { Screen } from "@/components/Screen"
 import { Text } from "@/components/Text"
 import { useAuth } from "@/context/AuthContext"
 import { isRTL } from "@/i18n"
-import { DemoTabScreenProps } from "@/navigators/DemoNavigator"
+import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useAppTheme } from "@/theme/context"
 import { $styles } from "@/theme/styles"
 import type { ThemedStyle } from "@/theme/types"
@@ -31,7 +31,7 @@ function openLinkInBrowser(url: string) {
 
 const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
 
-export const DashboardTeamsScreen: FC<DemoTabScreenProps<"DashboardTeams">> =
+export const DashboardTeamsScreen: FC<DashboardTabScreenProps<"DashboardTeams">> =
   function DashboardTeamsScreen(_props) {
     const { setThemeContextOverride, themeContext, themed } = useAppTheme()
     const { logout } = useAuth()

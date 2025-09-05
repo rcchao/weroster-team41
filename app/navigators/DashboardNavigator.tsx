@@ -15,7 +15,7 @@ import type { ThemedStyle } from "@/theme/types"
 
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 
-export type DemoTabParamList = {
+export type DashboardTabParamList = {
   DashboardRoster: undefined
   DashboardHome: { queryIndex?: string; itemIndex?: string }
   DashboardTeams: undefined
@@ -27,21 +27,21 @@ export type DemoTabParamList = {
  *
  * More info: https://reactnavigation.org/docs/typescript/#organizing-types
  */
-export type DemoTabScreenProps<T extends keyof DemoTabParamList> = CompositeScreenProps<
-  BottomTabScreenProps<DemoTabParamList, T>,
+export type DashboardTabScreenProps<T extends keyof DashboardTabParamList> = CompositeScreenProps<
+  BottomTabScreenProps<DashboardTabParamList, T>,
   AppStackScreenProps<keyof AppStackParamList>
 >
 
-const Tab = createBottomTabNavigator<DemoTabParamList>()
+const Tab = createBottomTabNavigator<DashboardTabParamList>()
 
 /**
- * This is the main navigator for the demo screens with a bottom tab bar.
+ * This is the main navigator for the dashboard screens with a bottom tab bar.
  * Each tab is a stack navigator with its own set of screens.
  *
  * More info: https://reactnavigation.org/docs/bottom-tab-navigator/
- * @returns {JSX.Element} The rendered `DemoNavigator`.
+ * @returns {JSX.Element} The rendered `DashboardNavigator`.
  */
-export function DemoNavigator() {
+export function DashboardNavigator() {
   const { bottom } = useSafeAreaInsets()
   const {
     themed,
@@ -65,7 +65,7 @@ export function DemoNavigator() {
           name="DashboardHome"
           component={DashboardHomeScreen}
           options={{
-            tabBarLabel: translate("demoNavigator:homeTab"),
+            tabBarLabel: translate("dashboardNavigator:homeTab"),
             tabBarIcon: ({ focused }) => (
               <Icon
                 icon="components"
@@ -80,7 +80,7 @@ export function DemoNavigator() {
           name="DashboardRoster"
           component={DashboardRosterScreen}
           options={{
-            tabBarLabel: translate("demoNavigator:rosterTab"),
+            tabBarLabel: translate("dashboardNavigator:rosterTab"),
             tabBarIcon: ({ focused }) => (
               <Icon
                 icon="community"
@@ -95,8 +95,8 @@ export function DemoNavigator() {
           name="DashboardRequests"
           component={DashboardRequestsScreen}
           options={{
-            tabBarAccessibilityLabel: translate("demoNavigator:requestsTab"),
-            tabBarLabel: translate("demoNavigator:requestsTab"),
+            tabBarAccessibilityLabel: translate("dashboardNavigator:requestsTab"),
+            tabBarLabel: translate("dashboardNavigator:requestsTab"),
             tabBarIcon: ({ focused }) => (
               <Icon icon="podcast" color={focused ? colors.tint : colors.tintInactive} size={30} />
             ),
@@ -107,7 +107,7 @@ export function DemoNavigator() {
           name="DashboardTeams"
           component={DashboardTeamsScreen}
           options={{
-            tabBarLabel: translate("demoNavigator:teamsTab"),
+            tabBarLabel: translate("dashboardNavigator:teamsTab"),
             tabBarIcon: ({ focused }) => (
               <Icon icon="debug" color={focused ? colors.tint : colors.tintInactive} size={30} />
             ),
