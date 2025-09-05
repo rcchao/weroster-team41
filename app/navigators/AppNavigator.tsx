@@ -14,7 +14,7 @@ import { ErrorBoundary } from "@/screens/ErrorScreen/ErrorBoundary"
 import { LoginScreen } from "@/screens/LoginScreen"
 import { useAppTheme } from "@/theme/context"
 
-import { DemoNavigator, DemoTabParamList } from "./DemoNavigator"
+import { DashboardNavigator, DashboardTabParamList } from "./DashboardNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 
 /**
@@ -28,7 +28,7 @@ import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
  */
 export type AppStackParamList = {
   Login: undefined
-  Demo: NavigatorScreenParams<DemoTabParamList>
+  Dashboard: NavigatorScreenParams<DashboardTabParamList>
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
@@ -63,11 +63,11 @@ const AppStack = () => {
           backgroundColor: colors.background,
         },
       }}
-      initialRouteName={isAuthenticated ? "Demo" : "Login"}
+      initialRouteName={isAuthenticated ? "Dashboard" : "Login"}
     >
       {isAuthenticated ? (
         <>
-          <Stack.Screen name="Demo" component={DemoNavigator} />
+          <Stack.Screen name="Dashboard" component={DashboardNavigator} />
         </>
       ) : (
         <>
