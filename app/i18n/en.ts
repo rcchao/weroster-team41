@@ -34,6 +34,9 @@ const en = {
     tapToLogIn: "Tap to log in!",
     hint: "Hint: you can use any email address and your favorite password :)",
   },
+  notificationScreen: {
+    title: "Notifications",
+  },
   dashboardNavigator: {
     homeTab: "Home",
     teamsTab: "Teams",

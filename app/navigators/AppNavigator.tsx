@@ -12,6 +12,7 @@ import Config from "@/config"
 import { useAuth } from "@/context/AuthContext"
 import { ErrorBoundary } from "@/screens/ErrorScreen/ErrorBoundary"
 import { LoginScreen } from "@/screens/LoginScreen"
+import { NotificationsScreen } from "@/screens/NotificationsScreen"
 import { useAppTheme } from "@/theme/context"
 
 import { DashboardNavigator, DashboardTabParamList } from "./DashboardNavigator"
@@ -29,6 +30,7 @@ import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 export type AppStackParamList = {
   Login: undefined
   Dashboard: NavigatorScreenParams<DashboardTabParamList>
+  Notifications: undefined
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
@@ -76,6 +78,14 @@ const AppStack = () => {
       )}
 
       {/** 🔥 Your screens go here */}
+      <Stack.Screen
+        name="Notifications"
+        component={NotificationsScreen}
+        options={{
+          presentation: "fullScreenModal",
+          animation: "fade",
+        }}
+      />
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

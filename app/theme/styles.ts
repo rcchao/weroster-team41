@@ -1,6 +1,8 @@
 import { ViewStyle } from "react-native"
+import { TextStyle } from "react-native"
 
 import { spacing } from "./spacing"
+import type { ThemedStyle } from "./types"
 
 /* Use this file to define styles that are used in multiple places in your app. */
 export const $styles = {
@@ -21,3 +23,17 @@ export const $styles = {
     overflow: "hidden",
   } as ViewStyle,
 }
+
+export const $topRightIcons: ThemedStyle<TextStyle> = () => ({
+  position: "absolute",
+  top: 16,
+  right: 16,
+  flexDirection: "row",
+  alignItems: "center",
+  zIndex: 1,
+})
+
+// Currently this is just padding
+export const $headerIcons: ThemedStyle<TextStyle> = () => ({
+  marginRight: spacing.md,
+})

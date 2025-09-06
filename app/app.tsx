@@ -54,6 +54,9 @@ const config = {
         DashboardRosterScreen: "roster",
       },
     },
+    Notifications: {
+      path: "notifications",
+    },
   },
 }
 
