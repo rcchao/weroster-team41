@@ -1,7 +1,6 @@
 import { defaultConfig } from "@tamagui/config/v4"
 import { createTokens, createTamagui } from "tamagui"
 
-// Colour tokens
 const tokens = createTokens({
   ...defaultConfig.tokens,
   color: {
@@ -87,6 +86,20 @@ const tokens = createTokens({
     white700: "#E8E9E9",
     white800: "#E4E5E5",
     white900: "#E0E1E1",
+  },
+  radius: {
+    ...defaultConfig.tokens.radius,
+    1: 4,
+    2: 6,
+    3: 8,
+    4: 12,
+    5: 16,
+    6: 20,
+    7: 24,
+    8: 32,
+    9: 40,
+    10: 48,
+    full: 9999,
   },
 })
 
