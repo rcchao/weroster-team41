@@ -67,11 +67,7 @@ export function DashboardNavigator() {
           options={{
             tabBarLabel: translate("dashboardNavigator:homeTab"),
             tabBarIcon: ({ focused }) => (
-              <Icon
-                icon="components"
-                color={focused ? colors.tint : colors.tintInactive}
-                size={30}
-              />
+              <Icon icon="house" color={focused ? colors.tint : colors.tintInactive} size={30} />
             ),
           }}
         />
@@ -82,11 +78,7 @@ export function DashboardNavigator() {
           options={{
             tabBarLabel: translate("dashboardNavigator:rosterTab"),
             tabBarIcon: ({ focused }) => (
-              <Icon
-                icon="community"
-                color={focused ? colors.tint : colors.tintInactive}
-                size={30}
-              />
+              <Icon icon="roster" color={focused ? colors.tint : colors.tintInactive} size={30} />
             ),
           }}
         />
@@ -98,7 +90,7 @@ export function DashboardNavigator() {
             tabBarAccessibilityLabel: translate("dashboardNavigator:requestsTab"),
             tabBarLabel: translate("dashboardNavigator:requestsTab"),
             tabBarIcon: ({ focused }) => (
-              <Icon icon="podcast" color={focused ? colors.tint : colors.tintInactive} size={30} />
+              <Icon icon="requests" color={focused ? colors.tint : colors.tintInactive} size={30} />
             ),
           }}
         />
@@ -109,7 +101,7 @@ export function DashboardNavigator() {
           options={{
             tabBarLabel: translate("dashboardNavigator:teamsTab"),
             tabBarIcon: ({ focused }) => (
-              <Icon icon="debug" color={focused ? colors.tint : colors.tintInactive} size={30} />
+              <Icon icon="teams" color={focused ? colors.tint : colors.tintInactive} size={30} />
             ),
           }}
         />
