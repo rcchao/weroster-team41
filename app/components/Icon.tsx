@@ -8,9 +8,6 @@ import {
   ViewProps,
   ViewStyle,
 } from "react-native"
-
-import { useAppTheme } from "@/theme/context"
-
 import {
   Bell,
   Building2,
@@ -51,7 +48,7 @@ import {
   Shuffle,
   Sliders,
   Stethoscope,
-  Sun,  
+  Sun,
   Sunrise,
   Sunset,
   User2,
@@ -59,6 +56,8 @@ import {
   X,
   Zap,
 } from "lucide-react-native"
+
+import { useAppTheme } from "@/theme/context"
 
 export type IconTypes = keyof typeof iconRegistry
 
@@ -111,6 +110,24 @@ export function PressableIcon(props: PressableIconProps) {
 
   const { theme } = useAppTheme()
 
+  const LucideIcon = iconRegistry[icon]
+
+  if (!LucideIcon) {
+    console.warn(`Icon "${icon}" does not exist in iconRegistry.`)
+    return null // Prevents native crash if icon is missing
+  }
+
+  if (
+    typeof LucideIcon == "function" ||
+    (typeof LucideIcon === "object" && LucideIcon !== null && "$$typeof" in LucideIcon)
+  ) {
+    return (
+      <TouchableOpacity {...pressableProps} style={$containerStyleOverride}>
+        <LucideIcon color={color ?? theme.colors.text} size={size ?? 24} />
+      </TouchableOpacity>
+    )
+  }
+
   const $imageStyle: StyleProp<ImageStyle> = [
     $imageStyleBase,
     { tintColor: color ?? theme.colors.text },
@@ -144,6 +161,24 @@ export function Icon(props: IconProps) {
 
   const { theme } = useAppTheme()
 
+  const LucideIcon = iconRegistry[icon]
+
+  if (!LucideIcon) {
+    console.warn(`Icon "${icon}" does not exist in iconRegistry.`)
+    return null // Prevents native crash if icon is missing
+  }
+
+  if (
+    typeof LucideIcon == "function" ||
+    (typeof LucideIcon === "object" && LucideIcon !== null && "$$typeof" in LucideIcon)
+  ) {
+    return (
+      <View {...viewProps} style={$containerStyleOverride}>
+        <LucideIcon color={color ?? theme.colors.text} size={size ?? 24} />
+      </View>
+    )
+  }
+
   const $imageStyle: StyleProp<ImageStyle> = [
     $imageStyleBase,
     { tintColor: color ?? theme.colors.text },
@@ -163,12 +198,12 @@ export const iconRegistry = {
   requests: MessageCircleWarning,
   roster: CalendarDays,
   house: House,
-  /*notifs: Bell,
+  notifs: Bell,
   building: Building2,
   calendar: Calendar,
   openShift: CalendarClock,
   camera: Camera,
-  check: Check,
+  lucideCheck: Check,
   checkCircle: CheckCircle2,
   down: ChevronDown,
   left: ChevronLeft,
@@ -181,7 +216,7 @@ export const iconRegistry = {
   clock: Clock3,
   copy: Copy,
   cross: Cross,
-  heart: Heart,
+  lucideHeart: Heart,
   layoutGrid: LayoutGrid,
   logOut: LogOut,
   mail: Mail,
@@ -195,16 +230,16 @@ export const iconRegistry = {
   leave: PlaneTakeoff,
   plus: Plus,
   search: Search,
-  settings: Settings,
-  swap: Shuffle, 
+  lucideSettings: Settings,
+  swap: Shuffle,
   sliders: Sliders,
   stethoscope: Stethoscope,
   sun: Sun,
   am: Sunrise,
   pm: Sunset,
   user2: User2,
-  x: X,
-  zap: Zap,*/
+  lucideX: X,
+  zap: Zap,
   back: require("@assets/icons/back.png"),
   bell: require("@assets/icons/bell.png"),
   caretLeft: require("@assets/icons/caretLeft.png"),
