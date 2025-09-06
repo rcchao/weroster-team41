@@ -1,15 +1,19 @@
-import { PrismaClient } from "@prisma/client"
-import express from "express"
+require("dotenv").config()
 
-import eventRoutes from "./routes/event.routes"
+import express from "express"
+import cors from "cors"
+import { PrismaClient } from "@prisma/client"
+import routes from "./routes"
 
 const app = express()
 const prisma = new PrismaClient()
 
+app.use(cors())
 app.use(express.json())
-// Make prisma available to all routes
 app.locals.prisma = prisma
 
-app.use("/api/events", eventRoutes)
+app.use("/api", routes)
 
-app.listen(3000)
+app.listen(3000, () => {
+  console.log("Server running on port 3000")
+})

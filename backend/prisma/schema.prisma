@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -142,10 +141,11 @@ model Roster {
 }
 
 model User {
-  id                Int                 @id
+  id                Int                 @id @default(autoincrement())
   first_name        String?             @db.VarChar(255)
   last_name         String?             @db.VarChar(255)
-  email             String?             @db.VarChar(255)
+  email             String              @unique @db.VarChar(255)
+  password          String              @db.VarChar(255)
   phone             String?             @db.VarChar(255)
   designation_id    Int?
   campus_id         Int?
@@ -157,19 +157,8 @@ model User {
   Designation       Designation?        @relation(fields: [designation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_1")
   Campus            Campus?             @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_2")
   Hospital          Hospital?           @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_3")
-  UserSession       UserSession[]
 
   @@index([campus_id], map: "campus_id")
   @@index([designation_id], map: "designation_id")
   @@index([hospital_id], map: "hospital_id")
-}
-
-model UserSession {
-  id         Int       @id
-  user_id    Int?
-  token      String?   @db.VarChar(255)
-  expires_at DateTime? @db.DateTime(0)
-  User       User?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "UserSession_ibfk_1")
-
-  @@index([user_id], map: "user_id")
 }
