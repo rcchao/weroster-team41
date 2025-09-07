@@ -7,3 +7,4 @@ ignite/ignite.json
 package.json
 .eslintignore
 backend/
+.github/pull_request_template.md
