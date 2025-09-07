@@ -1,0 +1,38 @@
+name: Add Ticket Link to PR
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  add-jira-link:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract ticket number from branch name
+        id: extract
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          if [[ "$BRANCH_NAME" =~ (WR-[0-9]+) ]]; then
+            echo "ticket=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
+          else
+            echo "ticket=" >> $GITHUB_OUTPUT
+          fi
+      - name: Update PR description with JIRA link
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const ticket = process.env.ticket || "${{ steps.extract.outputs.ticket }}";
+            if (ticket) {
+              const jiraLink = `https://comp30022weroster2025s2.atlassian.net/browse/${ticket}`;
+              const body = `_[JIRA Ticket](${jiraLink})_\n\n${context.payload.pull_request.body || ""}`;
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+                body: body
+              });
+            }
