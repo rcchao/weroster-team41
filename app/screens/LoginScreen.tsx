@@ -1,38 +1,36 @@
 import { FC, useRef, useState } from "react"
 import { ViewStyle, StyleSheet } from "react-native"
-
+import { Controller, useForm } from "react-hook-form"
 import { Input, Text, Image, YStack, Anchor } from "tamagui"
 
 import { PressableIcon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
+import { SubmitButton } from "@/components/SubmitButton"
 import { useAuth } from "@/context/AuthContext"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
-import { Controller, useForm } from "react-hook-form"
-
 import { UserInput } from "../components/UserInput"
-import { SubmitButton } from "@/components/SubmitButton"
 
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
 const styles = StyleSheet.create({
+  forgotPassword: {
+    alignItems: "center",
+  },
   image: {
     height: 125,
     resizeMode: "contain",
     width: 175,
   },
-  yStack: {
-    alignItems: "stretch",
-    padding: 30,
-  },
   logoWelcome: {
     alignItems: "center",
     gap: 20,
   },
-  forgotPassword: {
-    alignItems: "center",
+  yStack: {
+    alignItems: "stretch",
+    padding: 30,
   },
 })
 

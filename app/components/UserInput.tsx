@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react"
+import { forwardRef, type ComponentRef, type ReactNode } from "react"
 import { StyleSheet } from "react-native"
 import { Input, YStack, XStack, Paragraph } from "tamagui"
 
@@ -9,10 +9,10 @@ const styles = StyleSheet.create({
 
 type UserInputProps = React.ComponentProps<typeof Input> & {
   errorMessage?: string
-  RightAccessory?: (props: { style?: any }) => React.ReactNode
+  RightAccessory?: (props: { style?: any }) => ReactNode
 }
 
-export const UserInput = forwardRef<React.ComponentRef<typeof Input>, UserInputProps>(
+export const UserInput = forwardRef<ComponentRef<typeof Input>, UserInputProps>(
   ({ errorMessage, RightAccessory, ...rest }, ref) => {
     return (
       <YStack gap="$2">
