@@ -1,18 +1,43 @@
 import { FC, useRef, useState } from "react"
 // eslint-disable-next-line no-restricted-imports
-import { TextInput, TextStyle, ViewStyle } from "react-native"
+import { TextInput, TextStyle, ViewStyle, StyleSheet } from "react-native"
+import { Text, Image, YStack } from "tamagui"
 
 import { Button } from "@/components/Button"
 import { PressableIcon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
-import { Text } from "@/components/Text"
-import { TextField } from "@/components/TextField"
 import { useAuth } from "@/context/AuthContext"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
+import { Controller, useForm } from "react-hook-form"
+
+import { UserInput } from "../components/UserInput"
+
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
+
+const styles = StyleSheet.create({
+  image: {
+    height: 125,
+    resizeMode: "contain",
+    width: 175,
+  },
+  yStack: {
+    alignItems: "stretch",
+    padding: 30,
+  },
+  logoWelcome: {
+    alignItems: "center",
+    gap: 20,
+  },
+})
+
+type LoginValues = {
+  domain?: string
+  email: string
+  password: string
+}
 
 export const LoginScreen: FC<LoginScreenProps> = () => {
   const passwordInput = useRef<TextInput>(null)
@@ -26,20 +51,18 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
     theme: { colors },
   } = useAppTheme()
 
-  const handleSubmit = async () => {
-    if (!email || !password) {
-      console.log("Email and password are required.")
-      return
-    }
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<LoginValues>({
+    defaultValues: { domain: "", email: "", password: "" },
+    mode: "onChange",
+  })
 
+  const onSubmit = async ({ email, password }: LoginValues) => {
     const success = await login(email, password)
-
-    if (success) {
-      // Navigation will be handled by your navigator
-      // checking isAuthenticated from context
-    } else {
-      console.log("Authentication failed.")
-    }
+    if (!success) console.log("Authentication failed.")
   }
 
   return (
@@ -48,52 +71,98 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
       contentContainerStyle={themed($screenContentContainer)}
       safeAreaEdges={["top", "bottom"]}
     >
-      <Text text={"Log In"} preset="heading" style={themed($heading)} />
+      <YStack style={styles.yStack} gap="$space.8">
+        <YStack style={styles.logoWelcome}>
+          <Image source={require("../../assets/images/logo.png")} style={styles.image} />
+          {/* TODO: Replace this Welcome text once typography is available */}
+          <Text>Welcome</Text>
+        </YStack>
 
-      <TextField
-        value={email}
-        onChangeText={setEmail}
-        containerStyle={themed($textField)}
-        autoCapitalize="none"
-        autoComplete="email"
-        autoCorrect={false}
-        keyboardType="email-address"
-        label="Email"
-        placeholder="Enter your email"
-        status={error ? "error" : undefined}
-        onSubmitEditing={() => passwordInput.current?.focus()}
-      />
+        <Controller
+          control={control}
+          name="domain"
+          render={({ field: { value, onChange, onBlur, ref } }) => (
+            <UserInput
+              ref={ref}
+              placeholder="Domain"
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              returnKeyType="next"
+              autoCapitalize="none"
+            />
+          )}
+        />
 
-      <TextField
-        ref={passwordInput}
-        value={password}
-        onChangeText={setPassword}
-        containerStyle={themed($textField)}
-        autoCapitalize="none"
-        autoComplete="password"
-        autoCorrect={false}
-        secureTextEntry={isPasswordHidden}
-        label="Password"
-        placeholder="Enter your password"
-        onSubmitEditing={handleSubmit}
-        RightAccessory={(props) => (
-          <PressableIcon
-            icon={isPasswordHidden ? "anchor" : "anchor"}
-            color={colors.palette.neutral800}
-            containerStyle={props.style}
-            size={20}
-            onPress={() => setIsPasswordHidden(!isPasswordHidden)}
-          />
-        )}
-      />
+        <Controller
+          control={control}
+          name="email"
+          rules={{
+            required: "Email is required",
+            pattern: {
+              value: /^\S+@\S+\.\S+$/,
+              message: "Enter a valid email",
+            },
+          }}
+          render={({ field: { value, onChange, onBlur, ref } }) => (
+            <UserInput
+              ref={ref}
+              placeholder="Email"
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              autoCapitalize="none"
+              autoComplete="email"
+              autoCorrect={false}
+              keyboardType="email-address"
+              errorMessage={errors.email?.message}
+              returnKeyType="next"
+              onSubmitEditing={() => passwordInput.current?.focus()}
+            />
+          )}
+        />
 
-      <Button
-        text={"Log In"}
-        style={themed($button)}
-        preset="reversed"
-        onPress={handleSubmit}
-        disabled={!email || !password}
-      />
+        <Controller
+          control={control}
+          name="password"
+          rules={{
+            required: "Password is required",
+            minLength: { value: 6, message: "Min 6 characters" },
+          }}
+          render={({ field: { value, onChange, onBlur, ref } }) => (
+            <UserInput
+              ref={passwordInput}
+              placeholder="Password"
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              autoCapitalize="none"
+              autoComplete="password"
+              autoCorrect={false}
+              secureTextEntry={isPasswordHidden}
+              errorMessage={errors.password?.message}
+              onSubmitEditing={handleSubmit(onSubmit)}
+              RightAccessory={() => (
+                // TODO: Replace this with a Tamagui Button when icon is made available
+                <PressableIcon
+                  icon={isPasswordHidden ? "view" : "hidden"}
+                  color={colors.palette.neutral800}
+                  size={20}
+                  onPress={() => setIsPasswordHidden((v) => !v)}
+                />
+              )}
+            />
+          )}
+        />
+
+        <Button
+          text="Log In"
+          style={themed($button)}
+          preset="reversed"
+          onPress={handleSubmit(onSubmit)}
+          disabled={!isValid || isSubmitting}
+        />
+      </YStack>
     </Screen>
   )
 }
@@ -101,14 +170,6 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
 const $screenContentContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingVertical: spacing.xxl,
   paddingHorizontal: spacing.lg,
-})
-
-const $heading: ThemedStyle<TextStyle> = ({ spacing }) => ({
-  marginBottom: spacing.lg,
-})
-
-const $textField: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  marginBottom: spacing.lg,
 })
 
 const $button: ThemedStyle<ViewStyle> = ({ spacing }) => ({
