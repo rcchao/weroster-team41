@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-
-import { CreateEventDTO } from "../types/event.types"
+import type { Event } from ".prisma/client"
 
 export class EventService {
   // Use prisma client for DB operations/interactions -> Prisma is how we interact with the DB
@@ -8,26 +7,26 @@ export class EventService {
 
   // Async as it involves DB operations
   // Create a new event given the payload of type CreateEventDTO
-  async create(data: CreateEventDTO) {
+  async create(data: Event) {
     // Validation logic
-    if (data.startTime >= data.endTime) {
+    if (data.start_time && data.end_time && data.start_time >= data.end_time) {
       throw new Error("Invalid time range")
     }
 
     return this.prisma.event.create({
       data,
-      include: { activity: true },
+      include: { Activity: true },
     })
   }
 
   // Retrieve events for a specific activity ID (refer to schema.prisma or diagram for relation)
-  async getActivityEvents(activityId: string) {
+  async getActivityEvents(activity_id: string) {
     // FInd many as one activity can have multiple events
     return this.prisma.event.findMany({
       where: {
-        activityId,
+        // activity_id,
       },
-      include: { activity: true },
+      include: { Activity: true },
     })
   }
 }
