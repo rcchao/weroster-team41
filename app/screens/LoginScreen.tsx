@@ -1,6 +1,7 @@
 import { FC, useRef, useState } from "react"
-import { TextInput, ViewStyle, StyleSheet } from "react-native"
-import { Text, Image, YStack, Anchor } from "tamagui"
+import { ViewStyle, StyleSheet } from "react-native"
+
+import { Input, Text, Image, YStack, Anchor } from "tamagui"
 
 import { PressableIcon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
@@ -42,7 +43,7 @@ type LoginValues = {
 }
 
 export const LoginScreen: FC<LoginScreenProps> = () => {
-  const passwordInput = useRef<TextInput>(null)
+  const passwordInput = useRef<React.ComponentRef<typeof Input>>(null)
   const [isPasswordHidden, setIsPasswordHidden] = useState(true)
 
   const { login } = useAuth()

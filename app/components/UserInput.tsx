@@ -1,6 +1,5 @@
-// eslint-disable-next-line no-restricted-imports
 import React, { forwardRef } from "react"
-import { TextInput, StyleSheet } from "react-native"
+import { StyleSheet } from "react-native"
 import { Input, YStack, XStack, Paragraph } from "tamagui"
 
 const styles = StyleSheet.create({
@@ -13,7 +12,7 @@ type UserInputProps = React.ComponentProps<typeof Input> & {
   RightAccessory?: (props: { style?: any }) => React.ReactNode
 }
 
-export const UserInput = forwardRef<TextInput, UserInputProps>(
+export const UserInput = forwardRef<React.ComponentRef<typeof Input>, UserInputProps>(
   ({ errorMessage, RightAccessory, ...rest }, ref) => {
     return (
       <YStack gap="$2">
