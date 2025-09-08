@@ -1,5 +1,5 @@
 import { defaultConfig } from "@tamagui/config/v4"
-import { createTokens, createTamagui, createFont, isWeb } from "tamagui"
+import { createTokens, createTamagui, createFont } from "tamagui"
 
 const tokens = createTokens({
   ...defaultConfig.tokens,
@@ -105,7 +105,7 @@ const tokens = createTokens({
 
 // Font tokens
 const bodyFont = createFont({
-  family: isWeb ? "Inter, Helvetica, Arial, sans-serif" : "Inter",
+  family: "Inter",
   size: {
     1: 10,
     2: 12,
@@ -150,7 +150,7 @@ const bodyFont = createFont({
 })
 
 const headingFont = createFont({
-  family: isWeb ? "Montserrat, Georgia, serif" : "Montserrat",
+  family: "Montserrat",
   size: {
     1: 16,
     2: 18,

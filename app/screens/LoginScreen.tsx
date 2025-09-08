@@ -1,6 +1,7 @@
 import { FC, useRef, useState } from "react"
 // eslint-disable-next-line no-restricted-imports
 import { TextInput, TextStyle, ViewStyle } from "react-native"
+import { H1, H2, Heading } from "tamagui"
 
 import { Button } from "@/components/Button"
 import { PressableIcon } from "@/components/Icon"
@@ -49,6 +50,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
       safeAreaEdges={["top", "bottom"]}
     >
       <Text text={"Log In"} preset="heading" style={themed($heading)} />
+      <H1>Welcome back!</H1>
 
       <TextField
         value={email}

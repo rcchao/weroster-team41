@@ -55,7 +55,7 @@ export const typography = {
   /**
    * An alternate font used for perhaps titles and stuff.
    */
-  secondary: Platform.select({ ios: fonts.inter, android: fonts.inter }),
+  secondary: fonts.inter,
   /**
    * Lets get fancy with a monospace font!
    */
