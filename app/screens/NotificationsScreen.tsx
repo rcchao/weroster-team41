@@ -22,7 +22,7 @@ export const NotificationsScreen: FC<NotificationsScreenProps> = function Notifi
     <Screen preset="scroll" contentContainerStyle={$styles.container} safeAreaEdges={["top"]}>
       <View style={themed($topRightIcons)}>
         <Pressable onPress={() => navigation.goBack()} style={themed($headerIcons)}>
-          <Icon icon="components" />
+          <Icon icon="anchor" /> //placeholder icon
         </Pressable>
       </View>
       <Text preset="heading" tx="notificationScreen:title" />

@@ -8,7 +8,9 @@ import {
   ViewProps,
   ViewStyle,
 } from "react-native"
+
 import {
+  Anchor, // placeholder icon
   Bell,
   Building2,
   Calendar,
@@ -112,32 +114,9 @@ export function PressableIcon(props: PressableIconProps) {
 
   const LucideIcon = iconRegistry[icon]
 
-  if (!LucideIcon) {
-    console.warn(`Icon "${icon}" does not exist in iconRegistry.`)
-    return null // Prevents native crash if icon is missing
-  }
-
-  if (
-    typeof LucideIcon == "function" ||
-    (typeof LucideIcon === "object" && LucideIcon !== null && "$$typeof" in LucideIcon)
-  ) {
-    return (
-      <TouchableOpacity {...pressableProps} style={$containerStyleOverride}>
-        <LucideIcon color={color ?? theme.colors.text} size={size ?? 24} />
-      </TouchableOpacity>
-    )
-  }
-
-  const $imageStyle: StyleProp<ImageStyle> = [
-    $imageStyleBase,
-    { tintColor: color ?? theme.colors.text },
-    size !== undefined && { width: size, height: size },
-    $imageStyleOverride,
-  ]
-
   return (
     <TouchableOpacity {...pressableProps} style={$containerStyleOverride}>
-      <Image style={$imageStyle} source={iconRegistry[icon]} />
+      <LucideIcon color={color ?? theme.colors.text} size={size ?? 24} />
     </TouchableOpacity>
   )
 }
@@ -163,37 +142,16 @@ export function Icon(props: IconProps) {
 
   const LucideIcon = iconRegistry[icon]
 
-  if (!LucideIcon) {
-    console.warn(`Icon "${icon}" does not exist in iconRegistry.`)
-    return null // Prevents native crash if icon is missing
-  }
-
-  if (
-    typeof LucideIcon == "function" ||
-    (typeof LucideIcon === "object" && LucideIcon !== null && "$$typeof" in LucideIcon)
-  ) {
-    return (
-      <View {...viewProps} style={$containerStyleOverride}>
-        <LucideIcon color={color ?? theme.colors.text} size={size ?? 24} />
-      </View>
-    )
-  }
-
-  const $imageStyle: StyleProp<ImageStyle> = [
-    $imageStyleBase,
-    { tintColor: color ?? theme.colors.text },
-    size !== undefined && { width: size, height: size },
-    $imageStyleOverride,
-  ]
-
   return (
     <View {...viewProps} style={$containerStyleOverride}>
-      <Image style={$imageStyle} source={iconRegistry[icon]} />
+      <LucideIcon color={color ?? theme.colors.text} size={size ?? 24} />
     </View>
   )
+ 
 }
 
 export const iconRegistry = {
+  anchor: Anchor,
   teams: UsersRound,
   requests: MessageCircleWarning,
   roster: CalendarDays,
@@ -240,28 +198,6 @@ export const iconRegistry = {
   user2: User2,
   lucideX: X,
   zap: Zap,
-  back: require("@assets/icons/back.png"),
-  bell: require("@assets/icons/bell.png"),
-  caretLeft: require("@assets/icons/caretLeft.png"),
-  caretRight: require("@assets/icons/caretRight.png"),
-  check: require("@assets/icons/check.png"),
-  clap: require("@assets/icons/demo/clap.png"),
-  community: require("@assets/icons/demo/community.png"),
-  components: require("@assets/icons/demo/components.png"),
-  debug: require("@assets/icons/demo/debug.png"),
-  github: require("@assets/icons/demo/github.png"),
-  heart: require("@assets/icons/demo/heart.png"),
-  hidden: require("@assets/icons/hidden.png"),
-  ladybug: require("@assets/icons/ladybug.png"),
-  lock: require("@assets/icons/lock.png"),
-  menu: require("@assets/icons/menu.png"),
-  more: require("@assets/icons/more.png"),
-  pin: require("@assets/icons/demo/pin.png"),
-  podcast: require("@assets/icons/demo/podcast.png"),
-  settings: require("@assets/icons/settings.png"),
-  slack: require("@assets/icons/demo/slack.png"),
-  view: require("@assets/icons/view.png"),
-  x: require("@assets/icons/x.png"),
 }
 
 const $imageStyleBase: ImageStyle = {

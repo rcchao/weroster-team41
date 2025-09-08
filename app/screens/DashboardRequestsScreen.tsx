@@ -231,7 +231,7 @@ const EpisodeCard = ({
               ]}
             >
               <Icon
-                icon="heart"
+                icon="lucideHeart"
                 size={ICON_SIZE}
                 color={colors.palette.neutral800} // dark grey
               />
@@ -240,7 +240,7 @@ const EpisodeCard = ({
               style={[$styles.row, themed($iconContainer), animatedUnlikeButtonStyles]}
             >
               <Icon
-                icon="heart"
+                icon="lucideHeart"
                 size={ICON_SIZE}
                 color={colors.palette.primary400} // pink
               />

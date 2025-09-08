@@ -78,7 +78,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
         onSubmitEditing={handleSubmit}
         RightAccessory={(props) => (
           <PressableIcon
-            icon={isPasswordHidden ? "view" : "hidden"}
+            icon={isPasswordHidden ? "anchor" : "anchor"} //placeholder icon
             color={colors.palette.neutral800}
             containerStyle={props.style}
             size={20}
