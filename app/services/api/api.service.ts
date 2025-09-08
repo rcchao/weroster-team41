@@ -1,6 +1,6 @@
+import { Platform } from "react-native"
 import { create } from "apisauce"
 import { MMKV } from "react-native-mmkv"
-import { Platform } from "react-native"
 
 const storage = new MMKV()
 
