@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports
 import React, { forwardRef } from "react"
 import { TextInput, StyleSheet } from "react-native"
 import { Input, YStack, XStack, Paragraph } from "tamagui"
