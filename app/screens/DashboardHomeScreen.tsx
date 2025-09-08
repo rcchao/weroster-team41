@@ -30,7 +30,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
             onPress={() => navigation.navigate("Notifications")}
             style={themed($headerIcons)}
           >
-            <Icon icon="anchor" /> {/*placeholder icon*/}
+            <Icon icon="anchor" />
           </Pressable>
         </View>
         <Text preset="heading" tx="dashboardHomeScreen:jumpStart" />
