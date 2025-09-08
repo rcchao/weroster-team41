@@ -3,47 +3,39 @@
 
 import { Platform } from "react-native"
 import {
-  SpaceGrotesk_300Light as spaceGroteskLight,
-  SpaceGrotesk_400Regular as spaceGroteskRegular,
-  SpaceGrotesk_500Medium as spaceGroteskMedium,
-  SpaceGrotesk_600SemiBold as spaceGroteskSemiBold,
-  SpaceGrotesk_700Bold as spaceGroteskBold,
-} from "@expo-google-fonts/space-grotesk"
+  Montserrat_300Light as montserratLight,
+  Montserrat_400Regular as montserratRegular,
+  Montserrat_500Medium as montserratMedium,
+  Montserrat_600SemiBold as montserratSemiBold,
+  Montserrat_700Bold as montserratBold,
+} from "@expo-google-fonts/montserrat"
 
 export const customFontsToLoad = {
-  spaceGroteskLight,
-  spaceGroteskRegular,
-  spaceGroteskMedium,
-  spaceGroteskSemiBold,
-  spaceGroteskBold,
+  montserratLight,
+  montserratRegular,
+  montserratMedium,
+  montserratSemiBold,
+  montserratBold,
 }
 
 const fonts = {
-  spaceGrotesk: {
+  montserrat: {
     // Cross-platform Google font.
-    light: "spaceGroteskLight",
-    normal: "spaceGroteskRegular",
-    medium: "spaceGroteskMedium",
-    semiBold: "spaceGroteskSemiBold",
-    bold: "spaceGroteskBold",
-  },
-  helveticaNeue: {
-    // iOS only font.
-    thin: "HelveticaNeue-Thin",
-    light: "HelveticaNeue-Light",
-    normal: "Helvetica Neue",
-    medium: "HelveticaNeue-Medium",
+    light: "montserratLight",
+    normal: "montserratRegular",
+    medium: "montserratMedium",
+    semiBold: "montserratSemiBold",
+    bold: "montserratBold",
   },
   courier: {
     // iOS only font.
     normal: "Courier",
   },
-  sansSerif: {
-    // Android only font.
-    thin: "sans-serif-thin",
-    light: "sans-serif-light",
-    normal: "sans-serif",
-    medium: "sans-serif-medium",
+  inter: {
+    thin: "Inter-Thin",
+    normal: "Inter",
+    medium: "Inter-Medium",
+    bold: "Inter-Bold",
   },
   monospace: {
     // Android only font.
@@ -59,11 +51,11 @@ export const typography = {
   /**
    * The primary font. Used in most places.
    */
-  primary: fonts.spaceGrotesk,
+  primary: fonts.montserrat,
   /**
    * An alternate font used for perhaps titles and stuff.
    */
-  secondary: Platform.select({ ios: fonts.helveticaNeue, android: fonts.sansSerif }),
+  secondary: Platform.select({ ios: fonts.inter, android: fonts.inter }),
   /**
    * Lets get fancy with a monospace font!
    */

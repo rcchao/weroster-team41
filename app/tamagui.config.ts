@@ -1,5 +1,5 @@
 import { defaultConfig } from "@tamagui/config/v4"
-import { createTokens, createTamagui } from "tamagui"
+import { createTokens, createTamagui, createFont, isWeb } from "tamagui"
 
 const tokens = createTokens({
   ...defaultConfig.tokens,
@@ -103,8 +103,80 @@ const tokens = createTokens({
   },
 })
 
+// Font tokens
+const bodyFont = createFont({
+  family: isWeb ? "Inter, Helvetica, Arial, sans-serif" : "Inter",
+  size: {
+    1: 10,
+    2: 12,
+    3: 14, // unused onwards in figma
+    4: 16,
+    5: 18,
+    6: 20,
+    7: 24,
+    8: 30,
+    9: 36,
+    10: 48,
+  },
+  lineHeight: {
+    1: 12,
+    2: 14.5,
+    3: 17,
+    4: 19,
+    5: 21.5,
+    6: 24,
+    7: 29,
+    8: 36,
+    9: 43,
+    10: 58,
+  },
+  weight: {
+    1: "400", // regular
+    2: "500", // medium
+    3: "700", // bold
+  },
+  letterSpacing: {
+    1: 0,
+  },
+
+  // because android handles fonts differently, you need to map the weight
+  // to the actual name of the font in the font-file
+  // you can get the name with `otfinfo`: otfinfo --family Inter.ttf
+  face: {
+    400: { normal: "Inter-Regular", italic: "Inter-Italic" },
+    500: { normal: "Inter-Medium", italic: "Inter-MediumItalic" },
+    700: { normal: "Inter-Bold", italic: "Inter-BoldItalic" },
+  },
+})
+
+const headingFont = createFont({
+  family: isWeb ? "Montserrat, Georgia, serif" : "Montserrat",
+  size: {
+    1: 16,
+    2: 18,
+    3: 20,
+    4: 40,
+  },
+  lineHeight: {
+    1: 20,
+    2: 22,
+    3: 24,
+    4: 40,
+  },
+  weight: {
+    1: "700", // bold
+  },
+  letterSpacing: {
+    1: 0,
+  },
+})
+
 export const tamaguiConfig = createTamagui({
   ...defaultConfig,
+  fonts: {
+    heading: headingFont,
+    body: bodyFont,
+  },
   themes: {
     ...defaultConfig.themes,
     // Add in custom themes here
