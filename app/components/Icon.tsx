@@ -1,5 +1,4 @@
 import {
-  Image,
   ImageStyle,
   StyleProp,
   TouchableOpacity,
@@ -8,7 +7,6 @@ import {
   ViewProps,
   ViewStyle,
 } from "react-native"
-
 import {
   Anchor, // placeholder icon
   Bell,
@@ -101,14 +99,7 @@ type IconProps = Omit<ViewProps, "style"> & BaseIconProps
  * @returns {JSX.Element} The rendered `PressableIcon` component.
  */
 export function PressableIcon(props: PressableIconProps) {
-  const {
-    icon,
-    color,
-    size,
-    style: $imageStyleOverride,
-    containerStyle: $containerStyleOverride,
-    ...pressableProps
-  } = props
+  const { icon, color, size, containerStyle: $containerStyleOverride, ...pressableProps } = props
 
   const { theme } = useAppTheme()
 
@@ -129,14 +120,7 @@ export function PressableIcon(props: PressableIconProps) {
  * @returns {JSX.Element} The rendered `Icon` component.
  */
 export function Icon(props: IconProps) {
-  const {
-    icon,
-    color,
-    size,
-    style: $imageStyleOverride,
-    containerStyle: $containerStyleOverride,
-    ...viewProps
-  } = props
+  const { icon, color, size, containerStyle: $containerStyleOverride, ...viewProps } = props
 
   const { theme } = useAppTheme()
 
@@ -147,7 +131,6 @@ export function Icon(props: IconProps) {
       <LucideIcon color={color ?? theme.colors.text} size={size ?? 24} />
     </View>
   )
- 
 }
 
 export const iconRegistry = {
@@ -198,8 +181,4 @@ export const iconRegistry = {
   user2: User2,
   lucideX: X,
   zap: Zap,
-}
-
-const $imageStyleBase: ImageStyle = {
-  resizeMode: "contain",
 }
