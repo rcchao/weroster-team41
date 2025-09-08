@@ -177,6 +177,10 @@ export const tamaguiConfig = createTamagui({
     heading: headingFont,
     body: bodyFont,
   },
+  fonts: {
+    heading: headingFont,
+    body: bodyFont,
+  },
   themes: {
     ...defaultConfig.themes,
     // Add in custom themes here

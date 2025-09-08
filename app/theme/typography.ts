@@ -1,7 +1,6 @@
 // TODO: write documentation about fonts and typography along with guides on how to add custom fonts in own
 // markdown file and add links from here
 
-import { Platform } from "react-native"
 import {
   Montserrat_300Light as montserratLight,
   Montserrat_400Regular as montserratRegular,
@@ -27,19 +26,11 @@ const fonts = {
     semiBold: "montserratSemiBold",
     bold: "montserratBold",
   },
-  courier: {
-    // iOS only font.
-    normal: "Courier",
-  },
   inter: {
     thin: "Inter-Thin",
     normal: "Inter",
     medium: "Inter-Medium",
     bold: "Inter-Bold",
-  },
-  monospace: {
-    // Android only font.
-    normal: "monospace",
   },
 }
 
@@ -56,8 +47,4 @@ export const typography = {
    * An alternate font used for perhaps titles and stuff.
    */
   secondary: fonts.inter,
-  /**
-   * Lets get fancy with a monospace font!
-   */
-  code: Platform.select({ ios: fonts.courier, android: fonts.monospace }),
 }
