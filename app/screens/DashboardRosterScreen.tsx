@@ -20,8 +20,8 @@ export const DashboardRosterScreen: FC<DashboardTabScreenProps<"DashboardRoster"
         <Text tx="dashboardRosterScreen:externalLinkText" style={themed($description)} />
         <ListItem
           tx="dashboardRosterScreen:externalLink"
-          leftIcon="slack"
-          rightIcon={isRTL ? "caretLeft" : "caretRight"}
+          leftIcon="anchor" //placeholder icon
+          rightIcon={isRTL ? "left" : "right"}
           onPress={() => openLinkInBrowser("https://community.infinite.red/")}
         />
       </Screen>

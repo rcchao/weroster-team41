@@ -1,5 +1,4 @@
 import {
-  Image,
   ImageStyle,
   StyleProp,
   TouchableOpacity,
@@ -8,6 +7,55 @@ import {
   ViewProps,
   ViewStyle,
 } from "react-native"
+import {
+  Anchor, // placeholder icon
+  Bell,
+  Building2,
+  Calendar,
+  CalendarClock,
+  CalendarDays,
+  Camera,
+  Check,
+  CheckCircle2,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Circle,
+  CircleDashed,
+  CircleSlash,
+  CircleUserRound,
+  ClipboardList,
+  Clock3,
+  Copy,
+  Cross,
+  Heart,
+  House,
+  LayoutGrid,
+  LogOut,
+  Mail,
+  MapPin,
+  MessageCircleMore,
+  MessageCircleWarning,
+  Moon,
+  MoonStar,
+  PencilLine,
+  Phone,
+  PhoneCall,
+  PlaneTakeoff,
+  Plus,
+  Search,
+  Settings,
+  Shuffle,
+  Sliders,
+  Stethoscope,
+  Sun,
+  Sunrise,
+  Sunset,
+  User2,
+  UsersRound,
+  X,
+  Zap,
+} from "lucide-react-native"
 
 import { useAppTheme } from "@/theme/context"
 
@@ -51,27 +99,15 @@ type IconProps = Omit<ViewProps, "style"> & BaseIconProps
  * @returns {JSX.Element} The rendered `PressableIcon` component.
  */
 export function PressableIcon(props: PressableIconProps) {
-  const {
-    icon,
-    color,
-    size,
-    style: $imageStyleOverride,
-    containerStyle: $containerStyleOverride,
-    ...pressableProps
-  } = props
+  const { icon, color, size, containerStyle: $containerStyleOverride, ...pressableProps } = props
 
   const { theme } = useAppTheme()
 
-  const $imageStyle: StyleProp<ImageStyle> = [
-    $imageStyleBase,
-    { tintColor: color ?? theme.colors.text },
-    size !== undefined && { width: size, height: size },
-    $imageStyleOverride,
-  ]
+  const LucideIcon = iconRegistry[icon]
 
   return (
     <TouchableOpacity {...pressableProps} style={$containerStyleOverride}>
-      <Image style={$imageStyle} source={iconRegistry[icon]} />
+      <LucideIcon color={color ?? theme.colors.text} size={size ?? 24} />
     </TouchableOpacity>
   )
 }
@@ -84,56 +120,65 @@ export function PressableIcon(props: PressableIconProps) {
  * @returns {JSX.Element} The rendered `Icon` component.
  */
 export function Icon(props: IconProps) {
-  const {
-    icon,
-    color,
-    size,
-    style: $imageStyleOverride,
-    containerStyle: $containerStyleOverride,
-    ...viewProps
-  } = props
+  const { icon, color, size, containerStyle: $containerStyleOverride, ...viewProps } = props
 
   const { theme } = useAppTheme()
 
-  const $imageStyle: StyleProp<ImageStyle> = [
-    $imageStyleBase,
-    { tintColor: color ?? theme.colors.text },
-    size !== undefined && { width: size, height: size },
-    $imageStyleOverride,
-  ]
+  const LucideIcon = iconRegistry[icon]
 
   return (
     <View {...viewProps} style={$containerStyleOverride}>
-      <Image style={$imageStyle} source={iconRegistry[icon]} />
+      <LucideIcon color={color ?? theme.colors.text} size={size ?? 24} />
     </View>
   )
 }
 
 export const iconRegistry = {
-  back: require("@assets/icons/back.png"),
-  bell: require("@assets/icons/bell.png"),
-  caretLeft: require("@assets/icons/caretLeft.png"),
-  caretRight: require("@assets/icons/caretRight.png"),
-  check: require("@assets/icons/check.png"),
-  clap: require("@assets/icons/demo/clap.png"),
-  community: require("@assets/icons/demo/community.png"),
-  components: require("@assets/icons/demo/components.png"),
-  debug: require("@assets/icons/demo/debug.png"),
-  github: require("@assets/icons/demo/github.png"),
-  heart: require("@assets/icons/demo/heart.png"),
-  hidden: require("@assets/icons/hidden.png"),
-  ladybug: require("@assets/icons/ladybug.png"),
-  lock: require("@assets/icons/lock.png"),
-  menu: require("@assets/icons/menu.png"),
-  more: require("@assets/icons/more.png"),
-  pin: require("@assets/icons/demo/pin.png"),
-  podcast: require("@assets/icons/demo/podcast.png"),
-  settings: require("@assets/icons/settings.png"),
-  slack: require("@assets/icons/demo/slack.png"),
-  view: require("@assets/icons/view.png"),
-  x: require("@assets/icons/x.png"),
-}
-
-const $imageStyleBase: ImageStyle = {
-  resizeMode: "contain",
+  anchor: Anchor,
+  teams: UsersRound,
+  requests: MessageCircleWarning,
+  roster: CalendarDays,
+  house: House,
+  notifs: Bell,
+  building: Building2,
+  calendar: Calendar,
+  openShift: CalendarClock,
+  camera: Camera,
+  lucideCheck: Check,
+  checkCircle: CheckCircle2,
+  down: ChevronDown,
+  left: ChevronLeft,
+  right: ChevronRight,
+  circle: Circle,
+  circleDashed: CircleDashed,
+  circleSlash: CircleSlash,
+  circleUser: CircleUserRound,
+  clipboard: ClipboardList,
+  clock: Clock3,
+  copy: Copy,
+  cross: Cross,
+  lucideHeart: Heart,
+  layoutGrid: LayoutGrid,
+  logOut: LogOut,
+  mail: Mail,
+  location: MapPin,
+  message: MessageCircleMore,
+  moon: Moon,
+  afterHours: MoonStar,
+  edit: PencilLine,
+  phone: Phone,
+  phoneCall: PhoneCall,
+  leave: PlaneTakeoff,
+  plus: Plus,
+  search: Search,
+  lucideSettings: Settings,
+  swap: Shuffle,
+  sliders: Sliders,
+  stethoscope: Stethoscope,
+  sun: Sun,
+  am: Sunrise,
+  pm: Sunset,
+  user2: User2,
+  lucideX: X,
+  zap: Zap,
 }
