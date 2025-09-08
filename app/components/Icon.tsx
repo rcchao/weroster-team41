@@ -28,6 +28,8 @@ import {
   Clock3,
   Copy,
   Cross,
+  Eye,
+  EyeOff,
   Heart,
   House,
   LayoutGrid,
@@ -187,4 +189,6 @@ export const iconRegistry = {
   lucideX: X,
   zap: Zap,
   meh: Meh,
+  view: Eye,
+  hidden: EyeOff,
 }
