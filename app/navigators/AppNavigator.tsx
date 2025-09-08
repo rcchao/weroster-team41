@@ -13,6 +13,7 @@ import { useAuth } from "@/context/AuthContext"
 import { ErrorBoundary } from "@/screens/ErrorScreen/ErrorBoundary"
 import { LoginScreen } from "@/screens/LoginScreen"
 import { NotificationsScreen } from "@/screens/NotificationsScreen"
+import { ProfileScreen } from "@/screens/ProfileScreen"
 import { useAppTheme } from "@/theme/context"
 
 import { DashboardNavigator, DashboardTabParamList } from "./DashboardNavigator"
@@ -31,6 +32,7 @@ export type AppStackParamList = {
   Login: undefined
   Dashboard: NavigatorScreenParams<DashboardTabParamList>
   Notifications: undefined
+  ProfileScreen: undefined
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
@@ -78,6 +80,15 @@ const AppStack = () => {
       )}
 
       {/** 🔥 Your screens go here */}
+      <Stack.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{
+          presentation: "fullScreenModal",
+          animation: "fade",
+        }}
+      />
+
       <Stack.Screen
         name="Notifications"
         component={NotificationsScreen}
