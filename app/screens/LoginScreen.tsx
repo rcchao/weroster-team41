@@ -49,7 +49,6 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
       contentContainerStyle={themed($screenContentContainer)}
       safeAreaEdges={["top", "bottom"]}
     >
-      <Text text={"Log In"} preset="heading" style={themed($heading)} />
       <H1>Welcome back!</H1>
 
       <TextField
