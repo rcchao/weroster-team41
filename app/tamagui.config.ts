@@ -1,5 +1,5 @@
 import { defaultConfig } from "@tamagui/config/v4"
-import { createTokens, createTamagui } from "tamagui"
+import { createTokens, createTamagui, createFont } from "tamagui"
 
 const tokens = createTokens({
   ...defaultConfig.tokens,
@@ -104,12 +104,88 @@ const tokens = createTokens({
   },
 })
 
+const light = {
+  background: tokens.color.slate,
+  color: tokens.color.dark,
+}
+const dark = {
+  background: tokens.color.dark,
+  color: tokens.color.slate,
+}
+
+const headingFont = createFont({
+  family: "Montserrat",
+  size: {
+    1: 16,
+    2: 18,
+    3: 20,
+    4: 40,
+    5: 56,
+    6: 72,
+    7: 96,
+    8: 128,
+  },
+  lineHeight: {
+    1: 20,
+    2: 22,
+    3: 24.5,
+    4: 40,
+    5: 56,
+    6: 72,
+    7: 96,
+    8: 128,
+  },
+  weight: {
+    1: "700", // bold
+  },
+  face: {
+    700: { normal: "Montserrat-Bold", italic: "Montserrat-Italic" },
+  },
+})
+
+const bodyFont = createFont({
+  family: "Inter",
+  size: {
+    1: 12,
+    2: 14,
+    3: 16,
+    4: 20,
+    5: 32,
+    6: 40,
+    7: 48,
+    8: 64,
+  },
+  lineHeight: {
+    1: 12,
+    2: 14.5,
+    3: 17,
+    4: 24,
+    5: 36,
+    6: 48,
+    7: 56,
+    8: 72,
+  },
+  weight: {
+    4: "400", // regular
+    5: "500", // medium
+  },
+  face: {
+    400: { normal: "Inter", italic: "Inter-Italic" },
+    500: { normal: "Inter-Medium", italic: "Inter-Italic" },
+  },
+})
+
 export const tamaguiConfig = createTamagui({
   ...defaultConfig,
   settings: { ...defaultConfig.settings, onlyAllowShorthands: false },
+  fonts: {
+    heading: headingFont,
+    body: bodyFont,
+  },
   themes: {
     ...defaultConfig.themes,
-    // Add in custom themes here
+    light,
+    dark,
   },
   tokens,
 })
