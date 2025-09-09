@@ -1,37 +1,53 @@
 // TODO: write documentation about fonts and typography along with guides on how to add custom fonts in own
 // markdown file and add links from here
 
+import { Platform } from "react-native"
 import {
-  Montserrat_300Light as montserratLight,
-  Montserrat_400Regular as montserratRegular,
-  Montserrat_500Medium as montserratMedium,
-  Montserrat_600SemiBold as montserratSemiBold,
-  Montserrat_700Bold as montserratBold,
-} from "@expo-google-fonts/montserrat"
-import { styled, Text } from "tamagui"
+  SpaceGrotesk_300Light as spaceGroteskLight,
+  SpaceGrotesk_400Regular as spaceGroteskRegular,
+  SpaceGrotesk_500Medium as spaceGroteskMedium,
+  SpaceGrotesk_600SemiBold as spaceGroteskSemiBold,
+  SpaceGrotesk_700Bold as spaceGroteskBold,
+} from "@expo-google-fonts/space-grotesk"
 
 export const customFontsToLoad = {
-  montserratLight,
-  montserratRegular,
-  montserratMedium,
-  montserratSemiBold,
-  montserratBold,
+  spaceGroteskLight,
+  spaceGroteskRegular,
+  spaceGroteskMedium,
+  spaceGroteskSemiBold,
+  spaceGroteskBold,
 }
 
 const fonts = {
-  montserrat: {
+  spaceGrotesk: {
     // Cross-platform Google font.
-    light: "montserratLight",
-    normal: "montserratRegular",
-    medium: "montserratMedium",
-    semiBold: "montserratSemiBold",
-    bold: "montserratBold",
+    light: "spaceGroteskLight",
+    normal: "spaceGroteskRegular",
+    medium: "spaceGroteskMedium",
+    semiBold: "spaceGroteskSemiBold",
+    bold: "spaceGroteskBold",
   },
-  inter: {
-    thin: "Inter-Thin",
-    normal: "Inter",
-    medium: "Inter-Medium",
-    bold: "Inter-Bold",
+  helveticaNeue: {
+    // iOS only font.
+    thin: "HelveticaNeue-Thin",
+    light: "HelveticaNeue-Light",
+    normal: "Helvetica Neue",
+    medium: "HelveticaNeue-Medium",
+  },
+  courier: {
+    // iOS only font.
+    normal: "Courier",
+  },
+  sansSerif: {
+    // Android only font.
+    thin: "sans-serif-thin",
+    light: "sans-serif-light",
+    normal: "sans-serif",
+    medium: "sans-serif-medium",
+  },
+  monospace: {
+    // Android only font.
+    normal: "monospace",
   },
 }
 
@@ -43,40 +59,13 @@ export const typography = {
   /**
    * The primary font. Used in most places.
    */
-  primary: fonts.montserrat,
+  primary: fonts.spaceGrotesk,
   /**
    * An alternate font used for perhaps titles and stuff.
    */
-  secondary: fonts.inter,
+  secondary: Platform.select({ ios: fonts.helveticaNeue, android: fonts.sansSerif }),
+  /**
+   * Lets get fancy with a monospace font!
+   */
+  code: Platform.select({ ios: fonts.courier, android: fonts.monospace }),
 }
-
-export const FigmaText = styled(Text, {
-  name: "FigmaText",
-
-  variants: {
-    variant: {
-      body: {
-        fontFamily: "$body",
-        fontSize: "$3",
-        lineHeight: "$3",
-        fontWeight: "400",
-      },
-      body2: {
-        fontFamily: "$body",
-        fontSize: "$2",
-        lineHeight: "$2",
-        fontWeight: "400",
-      },
-      body3: {
-        fontFamily: "$body",
-        fontSize: "$1",
-        lineHeight: "$1",
-        fontWeight: "400",
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    variant: "body",
-  },
-})
