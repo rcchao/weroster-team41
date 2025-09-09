@@ -1,17 +1,16 @@
 import { FC, useRef, useState } from "react"
 // eslint-disable-next-line no-restricted-imports
 import { TextInput, TextStyle, ViewStyle } from "react-native"
-import { H1, Text } from "tamagui"
 
-import { Button } from "../components/Button"
-import { PressableIcon } from "../components/Icon"
-import { Screen } from "../components/Screen"
-import { TextField } from "../components/TextField"
-import { useAuth } from "../context/AuthContext"
-import type { AppStackScreenProps } from "../navigators/AppNavigator"
-import { useAppTheme } from "../theme/context"
-import type { ThemedStyle } from "../theme/types"
-import { FigmaText } from "../theme/typography"
+import { Button } from "@/components/Button"
+import { PressableIcon } from "@/components/Icon"
+import { Screen } from "@/components/Screen"
+import { Text } from "@/components/Text"
+import { TextField } from "@/components/TextField"
+import { useAuth } from "@/context/AuthContext"
+import type { AppStackScreenProps } from "@/navigators/AppNavigator"
+import { useAppTheme } from "@/theme/context"
+import type { ThemedStyle } from "@/theme/types"
 
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
@@ -49,9 +48,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
       contentContainerStyle={themed($screenContentContainer)}
       safeAreaEdges={["top", "bottom"]}
     >
-      <H1>Welcome back!</H1>
-      <Text>Log in to your account</Text>
-      <FigmaText variant="body">FigmaText</FigmaText>
+      <Text text={"Log In"} preset="heading" style={themed($heading)} />
 
       <TextField
         value={email}
