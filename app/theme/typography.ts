@@ -8,6 +8,7 @@ import {
   Montserrat_600SemiBold as montserratSemiBold,
   Montserrat_700Bold as montserratBold,
 } from "@expo-google-fonts/montserrat"
+import { styled, Text } from "tamagui"
 
 export const customFontsToLoad = {
   montserratLight,
@@ -48,3 +49,34 @@ export const typography = {
    */
   secondary: fonts.inter,
 }
+
+export const FigmaText = styled(Text, {
+  name: "FigmaText",
+
+  variants: {
+    variant: {
+      body: {
+        fontFamily: "$body",
+        fontSize: "$3",
+        lineHeight: "$3",
+        fontWeight: "400",
+      },
+      body2: {
+        fontFamily: "$body",
+        fontSize: "$2",
+        lineHeight: "$2",
+        fontWeight: "400",
+      },
+      body3: {
+        fontFamily: "$body",
+        fontSize: "$1",
+        lineHeight: "$1",
+        fontWeight: "400",
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    variant: "body",
+  },
+})
