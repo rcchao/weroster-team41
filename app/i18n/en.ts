@@ -37,6 +37,9 @@ const en = {
   notificationScreen: {
     title: "Notifications",
   },
+  profileScreen: {
+    title: "Profile",
+  },
   dashboardNavigator: {
     homeTab: "Home",
     teamsTab: "Teams",
