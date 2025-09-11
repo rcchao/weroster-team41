@@ -8,7 +8,7 @@ import {
   ViewStyle,
 } from "react-native"
 import {
-  Anchor, // placeholder icon
+  Anchor,
   Bell,
   Building2,
   Calendar,
