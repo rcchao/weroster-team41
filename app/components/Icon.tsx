@@ -126,6 +126,10 @@ export function Icon(props: IconProps) {
 
   const LucideIcon = iconRegistry[icon]
 
+  if (!LucideIcon) {
+    throw new Error(`Icon "${icon}" not found in iconRegistry.`)
+  }
+
   return (
     <View {...viewProps} style={$containerStyleOverride}>
       <LucideIcon color={color ?? theme.colors.text} size={size ?? 24} />
