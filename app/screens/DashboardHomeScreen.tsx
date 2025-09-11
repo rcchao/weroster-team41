@@ -1,7 +1,6 @@
 import { FC, ReactElement } from "react"
 import { Pressable } from "react-native"
 import { View } from "react-native"
-import { StyleSheet } from "react-native"
 
 import { Button } from "@/components/Button"
 import { Icon } from "@/components/Icon"
@@ -9,10 +8,10 @@ import { Screen } from "@/components/Screen"
 import { Text } from "@/components/Text"
 import { TxKeyPath } from "@/i18n"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
-import { colors } from "@/theme/colors"
 import { useAppTheme } from "@/theme/context"
 import { $styles } from "@/theme/styles"
 import { $topRightIcons, $headerIcons } from "@/theme/styles"
+import { $container, $fabButton } from "@/theme/styles"
 import type { Theme } from "@/theme/types"
 
 export interface Dashboard {
@@ -27,7 +26,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
     const { themed } = useAppTheme()
 
     return (
-      <View style={styles.container}>
+      <View style={$container}>
         <Screen preset="scroll" contentContainerStyle={$styles.container} safeAreaEdges={["top"]}>
           <View style={themed($topRightIcons)}>
             <Pressable
@@ -48,7 +47,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
 
         {/* FAB positioned relative to the outer View */}
         <Button
-          style={styles.fabButton}
+          style={themed($fabButton)}
           // navigates to blank edit screen for now
           onPress={() => navigation.getParent()?.navigate("EditDashboard")}
         >
@@ -57,25 +56,3 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
       </View>
     )
   }
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  fabButton: {
-    alignItems: "center",
-    backgroundColor: colors.palette.neutral100,
-    borderRadius: 26,
-    borderWidth: 0,
-    bottom: 13,
-    elevation: 5,
-    height: 52,
-    justifyContent: "center",
-    padding: 14,
-    position: "absolute",
-    right: 19,
-    shadowColor: colors.palette.overlay50,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
-    shadowRadius: 4,
-    width: 52,
-  },
-})

@@ -37,3 +37,24 @@ export const $topRightIcons: ThemedStyle<TextStyle> = () => ({
 export const $headerIcons: ThemedStyle<TextStyle> = () => ({
   marginRight: spacing.md,
 })
+
+export const $container: ViewStyle = { flex: 1 }
+
+export const $fabButton: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
+  alignItems: "center",
+  backgroundColor: colors.palette.neutral100,
+  borderRadius: 26,
+  borderWidth: 0,
+  bottom: spacing.md,
+  elevation: 5,
+  height: 52,
+  justifyContent: "center",
+  padding: spacing.md,
+  position: "absolute",
+  right: spacing.lg,
+  shadowColor: colors.palette.overlay50,
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 1,
+  shadowRadius: 4,
+  width: 52,
+})
