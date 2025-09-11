@@ -20,7 +20,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
     <Screen preset="scroll" contentContainerStyle={$styles.container} safeAreaEdges={["top"]}>
       <View style={themed($topRightIcons)}>
         <Pressable onPress={() => navigation.goBack()} style={themed($headerIcons)}>
-          <Icon icon="x" />
+          <Icon icon="anchor" />
         </Pressable>
       </View>
       <Text preset="heading" tx="profileScreen:title" />

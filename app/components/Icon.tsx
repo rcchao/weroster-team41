@@ -8,7 +8,7 @@ import {
   ViewStyle,
 } from "react-native"
 import {
-  Anchor, // placeholder icon
+  Anchor,
   Bell,
   Building2,
   Calendar,
@@ -125,6 +125,10 @@ export function Icon(props: IconProps) {
   const { theme } = useAppTheme()
 
   const LucideIcon = iconRegistry[icon]
+
+  if (!LucideIcon) {
+    throw new Error(`Icon "${icon}" not found in iconRegistry.`)
+  }
 
   return (
     <View {...viewProps} style={$containerStyleOverride}>
