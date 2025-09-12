@@ -1,6 +1,8 @@
 import { ViewStyle } from "react-native"
 import { TextStyle } from "react-native"
 
+import tamaguiConfig from "@/tamagui.config"
+
 import { spacing } from "./spacing"
 import type { ThemedStyle } from "./types"
 
@@ -43,7 +45,7 @@ export const $container: ViewStyle = { flex: 1 }
 export const $fabButton: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   alignItems: "center",
   backgroundColor: colors.palette.neutral100,
-  borderRadius: 26,
+  borderRadius: tamaguiConfig.tokens.radius[7].val,
   borderWidth: 0,
   bottom: spacing.md,
   elevation: 5,
