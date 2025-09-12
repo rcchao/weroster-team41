@@ -46,12 +46,12 @@ const config = {
     },
     Dashboard: {
       screens: {
-        DashboardHomeScreen: {
+        DashboardHome: {
           path: "home/:queryIndex?/:itemIndex?",
         },
-        DashboardTeamsScreen: "debug",
-        DashboardRequestsScreen: "podcast",
-        DashboardRosterScreen: "roster",
+        DashboardTeams: "debug",
+        DashboardRequests: "podcast",
+        DashboardRoster: "roster",
       },
     },
     Notifications: {
