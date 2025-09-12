@@ -1,0 +1,54 @@
+name: Ping Discord
+
+on:
+  pull_request:
+    types: [review_requested]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  notify-participants:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Discord IDs for reviewer and author
+        id: get_discord_ids
+        run: |
+          USER_MAP='${{ secrets.DISCORD_USER_MAP }}'
+          if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "review_requested" ]]; then
+            REVIEWER="${{ github.event.requested_reviewer.login }}"
+          elif [[ "${{ github.event_name }}" == "pull_request_review" ]]; then
+            REVIEWER="${{ github.event.review.user.login }}"
+          fi
+          AUTHOR="${{ github.event.pull_request.user.login }}"
+          REVIEWER_ID=$(echo "$USER_MAP" | jq -r --arg user "$REVIEWER" '.[$user]')
+          AUTHOR_ID=$(echo "$USER_MAP" | jq -r --arg user "$AUTHOR" '.[$user]')
+          echo "reviewer_id=$REVIEWER_ID" >> $GITHUB_OUTPUT
+          echo "author_id=$AUTHOR_ID" >> $GITHUB_OUTPUT
+        env:
+          DISCORD_USER_MAP: ${{ secrets.DISCORD_USER_MAP }}
+
+      - name: Set PR event message
+        id: set_message
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "review_requested" ]]; then
+            echo "message=<@${{ steps.get_discord_ids.outputs.reviewer_id }}> you were requested to review [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) by <@${{ steps.get_discord_ids.outputs.author_id }}>" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "pull_request_review" ]]; then
+            case "${{ github.event.review.state }}" in
+              approved)
+                echo "message=<@${{ steps.get_discord_ids.outputs.reviewer_id }}> approved [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) by <@${{ steps.get_discord_ids.outputs.author_id }}>" >> $GITHUB_OUTPUT
+                ;;
+              changes_requested)
+                echo "message=<@${{ steps.get_discord_ids.outputs.reviewer_id }}> requested changes on [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) by <@${{ steps.get_discord_ids.outputs.author_id }}>" >> $GITHUB_OUTPUT
+                ;;
+              commented)
+                echo "message=<@${{ steps.get_discord_ids.outputs.reviewer_id }}> commented on [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) by <@${{ steps.get_discord_ids.outputs.author_id }}>" >> $GITHUB_OUTPUT
+                ;;
+            esac
+          fi
+
+      - name: Send PR Notifications to Discord
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        with:
+          args: ${{ steps.set_message.outputs.message }}
