@@ -34,6 +34,7 @@ import {
   LogOut,
   Mail,
   MapPin,
+  Meh,
   MessageCircleMore,
   MessageCircleWarning,
   Moon,
@@ -185,4 +186,5 @@ export const iconRegistry = {
   user2: User2,
   lucideX: X,
   zap: Zap,
+  meh: Meh,
 }

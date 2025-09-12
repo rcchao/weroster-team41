@@ -7,28 +7,30 @@ const styles = StyleSheet.create({
   align: { alignItems: "center", justifyContent: "center" },
 })
 
-const REQUEST_TYPE_ICON: Record<string, IconTypes> = {
+const REQUEST_TYPE_ICON_MAP: Record<string, IconTypes> = {
   leave: "leave",
   swap: "swap",
   openShift: "openShift",
+  default: "meh",
 }
 
-const REQUEST_TYPE_COLOR: Record<string, string> = {
+const REQUEST_TYPE_COLOR_MAP: Record<string, string> = {
   leave: "secondary400",
   swap: "yellow400",
   openShift: "green500",
+  default: "mono300",
 }
 
-type RequestTypeIconProps = {
+interface RequestTypeIconProps {
   requestType: string
 }
 
-export const RequestTypeIcon = (props: RequestTypeIconProps) => {
+export const RequestTypeIcon = ({ requestType }: RequestTypeIconProps) => {
   const theme = useTheme()
   const iconColor = theme.white200.val
 
-  const icon = REQUEST_TYPE_ICON[props.requestType]
-  const bgToken = REQUEST_TYPE_COLOR[props.requestType]
+  const icon = REQUEST_TYPE_ICON_MAP[requestType] ?? REQUEST_TYPE_ICON_MAP["default"]
+  const bgToken = REQUEST_TYPE_COLOR_MAP[requestType] ?? REQUEST_TYPE_COLOR_MAP["default"]
   const bgColor = theme[bgToken]?.val
 
   return (
