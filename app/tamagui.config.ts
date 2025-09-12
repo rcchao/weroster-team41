@@ -105,6 +105,7 @@ const tokens = createTokens({
 
 export const tamaguiConfig = createTamagui({
   ...defaultConfig,
+  settings: { ...defaultConfig.settings, onlyAllowShorthands: false },
   themes: {
     ...defaultConfig.themes,
     // Add in custom themes here
