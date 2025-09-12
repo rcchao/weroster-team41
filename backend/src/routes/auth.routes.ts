@@ -52,6 +52,7 @@ router.get("/profile", authenticate, async (req, res) => {
       error: error.message,
     })
   }
+  return
 })
 
 router.put("/profile", authenticate, async (req, res) => {
@@ -77,6 +78,7 @@ router.put("/profile", authenticate, async (req, res) => {
       error: error.message,
     })
   }
+  return
 })
 
 export default router
