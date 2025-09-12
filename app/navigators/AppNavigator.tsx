@@ -10,6 +10,7 @@ import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navig
 
 import Config from "@/config"
 import { useAuth } from "@/context/AuthContext"
+import { DashboardEditScreen } from "@/screens/DashboardEditScreen"
 import { ErrorBoundary } from "@/screens/ErrorScreen/ErrorBoundary"
 import { LoginScreen } from "@/screens/LoginScreen"
 import { NotificationsScreen } from "@/screens/NotificationsScreen"
@@ -32,6 +33,7 @@ export type AppStackParamList = {
   Login: undefined
   Dashboard: NavigatorScreenParams<DashboardTabParamList>
   Notifications: undefined
+  EditDashboard: undefined
   ProfileScreen: undefined
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
@@ -72,6 +74,7 @@ const AppStack = () => {
       {isAuthenticated ? (
         <>
           <Stack.Screen name="Dashboard" component={DashboardNavigator} />
+          <Stack.Screen name="EditDashboard" component={DashboardEditScreen} />
         </>
       ) : (
         <>
