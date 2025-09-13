@@ -4,7 +4,6 @@ import { View } from "react-native"
 
 import { Button } from "@/components/Button"
 import { Icon } from "@/components/Icon"
-import { Lozenge } from "@/components/Lozenge"
 import { Screen } from "@/components/Screen"
 import { Text } from "@/components/Text"
 import { TxKeyPath } from "@/i18n"
@@ -44,7 +43,6 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
             </Pressable>
           </View>
           <Text preset="heading" tx="dashboardHomeScreen:jumpStart" />
-          <Lozenge />
         </Screen>
 
         {/* FAB positioned relative to the outer View */}
