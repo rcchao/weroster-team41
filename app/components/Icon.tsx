@@ -8,6 +8,7 @@ import {
   ViewStyle,
 } from "react-native"
 import {
+  AlignJustify,
   Anchor,
   Bell,
   Building2,
@@ -141,6 +142,7 @@ export function Icon(props: IconProps) {
 }
 
 export const iconRegistry = {
+  alignJustify: AlignJustify,
   anchor: Anchor,
   teams: UsersRound,
   requests: MessageCircleWarning,
