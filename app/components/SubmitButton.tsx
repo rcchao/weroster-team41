@@ -1,6 +1,6 @@
-import { StyledButton } from "@/theme/styles"
+import { Button } from "tamagui"
 
-type SubmitButtonProps = {
+interface SubmitButtonProps {
   text?: string
   onPress: () => void
   disabled?: boolean
@@ -8,8 +8,14 @@ type SubmitButtonProps = {
 
 export const SubmitButton = (props: SubmitButtonProps) => {
   return (
-    <StyledButton onPress={props.onPress} disabled={props.disabled}>
+    <Button
+      backgroundColor="$secondary500"
+      color="$white100"
+      borderRadius="$full"
+      onPress={props.onPress}
+      disabled={props.disabled}
+    >
       {props.text}
-    </StyledButton>
+    </Button>
   )
 }

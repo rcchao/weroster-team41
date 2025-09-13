@@ -1,5 +1,5 @@
 import { FC, useRef, useState } from "react"
-import { ViewStyle, StyleSheet } from "react-native"
+import { ViewStyle } from "react-native"
 import { Controller, useForm } from "react-hook-form"
 import { Input, Text, Image, YStack, Anchor } from "tamagui"
 
@@ -14,25 +14,6 @@ import type { ThemedStyle } from "@/theme/types"
 import { UserInput } from "../components/UserInput"
 
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
-
-const styles = StyleSheet.create({
-  forgotPassword: {
-    alignItems: "center",
-  },
-  image: {
-    height: 125,
-    resizeMode: "contain",
-    width: 175,
-  },
-  logoWelcome: {
-    alignItems: "center",
-    gap: 20,
-  },
-  yStack: {
-    alignItems: "stretch",
-    padding: 30,
-  },
-})
 
 type LoginValues = {
   domain?: string
@@ -69,9 +50,14 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
       contentContainerStyle={themed($screenContentContainer)}
       safeAreaEdges={["top", "bottom"]}
     >
-      <YStack style={styles.yStack} gap="$space.8">
-        <YStack style={styles.logoWelcome}>
-          <Image source={require("../../assets/images/logo.png")} style={styles.image} />
+      <YStack alignItems="stretch" padding={30} gap="$space.8">
+        <YStack alignItems="center" gap={20}>
+          <Image
+            source={require("../../assets/images/logo.png")}
+            height={125}
+            width={175}
+            objectFit="contain"
+          />
           {/* TODO: Replace this Welcome text once typography is available */}
           <Text>Welcome</Text>
         </YStack>
@@ -161,7 +147,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
             disabled={!isValid || isSubmitting}
           />
         </YStack>
-        <YStack style={styles.forgotPassword}>
+        <YStack alignItems="center">
           {/* This Anchor is current dumb */}
           <Anchor color="$accent500">Forgot password?</Anchor>
         </YStack>
