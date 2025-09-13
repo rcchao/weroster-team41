@@ -1,99 +1,157 @@
 import { FC, useRef, useState } from "react"
-// eslint-disable-next-line no-restricted-imports
-import { TextInput, TextStyle, ViewStyle } from "react-native"
+import { ViewStyle } from "react-native"
+import { Controller, useForm } from "react-hook-form"
+import { Input, Text, Image, YStack, Anchor } from "tamagui"
 
-import { Button } from "@/components/Button"
 import { PressableIcon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
-import { Text } from "@/components/Text"
-import { TextField } from "@/components/TextField"
+import { SubmitButton } from "@/components/SubmitButton"
 import { useAuth } from "@/context/AuthContext"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
+import { UserInput } from "../components/UserInput"
+
 interface LoginScreenProps extends AppStackScreenProps<"Login"> {}
 
+type LoginValues = {
+  domain?: string
+  email: string
+  password: string
+}
+
 export const LoginScreen: FC<LoginScreenProps> = () => {
-  const passwordInput = useRef<TextInput>(null)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const passwordInput = useRef<React.ComponentRef<typeof Input>>(null)
   const [isPasswordHidden, setIsPasswordHidden] = useState(true)
 
-  const { login, error } = useAuth()
+  const { login } = useAuth()
   const {
     themed,
     theme: { colors },
   } = useAppTheme()
 
-  const handleSubmit = async () => {
-    if (!email || !password) {
-      console.log("Email and password are required.")
-      return
-    }
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<LoginValues>({
+    defaultValues: { domain: "", email: "", password: "" },
+    mode: "onChange",
+  })
 
-    const success = await login(email, password)
-
-    if (success) {
-      // Navigation will be handled by your navigator
-      // checking isAuthenticated from context
-    } else {
-      console.log("Authentication failed.")
-    }
+  const onSubmit = async ({ email, password }: LoginValues) => {
+    const success = await login(email.trim(), password)
+    if (!success) console.log("Authentication failed.")
   }
-
   return (
     <Screen
-      preset="auto"
+      preset="fixed"
       contentContainerStyle={themed($screenContentContainer)}
       safeAreaEdges={["top", "bottom"]}
     >
-      <Text text={"Log In"} preset="heading" style={themed($heading)} />
-
-      <TextField
-        value={email}
-        onChangeText={setEmail}
-        containerStyle={themed($textField)}
-        autoCapitalize="none"
-        autoComplete="email"
-        autoCorrect={false}
-        keyboardType="email-address"
-        label="Email"
-        placeholder="Enter your email"
-        status={error ? "error" : undefined}
-        onSubmitEditing={() => passwordInput.current?.focus()}
-      />
-
-      <TextField
-        ref={passwordInput}
-        value={password}
-        onChangeText={setPassword}
-        containerStyle={themed($textField)}
-        autoCapitalize="none"
-        autoComplete="password"
-        autoCorrect={false}
-        secureTextEntry={isPasswordHidden}
-        label="Password"
-        placeholder="Enter your password"
-        onSubmitEditing={handleSubmit}
-        RightAccessory={(props) => (
-          <PressableIcon
-            icon={isPasswordHidden ? "anchor" : "anchor"}
-            color={colors.palette.neutral800}
-            containerStyle={props.style}
-            size={20}
-            onPress={() => setIsPasswordHidden(!isPasswordHidden)}
+      <YStack alignItems="stretch" padding={30} gap="$space.8">
+        <YStack alignItems="center" gap={20}>
+          <Image
+            source={require("../../assets/images/logo.png")}
+            height={125}
+            width={175}
+            objectFit="contain"
           />
-        )}
-      />
+          {/* TODO: Replace this Welcome text once typography is available */}
+          <Text>Welcome</Text>
+        </YStack>
+        <YStack gap="$space.5">
+          <Controller
+            control={control}
+            name="domain"
+            render={({ field: { value, onChange, onBlur, ref } }) => (
+              <UserInput
+                ref={ref}
+                placeholder="Domain"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                returnKeyType="next"
+                autoCapitalize="none"
+              />
+            )}
+          />
 
-      <Button
-        text={"Log In"}
-        style={themed($button)}
-        preset="reversed"
-        onPress={handleSubmit}
-        disabled={!email || !password}
-      />
+          <Controller
+            control={control}
+            name="email"
+            rules={{
+              required: "Email is required",
+              pattern: {
+                value: /^\S+@\S+\.\S+$/,
+                message: "Enter a valid email",
+              },
+            }}
+            render={({ field: { value, onChange, onBlur, ref } }) => (
+              <UserInput
+                ref={ref}
+                placeholder="Email"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                autoCapitalize="none"
+                autoComplete="email"
+                autoCorrect={false}
+                keyboardType="email-address"
+                errorMessage={errors.email?.message}
+                returnKeyType="next"
+                onSubmitEditing={() => passwordInput.current?.focus()}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="password"
+            rules={{
+              required: "Password is required",
+              minLength: { value: 6, message: "Min 6 characters" },
+            }}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <UserInput
+                ref={passwordInput}
+                placeholder="Password"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                autoCapitalize="none"
+                autoComplete="password"
+                autoCorrect={false}
+                secureTextEntry={isPasswordHidden}
+                errorMessage={errors.password?.message}
+                onSubmitEditing={handleSubmit(onSubmit)}
+                RightAccessory={() => (
+                  // TODO: Replace this with a Tamagui Button when icon is made available
+                  <PressableIcon
+                    icon={isPasswordHidden ? "view" : "hidden"}
+                    color={colors.palette.neutral800}
+                    size={20}
+                    onPress={() => setIsPasswordHidden((v) => !v)}
+                  />
+                )}
+              />
+            )}
+          />
+        </YStack>
+
+        <YStack marginBlockStart={"$space.10"}>
+          <SubmitButton
+            text="Login"
+            onPress={handleSubmit(onSubmit)}
+            disabled={!isValid || isSubmitting}
+          />
+        </YStack>
+        <YStack alignItems="center">
+          {/* This Anchor is current dumb */}
+          <Anchor color="$accent500">Forgot password?</Anchor>
+        </YStack>
+      </YStack>
     </Screen>
   )
 }
@@ -101,16 +159,4 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
 const $screenContentContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingVertical: spacing.xxl,
   paddingHorizontal: spacing.lg,
-})
-
-const $heading: ThemedStyle<TextStyle> = ({ spacing }) => ({
-  marginBottom: spacing.lg,
-})
-
-const $textField: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  marginBottom: spacing.lg,
-})
-
-const $button: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  marginTop: spacing.xs,
 })
