@@ -1,11 +1,6 @@
-import { StyleSheet } from "react-native"
 import { Group, useTheme } from "tamagui"
 
 import { Icon, IconTypes } from "./Icon"
-
-const styles = StyleSheet.create({
-  align: { alignItems: "center", justifyContent: "center" },
-})
 
 const REQUEST_TYPE_ICON_MAP: Record<string, IconTypes> = {
   leave: "leave",
@@ -34,7 +29,14 @@ export const RequestTypeIcon = ({ requestType }: RequestTypeIconProps) => {
   const bgColor = theme[bgToken]?.val
 
   return (
-    <Group width={74} height={74} bg={bgColor} size="$radius.4" style={styles.align}>
+    <Group
+      width={74}
+      height={74}
+      bg={bgColor}
+      size="$radius.4"
+      alignItems="center"
+      justifyContent="center"
+    >
       <Group.Item>
         <Icon icon={icon} color={iconColor} size={24} />
       </Group.Item>
