@@ -1,11 +1,12 @@
 import { FC, useRef, useState } from "react"
 // eslint-disable-next-line no-restricted-imports
-import { TextInput, TextStyle, ViewStyle } from "react-native"
+import { TextInput, ViewStyle } from "react-native"
 
+import { BodyText } from "@/components/BodyText"
 import { Button } from "@/components/Button"
+import { HeaderText } from "@/components/HeaderText"
 import { PressableIcon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
-import { Text } from "@/components/Text"
 import { TextField } from "@/components/TextField"
 import { useAuth } from "@/context/AuthContext"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
@@ -48,7 +49,9 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
       contentContainerStyle={themed($screenContentContainer)}
       safeAreaEdges={["top", "bottom"]}
     >
-      <Text text={"Log In"} preset="heading" style={themed($heading)} />
+      <HeaderText variant="h1">Log In</HeaderText>
+      <HeaderText variant="h2">Welcome Back</HeaderText>
+      <BodyText variant="body2">Welcome back to the app!</BodyText>
 
       <TextField
         value={email}
@@ -101,10 +104,6 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
 const $screenContentContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingVertical: spacing.xxl,
   paddingHorizontal: spacing.lg,
-})
-
-const $heading: ThemedStyle<TextStyle> = ({ spacing }) => ({
-  marginBottom: spacing.lg,
 })
 
 const $textField: ThemedStyle<ViewStyle> = ({ spacing }) => ({
