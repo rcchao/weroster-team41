@@ -1,0 +1,30 @@
+name: Enforce Rebase
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-rebase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check merge base
+        run: |
+          git fetch origin main
+          # Ensure PR branch is directly on top of main
+          if [ "$(git merge-base HEAD origin/main)" != "$(git rev-parse origin/main)" ]; then
+            echo "Branch is not rebased on latest main. Run `git fetch`, `git rebase origin/main` and `git push --force` to rebase."
+            exit 1
+          fi
+
+      - name: Check for merge commits
+        run: |
+          if git log origin/main..HEAD --merges --oneline | grep .; then
+            echo "Merge commits detected. Please rebase instead of merging."
+            exit 1
+          fi
