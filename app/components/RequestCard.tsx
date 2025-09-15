@@ -1,6 +1,7 @@
 import { format } from "date-fns"
 import { Card, Text, XStack, YStack } from "tamagui"
 
+import { Lozenge } from "./Lozenge"
 import { RequestTypeIcon } from "./RequestTypeIcon"
 
 type RequestType = "leave" | "swap" | "openShift"
@@ -8,6 +9,18 @@ type RequestType = "leave" | "swap" | "openShift"
 interface RequestCardProps {
   requestType: RequestType
   date: Date
+  status:
+    | "leave"
+    | "swap"
+    | "event"
+    | "available"
+    | "requested"
+    | "urgent"
+    | "approved"
+    | "awaiting"
+    | "declined"
+    | "assigned"
+    | "openShift"
 }
 
 const REQUEST_MAP: Record<RequestType, string> = {
@@ -45,7 +58,9 @@ export const RequestCard = (props: RequestCardProps) => {
             <Text marginInlineStart="$2">Description</Text>
           </YStack>
         </YStack>
-        {/* Status lozenge goes here */}
+        <YStack justifyContent="center">
+          <Lozenge type={props.status} />
+        </YStack>
       </XStack>
     </Card>
   )
