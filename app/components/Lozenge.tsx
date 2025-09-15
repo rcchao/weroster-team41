@@ -20,78 +20,104 @@ interface LozengeProps {
   onPress?: () => void
 }
 
-const LOZENGE_TEXT_MAP: Record<string, string> = {
-  leave: "Leave",
-  swap: "Swap",
-  event: "Event",
-  available: "Available",
-  requested: "Requested",
-  urgent: "Urgent",
-  approved: "Approved",
-  awaiting: "Awaiting",
-  declined: "Declined",
-  assigned: "Assigned",
-  openShift: "OpenShift",
+interface LozengeConfig {
+  text: string
+  icon?: IconTypes
+  bgColor: string
+  selectedBgColor?: string
+  textColor?: string
 }
 
-const LOZENGE_ICON_MAP: Record<string, IconTypes> = {
-  leave: "leave",
-  swap: "swap",
-  event: "openShift",
-  openShift: "openShift",
-}
-
-const LOZENGE_BGCOLOR_MAP: Record<string, string> = {
-  leave: "mono100",
-  swap: "mono100",
-  event: "mono100",
-  available: "green500",
-  requested: "mono100",
-  urgent: "red500",
-  approved: "green500",
-  awaiting: "yellow400",
-  declined: "red500",
-  assigned: "secondary300",
-  openShift: "mono100",
-}
-
-const LOZENGE_SELECTED_BGCOLOR_MAP: Record<string, string> = {
-  leave: "secondary400",
-  swap: "yellow400",
-  openShift: "green500",
-  approved: "green500",
-  awaiting: "yellow400",
-  declined: "red500",
-}
-
-const LOZENGE_TEXT_COLOR_MAP: Record<string, string> = {
-  available: "green800",
-  urgent: "red800",
-  approved: "green800",
-  awaiting: "yellow800",
-  declined: "red800",
-  assigned: "accent800",
+const LOZENGE_CONFIG: Record<LozengeProps["type"], LozengeConfig> = {
+  leave: {
+    text: "Leave",
+    icon: "leave",
+    bgColor: "mono100",
+    selectedBgColor: "secondary400",
+    textColor: "mono900",
+  },
+  swap: {
+    text: "Swap",
+    icon: "swap",
+    bgColor: "mono100",
+    selectedBgColor: "yellow400",
+    textColor: "mono900",
+  },
+  event: {
+    text: "Event",
+    icon: "openShift",
+    bgColor: "mono100",
+    textColor: "mono900",
+  },
+  available: {
+    text: "Available",
+    bgColor: "green500",
+    textColor: "green800",
+  },
+  requested: {
+    text: "Requested",
+    bgColor: "mono100",
+    textColor: "mono900",
+  },
+  urgent: {
+    text: "Urgent",
+    bgColor: "red500",
+    textColor: "red800",
+  },
+  approved: {
+    text: "Approved",
+    bgColor: "green500",
+    selectedBgColor: "green500",
+    textColor: "green800",
+  },
+  awaiting: {
+    text: "Awaiting",
+    bgColor: "yellow400",
+    selectedBgColor: "yellow400",
+    textColor: "yellow800",
+  },
+  declined: {
+    text: "Declined",
+    bgColor: "red500",
+    selectedBgColor: "red500",
+    textColor: "red800",
+  },
+  assigned: {
+    text: "Assigned",
+    bgColor: "secondary300",
+    textColor: "accent800",
+  },
+  openShift: {
+    text: "OpenShift",
+    icon: "openShift",
+    bgColor: "mono100",
+    selectedBgColor: "green500",
+    textColor: "mono900",
+  },
 }
 
 export const Lozenge = ({ type, active = false, onPress }: LozengeProps) => {
   const theme = useTheme()
   const [selected, setSelected] = useState(false)
 
-  const buttonText = LOZENGE_TEXT_MAP[type] || "Lozenge"
-  const buttonIcon = LOZENGE_ICON_MAP[type] || null
+  const lozenge = LOZENGE_CONFIG[type]
 
-  const defaultBg = !active ? theme[LOZENGE_BGCOLOR_MAP[type]]?.val : theme["mono100"]?.val
-  const selectedBg = theme[LOZENGE_SELECTED_BGCOLOR_MAP[type]]?.val || defaultBg
+  const buttonText = lozenge.text || "Lozenge"
+  const buttonIcon = lozenge.icon || null
+
+  const defaultBg = !active ? theme[lozenge.bgColor]?.val : theme["mono100"]?.val
+  const selectedBg = lozenge.selectedBgColor ? theme[lozenge.selectedBgColor]?.val : defaultBg
   const buttonBgColor = selected ? selectedBg : defaultBg
 
-  const buttonTextColor = !active ? theme[LOZENGE_TEXT_COLOR_MAP[type]]?.val : theme["mono900"]?.val
+  const buttonTextColor =
+    !active && lozenge.textColor ? theme[lozenge.textColor]?.val : theme["mono900"]?.val
 
   return (
     <Button
       height={active ? 33 : 24}
       borderRadius="$full"
       size="$3"
-      width="auto"
+      width={active ? 110 : "auto"}
       flexGrow={0}
       alignSelf="flex-start"
       disabled={!active}
