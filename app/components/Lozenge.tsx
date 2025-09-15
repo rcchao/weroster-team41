@@ -38,7 +38,6 @@ const LOZENGE_ICON_MAP: Record<string, IconTypes> = {
   leave: "leave",
   swap: "swap",
   event: "openShift",
-  urgent: "zap",
   openShift: "openShift",
 }
 
