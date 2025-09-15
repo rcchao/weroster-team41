@@ -1,6 +1,7 @@
 import { format } from "date-fns"
-import { Card, Text, XStack, YStack } from "tamagui"
+import { Card, XStack, YStack } from "tamagui"
 
+import { BodyText } from "./BodyText"
 import { Lozenge } from "./Lozenge"
 import { RequestTypeIcon } from "./RequestTypeIcon"
 
@@ -42,23 +43,30 @@ export const RequestCard = (props: RequestCardProps) => {
       padding="$3"
       borderRadius="$radius.8"
     >
-      <XStack width="auto" gap="$4">
-        <RequestTypeIcon requestType={props.requestType} />
-        <YStack gap="$2">
-          <Text
-            backgroundColor="$mono100"
-            paddingBlock="$2"
-            paddingInline="$3"
-            borderRadius="$radius.8"
-          >
-            {REQUEST_MAP[props.requestType]} Request
-          </Text>
-          <YStack gap="$1">
-            <Text marginInlineStart="$2">On {displayDate}</Text>
-            <Text marginInlineStart="$2">Description</Text>
+      <XStack width="auto" gap="$3" justifyContent="space-between">
+        <XStack gap="$2">
+          <RequestTypeIcon requestType={props.requestType} />
+          <YStack gap="$2">
+            <BodyText
+              variant="body3"
+              backgroundColor="$mono100"
+              paddingBlock="$2"
+              paddingInline="$3"
+              borderRadius="$radius.8"
+            >
+              {REQUEST_MAP[props.requestType]} Request
+            </BodyText>
+            <YStack gap="$1">
+              <BodyText variant="body3" marginInlineStart="$2">
+                On {displayDate}
+              </BodyText>
+              <BodyText variant="body3" marginInlineStart="$2">
+                Description
+              </BodyText>
+            </YStack>
           </YStack>
-        </YStack>
-        <YStack justifyContent="center">
+        </XStack>
+        <YStack justifyContent="center" marginInlineEnd="$2">
           <Lozenge type={props.status} />
         </YStack>
       </XStack>
