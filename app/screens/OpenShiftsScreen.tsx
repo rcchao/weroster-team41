@@ -3,7 +3,7 @@ import { View } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 
-import { useRosterHeader } from "@/components/RosterHeader"
+import { RosterHeader } from "@/components/RosterHeader"
 import { Screen } from "@/components/Screen"
 import { Text } from "@/components/Text"
 import type { RosterStackParamList } from "@/navigators/DashboardNavigator"
@@ -14,12 +14,11 @@ type Props = NativeStackScreenProps<RosterStackParamList, "OpenShifts">
 
 export function OpenShiftsScreen(_props: Props) {
   const navigation = useNavigation()
-  const header = useRosterHeader()
   const { themed } = useAppTheme()
 
   useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: true, header: () => header })
-  }, [navigation, header])
+    navigation.setOptions({ headerShown: true, header: () => <RosterHeader /> })
+  })
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.container}>

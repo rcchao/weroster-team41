@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { Icon } from "@/components/Icon"
-import { useRosterHeader } from "@/components/RosterHeader"
+import { RosterHeader } from "@/components/RosterHeader"
 import { EpisodeProvider } from "@/context/EpisodeContext"
 import { translate } from "@/i18n/translate"
 import { DashboardHomeScreen } from "@/screens/DashboardHomeScreen"
@@ -31,14 +31,13 @@ function DashboardRosterScreen() {
   const {
     theme: { colors },
   } = useAppTheme()
-  const header = useRosterHeader()
 
   return (
     <RosterStack.Navigator
       initialRouteName="MyRoster"
       screenOptions={{
         headerShown: true,
-        header: () => header,
+        header: () => <RosterHeader />,
         contentStyle: { backgroundColor: colors.background },
         animation: "none",
         gestureEnabled: false,
