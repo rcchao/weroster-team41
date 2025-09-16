@@ -1,22 +1,58 @@
 import { TextStyle, ViewStyle } from "react-native"
 import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { CompositeScreenProps } from "@react-navigation/native"
+import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { Icon } from "@/components/Icon"
+import { useRosterHeader } from "@/components/RosterHeader"
 import { EpisodeProvider } from "@/context/EpisodeContext"
 import { translate } from "@/i18n/translate"
 import { DashboardHomeScreen } from "@/screens/DashboardHomeScreen"
 import { DashboardRequestsScreen } from "@/screens/DashboardRequestsScreen"
-import { DashboardRosterScreen } from "@/screens/DashboardRosterScreen"
 import { DashboardTeamsScreen } from "@/screens/DashboardTeamsScreen"
+import { MyRosterScreen } from "@/screens/MyRosterScreen"
+import { OpenShiftsScreen } from "@/screens/OpenShiftsScreen"
+import { TeamRosterScreen } from "@/screens/TeamRosterScreen"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
-import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
+import type { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
+
+export type RosterStackParamList = {
+  MyRoster: undefined
+  TeamRoster: undefined
+  OpenShifts: undefined
+}
+
+const RosterStack = createNativeStackNavigator<RosterStackParamList>()
+
+function DashboardRosterScreen() {
+  const {
+    theme: { colors },
+  } = useAppTheme()
+  const header = useRosterHeader()
+
+  return (
+    <RosterStack.Navigator
+      initialRouteName="MyRoster"
+      screenOptions={{
+        headerShown: true,
+        header: () => header,
+        contentStyle: { backgroundColor: colors.background },
+        animation: "none",
+        gestureEnabled: false,
+      }}
+    >
+      <RosterStack.Screen name="MyRoster" component={MyRosterScreen} />
+      <RosterStack.Screen name="TeamRoster" component={TeamRosterScreen} />
+      <RosterStack.Screen name="OpenShifts" component={OpenShiftsScreen} />
+    </RosterStack.Navigator>
+  )
+}
 
 export type DashboardTabParamList = {
-  DashboardRoster: undefined
+  DashboardRoster: NavigatorScreenParams<RosterStackParamList>
   DashboardHome: { queryIndex?: string; itemIndex?: string }
   DashboardTeams: undefined
   DashboardRequests: undefined
