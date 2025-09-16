@@ -43,7 +43,7 @@ export function useRosterHeader() {
   const handleTabChange = (k: string) => {
     const key = k as TabKey
     const target = ROUTE_BY_TAB[key]
-    navigation.navigate(target)
+    navigation.replace(target)
   }
 
   return (
