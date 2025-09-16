@@ -44,6 +44,7 @@ export const SubTabs = ({ tabs, activeTab, onTabChange }: SubTabsProps) => {
       backgroundColor="$primary500"
       overflow="hidden"
       borderColor="transparent"
+      boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.2)"}
     >
       {tabs.map((tab) => {
         const selected = tab.key === activeTab
