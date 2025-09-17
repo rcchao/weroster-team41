@@ -1,6 +1,12 @@
 name: Enforce Rebase
 
 on:
+  workflow_dispatch:
+    inputs:
+      pr_sha:
+        description: "SHA of the pull request head commit"
+        required: true
+        type: string
   pull_request:
     branches: [main]
 
@@ -30,6 +36,42 @@ jobs:
           else
             echo "status=success" >> $GITHUB_OUTPUT
           fi
+
+      - name: Set PR status to failure
+        if: github.event_name == 'workflow_dispatch' && steps.rebase_check.outputs.status == 'failure'
+        uses: actions/github-script@v6
+        env:
+          PR_SHA: ${{ github.event.inputs.pr_sha }}
+        with:
+          github-token: ${{ secrets.PAT_TOKEN }}
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: process.env.PR_SHA,
+              state: 'failure',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions`,
+              description: 'Branch is not rebased on latest main.',
+              context: 'Automated Rebase Check'
+            });
+
+      - name: Set PR status to success
+        if: github.event_name == 'workflow_dispatch' && steps.rebase_check.outputs.status == 'success'
+        uses: actions/github-script@v6
+        env:
+          PR_SHA: ${{ github.event.inputs.pr_sha }}
+        with:
+          github-token: ${{ secrets.PAT_TOKEN }}
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: process.env.PR_SHA,
+              state: 'success',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions`,
+              description: 'Branch is rebased on latest main.',
+              context: 'Automated Rebase Check'
+            });
 
       - name: Fail job if rebase check failed
         if: github.event_name == 'pull_request' && steps.rebase_check.outputs.status == 'failure'
