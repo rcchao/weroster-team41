@@ -58,12 +58,20 @@ model Designation {
   users            User[]
 }
 
+enum Session {
+  AM
+  PM
+  AH
+  OC
+}
+
 model Event {
   id                 Int                 @id
   activity_id        Int?
   location_id        Int?
   start_time         DateTime?           @db.DateTime(0)
   end_time           DateTime?           @db.DateTime(0)
+  session            Session?
   assignmentRequests AssignmentRequest[]
   activity           Activity?           @relation(fields: [activity_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Event_ibfk_1")
   location           Location?           @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Event_ibfk_2")
@@ -72,6 +80,7 @@ model Event {
   @@index([activity_id], map: "activity_id")
   @@index([location_id], map: "location_id")
 }
+
 
 model EventAssignment {
   id             Int          @id
