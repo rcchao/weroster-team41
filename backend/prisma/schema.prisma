@@ -157,8 +157,21 @@ model User {
   designation         Designation?        @relation(fields: [designation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_1")
   campus              Campus?             @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_2")
   hospital            Hospital?           @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_3")
+  dashboardPreference DashboardPreference?
 
   @@index([campus_id], map: "campus_id")
   @@index([designation_id], map: "designation_id")
   @@index([hospital_id], map: "hospital_id")
+}
+
+model DashboardPreference {
+  id              Int   @id @default(autoincrement())
+  userId          Int   @unique
+  user            User  @relation(fields: [userId], references: [id])
+
+  whosOnDuty      Boolean @default(true)
+  upcomingShifts  Boolean @default(true)
+  upcomingLeaves  Boolean @default(true)
+  openShifts      Boolean @default(true)
+  teamRoster      Boolean @default(true)
 }
