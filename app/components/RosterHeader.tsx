@@ -1,7 +1,8 @@
 import { memo, useLayoutEffect, useMemo, useState } from "react"
-import { SafeAreaView } from "react-native"
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { View } from "tamagui"
 
 import { SubTabs } from "@/components/SubTabs"
 import type { RosterStackParamList } from "@/navigators/DashboardNavigator"
@@ -27,11 +28,21 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: "openShifts", label: "Open Shifts" },
 ]
 
+const HEADER_CONTENT_HEIGHT = 40
+
+const $header = (top: number) => ({
+  height: top + HEADER_CONTENT_HEIGHT,
+  paddingTop: top,
+  justifyContent: "center" as const,
+})
+
 function RosterHeaderInner() {
   const navigation = useNavigation<NativeStackNavigationProp<RosterStackParamList>>()
   const route = useRoute<RouteProp<Record<string, object | undefined>, string>>()
 
   const [activeTab, setActiveTab] = useState<TabKey>("myRoster")
+
+  const { top } = useSafeAreaInsets()
 
   useLayoutEffect(() => {
     const name = route.name as RosterRouteName | undefined
@@ -45,13 +56,13 @@ function RosterHeaderInner() {
 
   const handleTabChange = (k: string) => {
     const key = k as TabKey
-    navigation.replace(ROUTE_BY_TAB[key])
+    navigation.navigate(ROUTE_BY_TAB[key])
   }
 
   return (
-    <SafeAreaView>
-      <SubTabs tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
-    </SafeAreaView>
+    <View style={$header(top)}>
+      <SubTabs tabs={tabs as any} activeTab={activeTab} onTabChange={handleTabChange} />
+    </View>
   )
 }
 

@@ -1,9 +1,6 @@
-import { useLayoutEffect } from "react"
 import { View } from "react-native"
-import { useNavigation } from "@react-navigation/native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 
-import { RosterHeader } from "@/components/RosterHeader"
 import { Screen } from "@/components/Screen"
 import { Text } from "@/components/Text"
 import type { RosterStackParamList } from "@/navigators/DashboardNavigator"
@@ -13,12 +10,7 @@ import { $styles } from "@/theme/styles"
 type Props = NativeStackScreenProps<RosterStackParamList, "MyRoster">
 
 export function MyRosterScreen(_props: Props) {
-  const navigation = useNavigation()
   const { themed } = useAppTheme()
-
-  useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: true, header: () => <RosterHeader /> })
-  })
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.container}>

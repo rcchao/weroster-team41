@@ -1,9 +1,7 @@
-import { FC, useLayoutEffect } from "react"
+import { FC } from "react"
 import { TextStyle } from "react-native"
-import { useNavigation } from "@react-navigation/native"
 
 import { ListItem } from "@/components/ListItem"
-import { RosterHeader } from "@/components/RosterHeader"
 import { Screen } from "@/components/Screen"
 import { Text } from "@/components/Text"
 import { isRTL } from "@/i18n"
@@ -16,16 +14,6 @@ import { openLinkInBrowser } from "@/utils/openLinkInBrowser"
 export const DashboardRosterScreen: FC<DashboardTabScreenProps<"DashboardRoster">> =
   function DashboardRosterScreen(_props) {
     const { themed } = useAppTheme()
-
-    const navigation = useNavigation()
-
-    useLayoutEffect(() => {
-      navigation.setOptions({
-        headerShown: true,
-        header: () => <RosterHeader />,
-        animation: "none",
-      })
-    })
 
     return (
       <Screen preset="scroll" contentContainerStyle={$styles.container}>
