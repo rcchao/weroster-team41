@@ -150,6 +150,12 @@ model Roster {
   @@index([hospital_id], map: "hospital_id")
 }
 
+enum Preference {
+  PREFERENCE1
+  PREFERENCE2
+  PREFERENCE3
+}
+
 model User {
   id                  Int                 @id @default(autoincrement())
   first_name          String?             @db.VarChar(255)
@@ -161,6 +167,7 @@ model User {
   campus_id           Int?
   hospital_id         Int?
   role                String?             @db.VarChar(255)
+  preference          Preference?
   assignmentRequests  AssignmentRequest[]
   eventAssignments    EventAssignment[]
   leaves              Leave[]
