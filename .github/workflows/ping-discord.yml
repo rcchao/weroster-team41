@@ -30,23 +30,31 @@ jobs:
       - name: Set PR event message
         id: set_message
         run: |
+          REVIEWER_ID="${{ steps.get_discord_ids.outputs.reviewer_id }}"
+          AUTHOR_ID="${{ steps.get_discord_ids.outputs.author_id }}"
+          # Early exit if author is the reviewer for a review event
+          if [[ "${{ github.event_name }}" == "pull_request_review" && "$REVIEWER_ID" == "$AUTHOR_ID" ]]; then
+            echo "message=" >> $GITHUB_OUTPUT
+            exit 0
+          fi
           if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "review_requested" ]]; then
-            echo "message=<@${{ steps.get_discord_ids.outputs.reviewer_id }}> you were requested to review [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) by <@${{ steps.get_discord_ids.outputs.author_id }}>" >> $GITHUB_OUTPUT
+            echo "message=<@$REVIEWER_ID> you were requested to review [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) by <@$AUTHOR_ID>" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event_name }}" == "pull_request_review" ]]; then
             case "${{ github.event.review.state }}" in
               approved)
-                echo "message=<@${{ steps.get_discord_ids.outputs.reviewer_id }}> approved [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) by <@${{ steps.get_discord_ids.outputs.author_id }}>" >> $GITHUB_OUTPUT
+                echo "message=<@$REVIEWER_ID> approved [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) by <@$AUTHOR_ID>" >> $GITHUB_OUTPUT
                 ;;
               changes_requested)
-                echo "message=<@${{ steps.get_discord_ids.outputs.reviewer_id }}> requested changes on [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) by <@${{ steps.get_discord_ids.outputs.author_id }}>" >> $GITHUB_OUTPUT
+                echo "message=<@$REVIEWER_ID> requested changes on [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) by <@$AUTHOR_ID>" >> $GITHUB_OUTPUT
                 ;;
               commented)
-                echo "message=<@${{ steps.get_discord_ids.outputs.reviewer_id }}> commented on [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) by <@${{ steps.get_discord_ids.outputs.author_id }}>" >> $GITHUB_OUTPUT
+                echo "message=<@$REVIEWER_ID> commented on [PR #${{ github.event.pull_request.number }}](${{ github.event.pull_request.html_url }}) by <@$AUTHOR_ID>" >> $GITHUB_OUTPUT
                 ;;
             esac
           fi
 
       - name: Send PR Notifications to Discord
+        if: steps.set_message.outputs.message != ''
         uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
