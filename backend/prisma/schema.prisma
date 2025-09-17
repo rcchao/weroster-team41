@@ -8,22 +8,22 @@ datasource db {
 }
 
 model Activity {
-  id            Int            @id
-  name          String?        @db.VarChar(255)
-  group_id      Int?
-  location_id   Int?
-  ActivityGroup ActivityGroup? @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Activity_ibfk_1")
-  Location      Location?      @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Activity_ibfk_2")
-  Event         Event[]
+  id          Int             @id
+  name        String?         @db.VarChar(255)
+  group_id    Int?
+  location_id Int?
+  activityGroup ActivityGroup? @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Activity_ibfk_1")
+  location      Location?      @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Activity_ibfk_2")
+  events        Event[]
 
   @@index([group_id], map: "group_id")
   @@index([location_id], map: "location_id")
 }
 
 model ActivityGroup {
-  id       Int        @id
-  name     String?    @db.VarChar(255)
-  Activity Activity[]
+  id        Int        @id
+  name      String?    @db.VarChar(255)
+  activities Activity[]
 }
 
 model AssignmentRequest {
@@ -31,43 +31,43 @@ model AssignmentRequest {
   user_id  Int?
   event_id Int?
   status   String? @db.VarChar(255)
-  User     User?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_1")
-  Event    Event?  @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_2")
+  user     User?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_1")
+  event    Event?  @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_2")
 
   @@index([event_id], map: "event_id")
   @@index([user_id], map: "user_id")
 }
 
 model Campus {
-  id          Int        @id
-  name        String?    @db.VarChar(255)
+  id          Int       @id
+  name        String?   @db.VarChar(255)
   hospital_id Int?
-  Hospital    Hospital?  @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Campus_ibfk_1")
-  Location    Location[]
-  Roster      Roster[]
-  User        User[]
+  hospital    Hospital? @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Campus_ibfk_1")
+  locations   Location[]
+  rosters     Roster[]
+  users       User[]
 
   @@index([hospital_id], map: "hospital_id")
 }
 
 model Designation {
-  id              Int               @id
-  title           String?           @db.VarChar(255)
-  description     String?           @db.VarChar(255)
-  EventAssignment EventAssignment[]
-  User            User[]
+  id               Int              @id
+  title            String?          @db.VarChar(255)
+  description      String?          @db.VarChar(255)
+  eventAssignments EventAssignment[]
+  users            User[]
 }
 
 model Event {
-  id                Int                 @id
-  activity_id       Int?
-  location_id       Int?
-  start_time        DateTime?           @db.DateTime(0)
-  end_time          DateTime?           @db.DateTime(0)
-  AssignmentRequest AssignmentRequest[]
-  Activity          Activity?           @relation(fields: [activity_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Event_ibfk_1")
-  Location          Location?           @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Event_ibfk_2")
-  EventAssignment   EventAssignment[]
+  id                 Int                 @id
+  activity_id        Int?
+  location_id        Int?
+  start_time         DateTime?           @db.DateTime(0)
+  end_time           DateTime?           @db.DateTime(0)
+  assignmentRequests AssignmentRequest[]
+  activity           Activity?           @relation(fields: [activity_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Event_ibfk_1")
+  location           Location?           @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Event_ibfk_2")
+  eventAssignments   EventAssignment[]
 
   @@index([activity_id], map: "activity_id")
   @@index([location_id], map: "location_id")
@@ -78,9 +78,9 @@ model EventAssignment {
   event_id       Int?
   user_id        Int?
   designation_id Int?
-  Event          Event?       @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "EventAssignment_ibfk_1")
-  User           User?        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "EventAssignment_ibfk_2")
-  Designation    Designation? @relation(fields: [designation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "EventAssignment_ibfk_3")
+  event          Event?       @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "EventAssignment_ibfk_1")
+  user           User?        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "EventAssignment_ibfk_2")
+  designation    Designation? @relation(fields: [designation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "EventAssignment_ibfk_3")
 
   @@index([designation_id], map: "designation_id")
   @@index([event_id], map: "event_id")
@@ -88,12 +88,12 @@ model EventAssignment {
 }
 
 model Hospital {
-  id      Int      @id
-  name    String?  @db.VarChar(255)
-  address String?  @db.VarChar(255)
-  Campus  Campus[]
-  Roster  Roster[]
-  User    User[]
+  id       Int      @id
+  name     String?  @db.VarChar(255)
+  address  String?  @db.VarChar(255)
+  campuses Campus[]
+  rosters  Roster[]
+  users    User[]
 }
 
 model Leave {
@@ -103,8 +103,8 @@ model Leave {
   start_date    DateTime?  @db.DateTime(0)
   end_date      DateTime?  @db.DateTime(0)
   status        String?    @db.VarChar(255)
-  User          User?      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_1")
-  LeaveType     LeaveType? @relation(fields: [leave_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_2")
+  user          User?      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_1")
+  leaveType     LeaveType? @relation(fields: [leave_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_2")
 
   @@index([leave_type_id], map: "leave_type_id")
   @@index([user_id], map: "user_id")
@@ -114,16 +114,16 @@ model LeaveType {
   id          Int     @id
   name        String? @db.VarChar(255)
   description String? @db.VarChar(255)
-  Leave       Leave[]
+  leaves      Leave[]
 }
 
 model Location {
   id        Int        @id
   name      String?    @db.VarChar(255)
   campus_id Int?
-  Activity  Activity[]
-  Event     Event[]
-  Campus    Campus?    @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Location_ibfk_1")
+  activities Activity[]
+  events     Event[]
+  campus     Campus?    @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Location_ibfk_1")
 
   @@index([campus_id], map: "campus_id")
 }
@@ -133,30 +133,30 @@ model Roster {
   campus_id   Int?
   hospital_id Int?
   week_start  DateTime? @db.DateTime(0)
-  Campus      Campus?   @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Roster_ibfk_1")
-  Hospital    Hospital? @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Roster_ibfk_2")
+  campus      Campus?   @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Roster_ibfk_1")
+  hospital    Hospital? @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Roster_ibfk_2")
 
   @@index([campus_id], map: "campus_id")
   @@index([hospital_id], map: "hospital_id")
 }
 
 model User {
-  id                Int                 @id @default(autoincrement())
-  first_name        String?             @db.VarChar(255)
-  last_name         String?             @db.VarChar(255)
-  email             String              @unique @db.VarChar(255)
-  password          String              @db.VarChar(255)
-  phone             String?             @db.VarChar(255)
-  designation_id    Int?
-  campus_id         Int?
-  hospital_id       Int?
-  role              String?             @db.VarChar(255)
-  AssignmentRequest AssignmentRequest[]
-  EventAssignment   EventAssignment[]
-  Leave             Leave[]
-  Designation       Designation?        @relation(fields: [designation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_1")
-  Campus            Campus?             @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_2")
-  Hospital          Hospital?           @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_3")
+  id                  Int                 @id @default(autoincrement())
+  first_name          String?             @db.VarChar(255)
+  last_name           String?             @db.VarChar(255)
+  email               String              @unique @db.VarChar(255)
+  password            String              @db.VarChar(255)
+  phone               String?             @db.VarChar(255)
+  designation_id      Int?
+  campus_id           Int?
+  hospital_id         Int?
+  role                String?             @db.VarChar(255)
+  assignmentRequests  AssignmentRequest[]
+  eventAssignments    EventAssignment[]
+  leaves              Leave[]
+  designation         Designation?        @relation(fields: [designation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_1")
+  campus              Campus?             @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_2")
+  hospital            Hospital?           @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_3")
 
   @@index([campus_id], map: "campus_id")
   @@index([designation_id], map: "designation_id")
