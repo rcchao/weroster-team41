@@ -79,6 +79,7 @@ model Event {
 
   @@index([activity_id], map: "activity_id")
   @@index([location_id], map: "location_id")
+  Swap Swap[] @relation(map: "Swap_ibfk_3")
 }
 
 
@@ -167,6 +168,9 @@ model User {
   campus              Campus?             @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_2")
   hospital            Hospital?           @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_3")
   dashboardPreference DashboardPreference?
+  teamRosterFilterPreferences TeamRosterFilterPreference[]
+  swapsFrom           Swap[]              @relation("SwapFromUser")
+  swapsTo             Swap[]              @relation("SwapToUser")
 
   @@index([campus_id], map: "campus_id")
   @@index([designation_id], map: "designation_id")
@@ -183,4 +187,34 @@ model DashboardPreference {
   upcomingLeaves  Boolean @default(true)
   openShifts      Boolean @default(true)
   teamRoster      Boolean @default(true)
+}
+
+model TeamRosterFilterPreference {
+  id              Int          @id @default(autoincrement())
+  name            String?      @db.VarChar(255)
+
+  userId          Int
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  sessions        Json?        // Store as ["AM", "PM"]
+  locations       Json?        // Store as ["PMC", "TSC Campus", "Clinical Support"]
+  designations    Json?        // Store as ["Nurse", "Doctor", "Surgeon"]
+
+  @@index([userId], map: "userId_idx")
+}
+
+model Swap {
+  id         Int     @id @default(autoincrement())
+  message    String? @db.VarChar(255)
+  from_user  Int?
+  to_user    Int?
+  event_id   Int?
+  status     String? @db.VarChar(255)
+  fromUser   User?   @relation("SwapFromUser", fields: [from_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_1")
+  toUser     User?   @relation("SwapToUser", fields: [to_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_2")
+  event      Event?  @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_3")
+
+  @@index([event_id], map: "event_id")
+  @@index([from_user], map: "from_user")
+  @@index([to_user], map: "to_user")
 }
