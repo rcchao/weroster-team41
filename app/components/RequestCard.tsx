@@ -34,14 +34,17 @@ export const RequestCard = (props: RequestCardProps) => {
   const displayDate = format(props.date, "EEE, d MMM")
   return (
     <Card
-      elevate
       width={350}
       height={104}
       backgroundColor="$white200"
-      boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.2)"}
       justifyContent="center"
       padding="$3"
       borderRadius="$radius.8"
+      elevation={4}
+      shadowColor="$mono900"
+      shadowOffset={{ width: 0, height: 4 }}
+      shadowOpacity={0.25}
+      shadowRadius={4}
     >
       <XStack width="auto" gap="$3" justifyContent="space-between">
         <XStack gap="$2">
