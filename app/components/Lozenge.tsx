@@ -1,6 +1,7 @@
 import { useState } from "react"
-import { Button, Text, useTheme } from "tamagui"
+import { Button, useTheme } from "tamagui"
 
+import { BodyText } from "./BodyText"
 import { Icon, IconTypes } from "./Icon"
 
 interface LozengeProps {
@@ -129,9 +130,9 @@ export const Lozenge = ({ type, active = false, onPress }: LozengeProps) => {
       }}
     >
       {buttonIcon && <Icon icon={buttonIcon} size={16} color={buttonTextColor} />}
-      <Text fontSize={12} color={buttonTextColor}>
+      <BodyText variant="body4" color={buttonTextColor} includeFontPadding>
         {buttonText}
-      </Text>
+      </BodyText>
     </Button>
   )
 }
