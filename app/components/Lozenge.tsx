@@ -122,13 +122,18 @@ export const Lozenge = ({ type, active = false, onPress }: LozengeProps) => {
       alignSelf="flex-start"
       disabled={!active}
       backgroundColor={buttonBgColor}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: !active, selected }}
+      testID={`lozenge-${type}`}
       onPress={() => {
         if (!active) return
         setSelected(!selected)
         onPress?.()
       }}
     >
-      {buttonIcon && <Icon icon={buttonIcon} size={16} color={buttonTextColor} />}
+      {buttonIcon && (
+        <Icon icon={buttonIcon} size={16} color={buttonTextColor} testID={buttonIcon} />
+      )}
       <Text fontSize={12} color={buttonTextColor}>
         {buttonText}
       </Text>
