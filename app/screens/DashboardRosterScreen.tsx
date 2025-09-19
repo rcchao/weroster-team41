@@ -7,17 +7,18 @@ import { Text } from "@/components/Text"
 import { isRTL } from "@/i18n"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useAppTheme } from "@/theme/context"
-import { $styles } from "@/theme/styles"
 import type { ThemedStyle } from "@/theme/types"
 import { openLinkInBrowser } from "@/utils/openLinkInBrowser"
 
 export const DashboardRosterScreen: FC<DashboardTabScreenProps<"DashboardRoster">> =
   function DashboardRosterScreen(_props) {
     const { themed } = useAppTheme()
+
     return (
-      <Screen preset="scroll" contentContainerStyle={$styles.container} safeAreaEdges={["top"]}>
+      <Screen preset="scroll">
         <Text preset="heading" tx="dashboardRosterScreen:title" style={themed($title)} />
         <Text tx="dashboardRosterScreen:externalLinkText" style={themed($description)} />
+
         <ListItem
           tx="dashboardRosterScreen:externalLink"
           leftIcon="anchor"

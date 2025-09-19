@@ -1,6 +1,6 @@
 import { TextStyle, ViewStyle } from "react-native"
 import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { CompositeScreenProps } from "@react-navigation/native"
+import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { Icon } from "@/components/Icon"
@@ -8,15 +8,15 @@ import { EpisodeProvider } from "@/context/EpisodeContext"
 import { translate } from "@/i18n/translate"
 import { DashboardHomeScreen } from "@/screens/DashboardHomeScreen"
 import { DashboardRequestsScreen } from "@/screens/DashboardRequestsScreen"
-import { DashboardRosterScreen } from "@/screens/DashboardRosterScreen"
 import { DashboardTeamsScreen } from "@/screens/DashboardTeamsScreen"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
-import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
+import type { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
+import { DashboardRosterScreen, RosterStackParamList } from "./RosterStackNavigator"
 
 export type DashboardTabParamList = {
-  DashboardRoster: undefined
+  DashboardRoster: NavigatorScreenParams<RosterStackParamList>
   DashboardHome: { queryIndex?: string; itemIndex?: string }
   DashboardTeams: undefined
   DashboardRequests: undefined
@@ -125,3 +125,4 @@ const $tabBarLabel: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
   lineHeight: 16,
   color: colors.text,
 })
+export { RosterStackParamList }
