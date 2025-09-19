@@ -10,23 +10,11 @@ import type { RosterStackParamList } from "@/navigators/DashboardNavigator"
 type TabKey = "myRoster" | "teamRoster" | "openShifts"
 type RosterRouteName = keyof RosterStackParamList
 
-const ROUTE_BY_TAB: Record<TabKey, RosterRouteName> = {
-  myRoster: "MyRoster",
-  teamRoster: "TeamRoster",
-  openShifts: "OpenShifts",
-}
-
-const TAB_BY_ROUTE: Record<RosterRouteName, TabKey> = {
-  MyRoster: "myRoster",
-  TeamRoster: "teamRoster",
-  OpenShifts: "openShifts",
-}
-
-const TABS: { key: TabKey; label: string }[] = [
-  { key: "myRoster", label: "My Roster" },
-  { key: "teamRoster", label: "Team Roster" },
-  { key: "openShifts", label: "Open Shifts" },
-]
+const TABS: ReadonlyArray<{ key: TabKey; label: string; route: RosterRouteName }> = [
+  { key: "myRoster", label: "My Roster", route: "MyRoster" },
+  { key: "teamRoster", label: "Team Roster", route: "TeamRoster" },
+  { key: "openShifts", label: "Open Shifts", route: "OpenShifts" },
+] as const
 
 const HEADER_CONTENT_HEIGHT = 40
 
@@ -40,23 +28,17 @@ function RosterHeaderInner() {
   const navigation = useNavigation<NativeStackNavigationProp<RosterStackParamList>>()
   const route = useRoute<RouteProp<Record<string, object | undefined>, string>>()
 
-  const [activeTab, setActiveTab] = useState<TabKey>("myRoster")
-
+  // Fetch the size of the top margin to manually fix the margins when rendering (fixes the glitching effect)
   const { top } = useSafeAreaInsets()
-
-  useLayoutEffect(() => {
-    const name = route.name as RosterRouteName | undefined
-    if (name) {
-      const next = TAB_BY_ROUTE[name]
-      setActiveTab((prev) => (prev === next ? prev : next))
-    }
-  }, [route.name])
 
   const tabs = useMemo(() => TABS, [])
 
+  const activeTab: TabKey =
+    (tabs.find((t) => t.route === (route.name as RosterRouteName))?.key as TabKey) ?? "myRoster"
+
   const handleTabChange = (k: string) => {
-    const key = k as TabKey
-    navigation.navigate(ROUTE_BY_TAB[key])
+    const tab = tabs.find((t) => t.key === (k as TabKey))
+    if (tab) navigation.navigate(tab.route)
   }
 
   return (
