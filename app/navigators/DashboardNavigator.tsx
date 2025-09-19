@@ -1,54 +1,19 @@
 import { TextStyle, ViewStyle } from "react-native"
 import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { Icon } from "@/components/Icon"
-import { RosterHeader } from "@/components/RosterHeader"
 import { EpisodeProvider } from "@/context/EpisodeContext"
 import { translate } from "@/i18n/translate"
 import { DashboardHomeScreen } from "@/screens/DashboardHomeScreen"
 import { DashboardRequestsScreen } from "@/screens/DashboardRequestsScreen"
 import { DashboardTeamsScreen } from "@/screens/DashboardTeamsScreen"
-import { MyRosterScreen } from "@/screens/MyRosterScreen"
-import { OpenShiftsScreen } from "@/screens/OpenShiftsScreen"
-import { TeamRosterScreen } from "@/screens/TeamRosterScreen"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
 import type { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
-
-export type RosterStackParamList = {
-  MyRoster: undefined
-  TeamRoster: undefined
-  OpenShifts: undefined
-}
-
-const RosterStack = createNativeStackNavigator<RosterStackParamList>()
-
-function DashboardRosterScreen() {
-  const {
-    theme: { colors },
-  } = useAppTheme()
-
-  return (
-    <RosterStack.Navigator
-      initialRouteName="MyRoster"
-      screenOptions={{
-        headerShown: true,
-        header: () => <RosterHeader />,
-        contentStyle: { backgroundColor: colors.background },
-        animation: "none",
-        gestureEnabled: false,
-      }}
-    >
-      <RosterStack.Screen name="MyRoster" component={MyRosterScreen} />
-      <RosterStack.Screen name="TeamRoster" component={TeamRosterScreen} />
-      <RosterStack.Screen name="OpenShifts" component={OpenShiftsScreen} />
-    </RosterStack.Navigator>
-  )
-}
+import { DashboardRosterScreen, RosterStackParamList } from "./RosterStackNavigator"
 
 export type DashboardTabParamList = {
   DashboardRoster: NavigatorScreenParams<RosterStackParamList>
@@ -160,3 +125,4 @@ const $tabBarLabel: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
   lineHeight: 16,
   color: colors.text,
 })
+export { RosterStackParamList }
