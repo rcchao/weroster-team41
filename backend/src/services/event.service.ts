@@ -15,7 +15,7 @@ export class EventService {
 
     return this.prisma.event.create({
       data,
-      include: { Activity: true },
+      include: { activity: true },
     })
   }
 
@@ -26,7 +26,7 @@ export class EventService {
       where: {
         // activity_id,
       },
-      include: { Activity: true },
+      include: { activity: true },
     })
   }
 }
