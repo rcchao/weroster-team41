@@ -10,18 +10,7 @@ type RequestType = "leave" | "swap" | "openShift"
 interface RequestCardProps {
   requestType: RequestType
   date: Date
-  status:
-    | "leave"
-    | "swap"
-    | "event"
-    | "available"
-    | "requested"
-    | "urgent"
-    | "approved"
-    | "awaiting"
-    | "declined"
-    | "assigned"
-    | "openShift"
+  status: "approved" | "awaiting" | "declined"
 }
 
 const REQUEST_MAP: Record<RequestType, string> = {
