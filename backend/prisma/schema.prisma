@@ -26,11 +26,17 @@ model ActivityGroup {
   activities Activity[]
 }
 
+enum RequestStatus {
+  AWAITING
+  APPROVED
+  DECLINED
+}
+
 model AssignmentRequest {
   id       Int     @id
   user_id  Int?
   event_id Int?
-  status   String? @db.VarChar(255)
+  status   RequestStatus? @default(AWAITING)
   user     User?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_1")
   event    Event?  @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_2")
 
@@ -112,7 +118,7 @@ model Leave {
   leave_type_id Int?
   start_date    DateTime?  @db.DateTime(0)
   end_date      DateTime?  @db.DateTime(0)
-  status        String?    @db.VarChar(255)
+  status        RequestStatus? @default(AWAITING)
   user          User?      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_1")
   leaveType     LeaveType? @relation(fields: [leave_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_2")
 
@@ -216,7 +222,7 @@ model Swap {
   from_user  Int?
   to_user    Int?
   event_id   Int?
-  status     String? @db.VarChar(255)
+  status     RequestStatus? @default(AWAITING)
   fromUser   User?   @relation("SwapFromUser", fields: [from_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_1")
   toUser     User?   @relation("SwapToUser", fields: [to_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_2")
   event      Event?  @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_3")
