@@ -12,6 +12,7 @@ import {
 } from "react-native"
 import { useScrollToTop } from "@react-navigation/native"
 import { SystemBars, SystemBarsProps, SystemBarStyle } from "react-native-edge-to-edge"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller"
 
 import { useAppTheme } from "@/theme/context"
@@ -267,18 +268,20 @@ export function Screen(props: ScreenProps) {
         {...SystemBarsProps}
       />
 
-      <KeyboardAvoidingView
-        behavior={isIos ? "padding" : "height"}
-        keyboardVerticalOffset={keyboardOffset}
-        {...KeyboardAvoidingViewProps}
-        style={[$styles.flex1, KeyboardAvoidingViewProps?.style]}
-      >
-        {isNonScrolling(props.preset) ? (
-          <ScreenWithoutScrolling {...props} />
-        ) : (
-          <ScreenWithScrolling {...props} />
-        )}
-      </KeyboardAvoidingView>
+      <GestureHandlerRootView style={$gestureRootStyle}>
+        <KeyboardAvoidingView
+          behavior={isIos ? "padding" : "height"}
+          keyboardVerticalOffset={keyboardOffset}
+          {...KeyboardAvoidingViewProps}
+          style={[$styles.flex1, KeyboardAvoidingViewProps?.style]}
+        >
+          {isNonScrolling(props.preset) ? (
+            <ScreenWithoutScrolling {...props} />
+          ) : (
+            <ScreenWithScrolling {...props} />
+          )}
+        </KeyboardAvoidingView>
+      </GestureHandlerRootView>
     </View>
   )
 }
@@ -302,4 +305,8 @@ const $justifyFlexEnd: ViewStyle = {
 const $innerStyle: ViewStyle = {
   justifyContent: "flex-start",
   alignItems: "stretch",
+}
+
+const $gestureRootStyle: ViewStyle = {
+  flex: 1,
 }
