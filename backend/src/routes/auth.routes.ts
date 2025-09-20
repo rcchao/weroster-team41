@@ -41,7 +41,9 @@ router.get("/profile", authenticate, async (req, res) => {
     const user = await service.getProfile(req.userId)
     res.json({
       success: true,
-      ...user,
+      data: {
+        ...user,
+      },
     })
   } catch (error: any) {
     const status =
@@ -70,7 +72,9 @@ router.put("/profile", authenticate, async (req, res) => {
     const user = await service.updateProfile(req.userId, req.body)
     res.json({
       success: true,
-      ...user,
+      data: {
+        ...user,
+      },
     })
   } catch (error: any) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
