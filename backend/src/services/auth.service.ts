@@ -36,9 +36,9 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({
       where: { email: data.email },
       include: {
-        Campus: true,
-        Hospital: true,
-        Designation: true,
+        campus: true,
+        hospital: true,
+        designation: true,
       },
     })
 
@@ -65,9 +65,9 @@ export class AuthService {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       include: {
-        Campus: true,
-        Hospital: true,
-        Designation: true,
+        campus: true,
+        hospital: true,
+        designation: true,
       },
     })
 
@@ -90,9 +90,9 @@ export class AuthService {
         ...(data.hospital_id !== undefined && { hospital_id: data.hospital_id }),
       },
       include: {
-        Campus: true,
-        Hospital: true,
-        Designation: true,
+        campus: true,
+        hospital: true,
+        designation: true,
       },
     })
 
