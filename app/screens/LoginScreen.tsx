@@ -35,14 +35,24 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
     control,
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
+    setError,
+    clearErrors,
   } = useForm<LoginValues>({
     defaultValues: { domain: "", email: "", password: "" },
     mode: "onChange",
   })
 
   const onSubmit = async ({ email, password }: LoginValues) => {
+    clearErrors()
     const success = await login(email.trim(), password)
-    if (!success) console.log("Authentication failed.")
+    if (!success) {
+      setError("password", {
+        type: "server",
+        message: "Incorrect email or password.",
+      })
+      console.log("Authentication failed.")
+      passwordInput.current?.focus()
+    }
   }
   return (
     <Screen
@@ -82,10 +92,10 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
             control={control}
             name="email"
             rules={{
-              required: "Email is required",
+              required: "Email is required.",
               pattern: {
                 value: /^\S+@\S+\.\S+$/,
-                message: "Enter a valid email",
+                message: "Enter a valid email.",
               },
             }}
             render={({ field: { value, onChange, onBlur, ref } }) => (
@@ -110,8 +120,8 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
             control={control}
             name="password"
             rules={{
-              required: "Password is required",
-              minLength: { value: 6, message: "Min 6 characters" },
+              required: "Password is required.",
+              minLength: { value: 6, message: "Min 6 characters are required." },
             }}
             render={({ field: { value, onChange, onBlur } }) => (
               <UserInput
