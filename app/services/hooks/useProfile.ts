@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 
 import { ProfileData } from "backend/src/types/auth.types"
 
-import { authApi } from "../api/api.service"
+import { authApi } from "../api/authApi"
 
 export const useProfile = () => {
   const [profile, setProfile] = useState<ProfileData | null>(null)
