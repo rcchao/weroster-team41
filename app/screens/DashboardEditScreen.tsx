@@ -75,6 +75,8 @@ export const DashboardEditScreen: FC<AppStackScreenProps<"EditDashboard">> =
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           onDragEnd={({ data }) => setCards(data)} // update card order
+          scrollEnabled={false}
+          activationDistance={Number.MAX_SAFE_INTEGER}
         />
       </Screen>
     )
