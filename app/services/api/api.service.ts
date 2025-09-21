@@ -11,9 +11,12 @@ interface User {
   last_name?: string | null
   phone?: string | null
   role?: string | null
-  Campus?: any
-  Hospital?: any
-  Designation?: any
+  hospital_id: number
+  campus_id: number
+  designation_id: number
+  campus?: any
+  hospital?: any
+  designation?: any
 }
 
 interface AuthResponse {
@@ -56,6 +59,9 @@ export const authApi = {
     if (response.ok && response.data) {
       storage.set("authToken", response.data.token)
       storage.set("userEmail", email)
+      storage.set("userId", response.data.user.id)
+      storage.set("userHospitalId", response.data.user.hospital_id)
+
       return { success: true, data: response.data }
     }
     return {
@@ -72,5 +78,7 @@ export const authApi = {
   logout: () => {
     storage.delete("authToken")
     storage.delete("userEmail")
+    storage.delete("userId")
+    storage.delete("userHospitalId")
   },
 }
