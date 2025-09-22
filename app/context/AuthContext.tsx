@@ -9,6 +9,8 @@ export type AuthContextType = {
   isAuthenticated: boolean
   authToken: string | undefined
   authEmail: string | undefined
+  userId: number | undefined
+  userHospitalId: number | undefined
   error: string | null
   login: (email: string, password: string) => Promise<boolean>
   logout: () => void
@@ -19,6 +21,10 @@ export const AuthContext = createContext<AuthContextType | null>(null)
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [authToken, setAuthToken] = useState<string | undefined>(storage.getString("authToken"))
   const [authEmail, setAuthEmail] = useState<string | undefined>(storage.getString("userEmail"))
+  const [userId, setUserId] = useState<number | undefined>(storage.getNumber("userId"))
+  const [userHospitalId, setUserHospitalId] = useState<number | undefined>(
+    storage.getNumber("userHospitalId"),
+  )
   const [error, setError] = useState<string | null>(null)
 
   const login = async (email: string, password: string): Promise<boolean> => {
@@ -29,6 +35,8 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     if (result.success) {
       setAuthToken(result.data?.token)
       setAuthEmail(email)
+      setUserId(result.data?.user.id)
+      setUserHospitalId(result.data?.user.hospital_id)
       return true
     } else {
       setError(result.error)
@@ -40,6 +48,8 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     authApi.logout()
     setAuthToken(undefined)
     setAuthEmail(undefined)
+    setUserId(undefined)
+    setUserHospitalId(undefined)
     setError(null)
   }
 
@@ -47,6 +57,8 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     isAuthenticated: !!authToken,
     authToken,
     authEmail,
+    userId,
+    userHospitalId,
     error,
     login,
     logout,
