@@ -29,7 +29,7 @@ interface LozengeConfig {
   textColor?: string
 }
 
-const LOZENGE_CONFIG: Record<LozengeProps["type"], LozengeConfig> = {
+export const LOZENGE_CONFIG: Record<LozengeProps["type"], LozengeConfig> = {
   leave: {
     text: "Leave",
     icon: "leave",
@@ -123,13 +123,17 @@ export const Lozenge = ({ type, active = false, onPress }: LozengeProps) => {
       alignSelf="flex-start"
       disabled={!active}
       backgroundColor={buttonBgColor}
+      accessibilityState={{ disabled: !active, selected }}
+      testID={`lozenge-${type}`}
       onPress={() => {
         if (!active) return
         setSelected(!selected)
         onPress?.()
       }}
     >
-      {buttonIcon && <Icon icon={buttonIcon} size={16} color={buttonTextColor} />}
+      {buttonIcon && (
+        <Icon icon={buttonIcon} size={16} color={buttonTextColor} testID={buttonIcon} />
+      )}
       <BodyText variant="body4" color={buttonTextColor} includeFontPadding>
         {buttonText}
       </BodyText>
