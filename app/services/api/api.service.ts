@@ -2,6 +2,9 @@ import { Platform } from "react-native"
 import { create } from "apisauce"
 import { MMKV } from "react-native-mmkv"
 
+import { ApiResponse } from "../../../backend/src/types/api.types"
+import { ProfileData } from "../../../backend/src/types/auth.types"
+
 const storage = new MMKV()
 
 interface User {
@@ -65,8 +68,15 @@ export const authApi = {
   },
 
   getProfile: async () => {
-    const response = await api.get<User>("/auth/profile")
-    return response.ok ? response.data : null
+    const response = await api.get<ApiResponse<ProfileData>>("/auth/profile")
+    console.log("\n\n[authApi.getProfile] response:", response.data)
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to retrieve profile",
+    } as ApiResponse<ProfileData>
   },
 
   logout: () => {
