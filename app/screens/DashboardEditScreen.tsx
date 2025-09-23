@@ -84,7 +84,7 @@ export const DashboardEditScreen: FC<AppStackScreenProps<"EditDashboard">> =
 
 export const $editDashboardText: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
   color: colors.text,
-  fontFamily: typography.primary.medium,
+  fontFamily: typography.primary.regular,
   fontSize: 16,
   lineHeight: 20,
   marginLeft: spacing.md,
