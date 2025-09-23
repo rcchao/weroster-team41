@@ -139,7 +139,7 @@ const headingFont = createFont({
     1: "700", // bold
   },
   face: {
-    700: { normal: "Montserrat-Bold", italic: "Montserrat-Italic" },
+    700: { normal: "Montserrat-Bold" },
   },
 })
 
@@ -170,8 +170,8 @@ const bodyFont = createFont({
     5: "500", // medium
   },
   face: {
-    400: { normal: "Inter", italic: "Inter-Italic" },
-    500: { normal: "Inter-Medium", italic: "Inter-Italic" },
+    400: { normal: "Inter-Regular" },
+    500: { normal: "Inter-Medium" },
   },
 })
 
