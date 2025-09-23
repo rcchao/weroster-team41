@@ -3,6 +3,7 @@ import { MMKV } from "react-native-mmkv"
 import { api } from "./apiClient"
 import { ApiResponse } from "../../../backend/src/types/api.types"
 import { ProfileData } from "../../../backend/src/types/auth.types"
+import { EventData } from "../../../backend/src/types/event.types"
 
 const storage = new MMKV()
 
@@ -60,5 +61,19 @@ export const authApi = {
     storage.delete("userEmail")
     storage.delete("userId")
     storage.delete("userHospitalId")
+  },
+}
+
+export const eventApi = {
+  getMyEvents: async () => {
+    const response = await api.get<ApiResponse<EventData[]>>("/events/")
+
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to retrieve events",
+    } as ApiResponse<EventData[]>
   },
 }
