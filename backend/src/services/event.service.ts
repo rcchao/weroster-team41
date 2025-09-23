@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import type { Event } from ".prisma/client"
-import { ShiftDetails } from "../types/event.types"
+import { ShiftDetails, ShiftWithNumUsers } from "../types/event.types"
 
 export class EventService {
   // Use prisma client for DB operations/interactions -> Prisma is how we interact with the DB
@@ -20,8 +20,8 @@ export class EventService {
     })
   }
 
-  async getMyShifts(user_id: number): Promise<ShiftDetails[]> {
-    return this.prisma.event.findMany({
+  async getMyShifts(user_id: number): Promise<ShiftWithNumUsers[]> {
+    const shifts = await this.prisma.event.findMany({
       where: {
         eventAssignments: {
           // Find all events where there exists at least one event assignment for the user
@@ -55,5 +55,10 @@ export class EventService {
         start_time: "asc",
       },
     })
+
+    return shifts.map((shift: ShiftDetails) => ({
+      ...shift,
+      numUsers: shift.eventAssignments.length,
+    }))
   }
 }

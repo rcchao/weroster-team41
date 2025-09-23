@@ -23,3 +23,7 @@ export type ShiftDetails = Prisma.EventGetPayload<{
     }
   }
 }>
+
+export type ShiftWithNumUsers = ShiftDetails & {
+  numUsers: number
+}
