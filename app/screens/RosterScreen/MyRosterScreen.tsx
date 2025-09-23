@@ -1,22 +1,30 @@
 import { View } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
+import { format } from "date-fns"
+import { useTheme } from "tamagui"
+import { YStack } from "tamagui"
 
+import { Accordion } from "@/components/Accordion"
+import { BodyText } from "@/components/BodyText"
+import { HeaderText } from "@/components/HeaderText"
 import { Screen } from "@/components/Screen"
 import { Text } from "@/components/Text"
 import type { RosterStackParamList } from "@/navigators/DashboardNavigator"
-import { useAppTheme } from "@/theme/context"
 import { $styles } from "@/theme/styles"
 
 type Props = NativeStackScreenProps<RosterStackParamList, "MyRoster">
 
 export function MyRosterScreen(_props: Props) {
-  const { themed } = useAppTheme()
+  const themes = useTheme()
+
+  const today = new Date()
+  const tomorrow = new Date(today)
+  today.setDate(today.getDate())
+  tomorrow.setDate(today.getDate() + 1)
 
   return (
-    <Screen preset="scroll" contentContainerStyle={$styles.container}>
-      <Text preset="heading" style={themed(() => ({ marginBottom: 12 }))}>
-        My Roster
-      </Text>
+    <Screen preset="scroll" contentContainerStyle={$styles.barContainer}>
+      <HeaderText>My Roster</HeaderText>
 
       <View>
         <Text preset="subheading">Coming soon</Text>
@@ -24,6 +32,16 @@ export function MyRosterScreen(_props: Props) {
           This is the base screen for <Text weight="bold">My Roster</Text>. Replace this area with
           your roster list/calendar.
         </Text>
+        <Accordion sectionText={format(today, "EEEE, MMM d")} isCurrent={true}>
+          <YStack padding={16} backgroundColor={themes.white100.val}>
+            <BodyText>Today&apos;s Shifts Here</BodyText>
+          </YStack>
+        </Accordion>
+        <Accordion sectionText={format(tomorrow, "EEEE, MMM d")} isCurrent={false}>
+          <YStack padding={16} backgroundColor={themes.white100.val}>
+            <BodyText>Tomorrow&apos;s Shifts Here</BodyText>
+          </YStack>
+        </Accordion>
       </View>
     </Screen>
   )
