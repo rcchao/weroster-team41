@@ -2,7 +2,8 @@ import { Avatar, Card, useTheme, XStack, YStack } from "tamagui"
 
 import { BodyText } from "./BodyText"
 import { HeaderText } from "./HeaderText"
-import { Icon, PressableIcon } from "./Icon"
+import { PressableIcon } from "./Icon"
+import { StyledIcon } from "./StyledIcon"
 
 interface TeamMemberCardProps {
   name: string
@@ -35,15 +36,15 @@ export const TeamMemberCard = (props: TeamMemberCardProps) => {
             <HeaderText variant="h2">{props.name}</HeaderText>
             <YStack gap="$1.5">
               <XStack alignItems="center" gap="$1">
-                <Icon icon="clock" size={16} color={theme.secondary500.val} />
+                <StyledIcon icon="clock" />
                 <BodyText variant="body2">Shift time</BodyText>
               </XStack>
               <XStack alignItems="center" gap="$1">
-                <Icon icon="stethoscope" size={16} color={theme.secondary500.val} />
+                <StyledIcon icon="stethoscope" />
                 <BodyText variant="body2">Role name</BodyText>
               </XStack>
               <XStack alignItems="center" gap="$1">
-                <Icon icon="location" size={16} color={theme.secondary500.val} />
+                <StyledIcon icon="location" />
                 <BodyText variant="body2">Shift location</BodyText>
               </XStack>
             </YStack>
@@ -56,5 +57,3 @@ export const TeamMemberCard = (props: TeamMemberCardProps) => {
     </Card>
   )
 }
-
-// src={require("../../assets/images/app-icon-all.png")}
