@@ -57,13 +57,13 @@ export const $checkbox: ThemedStyle<ViewStyle> = () => ({
 })
 
 export const $titleStyle: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontFamily: typography.primary.semiBold,
+  fontFamily: typography.primary.bold,
   fontSize: 16,
   marginLeft: spacing.md,
 })
 
 export const $subtitleStyle: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontFamily: typography.primary.normal,
+  fontFamily: typography.primary.regular,
   fontSize: 12,
   marginLeft: spacing.md,
 })

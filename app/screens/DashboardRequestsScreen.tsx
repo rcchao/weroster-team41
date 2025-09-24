@@ -297,7 +297,7 @@ const EpisodeCard = ({
           <Text
             size="xxs"
             accessibilityLabel={duration.accessibilityLabel}
-            weight="medium"
+            weight="regular"
             text={
               isFavorite
                 ? translate("dashboardRequestsScreen:unfavoriteButton")

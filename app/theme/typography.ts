@@ -2,26 +2,21 @@
 // markdown file and add links from here
 
 export const customFontsToLoad = {
-  "Montserrat": require("../../assets/fonts/Montserrat-VariableFont_wght.ttf"),
-  "Montserrat-Italic": require("../../assets/fonts/Montserrat-Italic-VariableFont_wght.ttf"),
-  "Inter": require("../../assets/fonts/Inter-VariableFont_opsz,wght.ttf"),
-  "Inter-Italic": require("../../assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf"),
+  "Montserrat-Regular": require("../../assets/fonts/Montserrat-Regular.ttf"),
+  "Montserrat-Bold": require("../../assets/fonts/Montserrat-Bold.ttf"),
+  "Inter-Regular": require("../../assets/fonts/Inter-Regular.ttf"),
+  "Inter-Medium": require("../../assets/fonts/Inter-Medium.ttf"),
+  "Inter-Bold": require("../../assets/fonts/Inter-Bold.ttf"),
 }
 
 const fonts = {
   Montserrat: {
-    // Cross-platform Google font.
-    light: "Montserrat-Light",
-    normal: "Montserrat-Regular",
-    medium: "Montserrat-Medium",
-    semiBold: "Montserrat-SemiBold",
+    regular: "Montserrat-Regular",
     bold: "Montserrat-Bold",
   },
   Inter: {
-    light: "Inter-Light",
-    normal: "Inter-Regular",
+    regular: "Inter-Regular",
     medium: "Inter-Medium",
-    semiBold: "Inter-SemiBold",
     bold: "Inter-Bold",
   },
 }

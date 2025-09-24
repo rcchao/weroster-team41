@@ -2,10 +2,11 @@ import { FC, ReactElement } from "react"
 import { Pressable } from "react-native"
 import { View } from "react-native"
 
+import { BodyText } from "@/components/BodyText"
 import { Button } from "@/components/Button"
+import { HeaderText } from "@/components/HeaderText"
 import { Icon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
-import { Text } from "@/components/Text"
 import { TxKeyPath } from "@/i18n"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useAppTheme } from "@/theme/context"
@@ -42,7 +43,13 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
               <Icon icon="anchor" />
             </Pressable>
           </View>
-          <Text preset="heading" tx="dashboardHomeScreen:jumpStart" />
+          <HeaderText variant="h1">Home H1 Text</HeaderText>
+          <HeaderText variant="h2">H2 Text</HeaderText>
+          <HeaderText variant="h3">H3 Text</HeaderText>
+          <BodyText variant="body">Body Text</BodyText>
+          <BodyText variant="body2">Body2 Text</BodyText>
+          <BodyText variant="body3">Body3 Text</BodyText>
+          <BodyText variant="body4">Body4 Text</BodyText>
         </Screen>
 
         {/* FAB positioned relative to the outer View */}
