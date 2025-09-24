@@ -9,6 +9,7 @@ import { ShiftWithNumUsers } from "backend/src/types/event.types"
 import { AccordionDropdown } from "@/components/AccordionDropdown"
 import { BodyText } from "@/components/BodyText"
 import { HeaderText } from "@/components/HeaderText"
+import { RosterCalendar } from "@/components/RosterCalendar"
 import { Screen } from "@/components/Screen"
 import { Text } from "@/components/Text"
 import type { RosterStackParamList } from "@/navigators/DashboardNavigator"
@@ -49,6 +50,7 @@ export function MyRosterScreen(_props: Props) {
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.barContainer}>
+      <RosterCalendar />
       <HeaderText>My Roster</HeaderText>
 
       <View>
