@@ -1,7 +1,7 @@
 import { createContext, FC, PropsWithChildren, useContext, useState } from "react"
 import { MMKV } from "react-native-mmkv"
 
-import { authApi } from "../services/api/api.service"
+import { authApi } from "../services/api/authApi"
 
 const storage = new MMKV()
 

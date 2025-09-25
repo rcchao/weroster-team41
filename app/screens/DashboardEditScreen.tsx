@@ -10,6 +10,7 @@ import { Icon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
 import { Text } from "@/components/Text"
 import { AppStackScreenProps } from "@/navigators/AppNavigator"
+import { useDashboardPreferences } from "@/services/hooks/useDashboardPreferences"
 import { useAppTheme } from "@/theme/context"
 import { spacing } from "@/theme/spacing"
 import { $topRightIcons, $headerIcons } from "@/theme/styles"
@@ -59,6 +60,7 @@ export const DashboardEditScreen: FC<AppStackScreenProps<"EditDashboard">> =
         />
       )
     }
+    const { dashboardPreferences } = useDashboardPreferences()
 
     return (
       <Screen preset="fixed" safeAreaEdges={["top"]}>
@@ -78,6 +80,7 @@ export const DashboardEditScreen: FC<AppStackScreenProps<"EditDashboard">> =
           scrollEnabled={false}
           activationDistance={Number.MAX_SAFE_INTEGER}
         />
+        <Text>{dashboardPreferences ? JSON.stringify(dashboardPreferences) : "Loading..."}</Text>
       </Screen>
     )
   }
