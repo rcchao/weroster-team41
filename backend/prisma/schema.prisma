@@ -102,6 +102,11 @@ model EventAssignment {
   @@index([user_id], map: "user_id")
 }
 
+enum FilterType {
+  EVENTS
+  USERS
+}
+
 model Hospital {
   id       Int      @id
   name     String?  @db.VarChar(255)
@@ -119,17 +124,18 @@ model Leave {
   end_date      DateTime?      @db.DateTime(0)
   status        RequestStatus? @default(AWAITING)
   user          User?          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_1")
-  leaveType     LeaveType?     @relation(fields: [leave_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_2")
+  leaveType     LeaveType?     @default(ANNUAL)
 
   @@index([leave_type_id], map: "leave_type_id")
   @@index([user_id], map: "user_id")
 }
 
-model LeaveType {
-  id          Int     @id
-  name        String? @db.VarChar(255)
-  description String? @db.VarChar(255)
-  leaves      Leave[]
+enum LeaveType {
+  ANNUAL
+  COMPASSIONATE
+  PARENTAL
+  SICK
+  UNPAID
 }
 
 model Location {
@@ -162,27 +168,27 @@ enum Preference {
 }
 
 model User {
-  id                          Int                          @id @default(autoincrement())
-  first_name                  String?                      @db.VarChar(255)
-  last_name                   String?                      @db.VarChar(255)
-  email                       String                       @unique @db.VarChar(255)
-  password                    String                       @db.VarChar(255)
-  phone                       String?                      @db.VarChar(255)
-  designation_id              Int?
-  campus_id                   Int?
-  hospital_id                 Int?
-  role                        String?                      @db.VarChar(255)
-  preference                  Preference?
-  assignmentRequests          AssignmentRequest[]
-  eventAssignments            EventAssignment[]
-  leaves                      Leave[]
-  designation                 Designation?                 @relation(fields: [designation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_1")
-  campus                      Campus?                      @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_2")
-  hospital                    Hospital?                    @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_3")
-  dashboardPreference         DashboardPreference?
-  teamRosterFilterPreferences TeamRosterFilterPreference[]
-  swapsFrom                   Swap[]                       @relation("SwapFromUser")
-  swapsTo                     Swap[]                       @relation("SwapToUser")
+  id                  Int                  @id @default(autoincrement())
+  first_name          String?              @db.VarChar(255)
+  last_name           String?              @db.VarChar(255)
+  email               String               @unique @db.VarChar(255)
+  password            String               @db.VarChar(255)
+  phone               String?              @db.VarChar(255)
+  designation_id      Int?
+  campus_id           Int?
+  hospital_id         Int?
+  role                String?              @db.VarChar(255)
+  preference          Preference?
+  assignmentRequests  AssignmentRequest[]
+  eventAssignments    EventAssignment[]
+  leaves              Leave[]
+  designation         Designation?         @relation(fields: [designation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_1")
+  campus              Campus?              @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_2")
+  hospital            Hospital?            @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_3")
+  dashboardPreference DashboardPreference?
+  savedFilters        SavedFilters[]
+  swapsFrom           Swap[]               @relation("SwapFromUser")
+  swapsTo             Swap[]               @relation("SwapToUser")
 
   @@index([campus_id], map: "campus_id")
   @@index([designation_id], map: "designation_id")
@@ -201,12 +207,13 @@ model DashboardPreference {
   teamRoster     Boolean @default(true)
 }
 
-model TeamRosterFilterPreference {
+model SavedFilters {
   id   Int     @id @default(autoincrement())
   name String? @db.VarChar(255)
 
-  userId Int
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  userId     Int
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  filterType FilterType
 
   sessions     Json? // Store as ["AM", "PM"]
   locations    Json? // Store as ["PMC", "TSC Campus", "Clinical Support"]
