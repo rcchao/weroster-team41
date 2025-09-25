@@ -8,10 +8,15 @@ export const BottomDashboardNavBar = ({ state, descriptors, navigation }: Bottom
     const active = state.index === index
 
     const label = (options.tabBarLabel ?? route.name) as string
+    const icon =
+      typeof options.tabBarIcon === "function"
+        ? options.tabBarIcon({ focused: active, color: "", size: 22 })
+        : null
 
     return {
       key: route.key,
       label,
+      icon,
       active,
     }
   })
