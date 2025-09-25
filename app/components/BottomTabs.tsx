@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import { Pressable } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { View, XStack, YStack } from "tamagui"
+import { XStack, YStack } from "tamagui"
 
 import { HeaderText } from "./HeaderText"
 
@@ -21,13 +21,18 @@ interface BottomTabsProps {
 export const BottomTabs = ({ items, onTabChange }: BottomTabsProps) => {
   const { bottom } = useSafeAreaInsets()
   return (
-    <View
+    <XStack
       position="absolute"
       bottom={0}
       left={0}
       right={0}
       alignItems="center"
       pointerEvents="box-none"
+      elevation={4}
+      shadowColor="$mono900"
+      shadowOffset={{ width: 0, height: -4 }}
+      shadowOpacity={0.25}
+      shadowRadius={4}
     >
       <XStack
         width="100%"
@@ -38,7 +43,7 @@ export const BottomTabs = ({ items, onTabChange }: BottomTabsProps) => {
         overflow="hidden"
         paddingHorizontal="$3"
         paddingTop="$3"
-        paddingBottom={Math.max(bottom, 8)}
+        paddingBottom={bottom}
       >
         <XStack flex={1} justifyContent="space-around">
           {items.map((it) => (
@@ -53,6 +58,6 @@ export const BottomTabs = ({ items, onTabChange }: BottomTabsProps) => {
           ))}
         </XStack>
       </XStack>
-    </View>
+    </XStack>
   )
 }
