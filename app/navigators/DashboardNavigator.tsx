@@ -3,6 +3,7 @@ import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigatio
 import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
+import { BottomDashboardNavBar } from "@/components/BottomDashboardNavBar"
 import { Icon } from "@/components/Icon"
 import { EpisodeProvider } from "@/context/EpisodeContext"
 import { translate } from "@/i18n/translate"
@@ -60,6 +61,7 @@ export function DashboardNavigator() {
           tabBarLabelStyle: themed($tabBarLabel),
           tabBarItemStyle: themed($tabBarItem),
         }}
+        tabBar={(props) => <BottomDashboardNavBar {...props} />}
       >
         <Tab.Screen
           name="DashboardHome"
