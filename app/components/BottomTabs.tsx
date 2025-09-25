@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 import { Pressable } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { View, XStack, YStack } from "tamagui"
@@ -7,6 +8,7 @@ import { HeaderText } from "./HeaderText"
 export type BottomNavBarItem = {
   key: string
   label: string
+  icon: ReactNode
   active?: boolean
   onPress?: () => void
 }
@@ -35,13 +37,14 @@ export const BottomTabs = ({ items, onTabChange }: BottomTabsProps) => {
         borderTopRightRadius={24}
         overflow="hidden"
         paddingHorizontal="$3"
-        paddingTop="$2"
+        paddingTop="$3"
         paddingBottom={Math.max(bottom, 8)}
       >
         <XStack flex={1} justifyContent="space-around">
           {items.map((it) => (
             <Pressable key={it.key} aria-selected={it.active} onPress={() => onTabChange(it.key)}>
               <YStack alignItems="center" gap="$1">
+                {it.icon}
                 <HeaderText variant="h3" color={it.active ? "$accent500" : "$white100"}>
                   {it.label}
                 </HeaderText>

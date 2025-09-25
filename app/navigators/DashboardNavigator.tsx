@@ -2,6 +2,7 @@ import { TextStyle, ViewStyle } from "react-native"
 import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { useTheme } from "tamagui"
 
 import { BottomDashboardNavBar } from "@/components/BottomDashboardNavBar"
 import { Icon } from "@/components/Icon"
@@ -49,6 +50,8 @@ export function DashboardNavigator() {
     theme: { colors },
   } = useAppTheme()
 
+  const theme = useTheme()
+
   return (
     <EpisodeProvider>
       <Tab.Navigator
@@ -69,7 +72,11 @@ export function DashboardNavigator() {
           options={{
             tabBarLabel: translate("dashboardNavigator:homeTab"),
             tabBarIcon: ({ focused }) => (
-              <Icon icon="house" color={focused ? colors.tint : colors.tintInactive} size={30} />
+              <Icon
+                icon="house"
+                color={focused ? theme.accent500.val : theme.white100.val}
+                size={24}
+              />
             ),
           }}
         />
@@ -80,7 +87,11 @@ export function DashboardNavigator() {
           options={{
             tabBarLabel: translate("dashboardNavigator:rosterTab"),
             tabBarIcon: ({ focused }) => (
-              <Icon icon="roster" color={focused ? colors.tint : colors.tintInactive} size={30} />
+              <Icon
+                icon="roster"
+                color={focused ? theme.accent500.val : theme.white100.val}
+                size={24}
+              />
             ),
           }}
         />
@@ -92,7 +103,11 @@ export function DashboardNavigator() {
             tabBarAccessibilityLabel: translate("dashboardNavigator:requestsTab"),
             tabBarLabel: translate("dashboardNavigator:requestsTab"),
             tabBarIcon: ({ focused }) => (
-              <Icon icon="requests" color={focused ? colors.tint : colors.tintInactive} size={30} />
+              <Icon
+                icon="requests"
+                color={focused ? theme.accent500.val : theme.white100.val}
+                size={24}
+              />
             ),
           }}
         />
@@ -103,7 +118,11 @@ export function DashboardNavigator() {
           options={{
             tabBarLabel: translate("dashboardNavigator:teamsTab"),
             tabBarIcon: ({ focused }) => (
-              <Icon icon="teams" color={focused ? colors.tint : colors.tintInactive} size={30} />
+              <Icon
+                icon="teams"
+                color={focused ? theme.accent500.val : theme.white100.val}
+                size={24}
+              />
             ),
           }}
         />
