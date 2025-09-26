@@ -1,9 +1,9 @@
 import { Avatar, Card, useTheme, XStack, YStack } from "tamagui"
 
 import { BodyText } from "./BodyText"
+import { StyledIcon } from "./common/StyledIcon"
 import { HeaderText } from "./HeaderText"
 import { PressableIcon } from "./Icon"
-import { StyledIcon } from "./StyledIcon"
 
 interface TeamMemberCardProps {
   name: string
