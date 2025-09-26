@@ -93,7 +93,7 @@ type BaseIconProps = {
 }
 
 type PressableIconProps = Omit<TouchableOpacityProps, "style"> & BaseIconProps
-type IconProps = Omit<ViewProps, "style"> & BaseIconProps
+export type IconProps = Omit<ViewProps, "style"> & BaseIconProps
 
 /**
  * A component to render a registered icon.
