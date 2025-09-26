@@ -61,3 +61,6 @@ export const BottomTabs = ({ items, onTabChange }: BottomTabsProps) => {
     </XStack>
   )
 }
+
+// Use to define bottom margin for floating components (e.g. FAB)
+export const NAV_BAR_HEIGHT = 70
