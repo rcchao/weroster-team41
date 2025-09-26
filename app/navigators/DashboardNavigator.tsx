@@ -10,17 +10,17 @@ import { EpisodeProvider } from "@/context/EpisodeContext"
 import { translate } from "@/i18n/translate"
 import { DashboardHomeScreen } from "@/screens/DashboardHomeScreen"
 import { DashboardRequestsScreen } from "@/screens/DashboardRequestsScreen"
-import { DashboardTeamsScreen } from "@/screens/DashboardTeamsScreen"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
 import type { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 import { DashboardRosterScreen, RosterStackParamList } from "./RosterStackNavigator"
+import { TeamNavigator, TeamStackParamList } from "./TeamNavigator"
 
 export type DashboardTabParamList = {
   DashboardRoster: NavigatorScreenParams<RosterStackParamList>
   DashboardHome: { queryIndex?: string; itemIndex?: string }
-  DashboardTeams: undefined
+  DashboardTeams: NavigatorScreenParams<TeamStackParamList>
   DashboardRequests: undefined
 }
 
@@ -114,7 +114,7 @@ export function DashboardNavigator() {
 
         <Tab.Screen
           name="DashboardTeams"
-          component={DashboardTeamsScreen}
+          component={TeamNavigator}
           options={{
             tabBarLabel: translate("dashboardNavigator:teamsTab"),
             tabBarIcon: ({ focused }) => (

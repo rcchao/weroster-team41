@@ -9,6 +9,7 @@ import {
   ViewStyle,
 } from "react-native"
 import * as Application from "expo-application"
+import type { NativeStackScreenProps } from "@react-navigation/native-stack"
 
 import { Button } from "@/components/Button"
 import { ListItem } from "@/components/ListItem"
@@ -16,7 +17,7 @@ import { Screen } from "@/components/Screen"
 import { Text } from "@/components/Text"
 import { useAuth } from "@/context/AuthContext"
 import { isRTL } from "@/i18n"
-import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
+import type { TeamStackParamList } from "@/navigators/TeamNavigator"
 import { useAppTheme } from "@/theme/context"
 import { $styles } from "@/theme/styles"
 import type { ThemedStyle } from "@/theme/types"
@@ -31,132 +32,133 @@ function openLinkInBrowser(url: string) {
 
 const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null
 
-export const DashboardTeamsScreen: FC<DashboardTabScreenProps<"DashboardTeams">> =
-  function DashboardTeamsScreen(_props) {
-    const { setThemeContextOverride, themeContext, themed } = useAppTheme()
-    const { logout } = useAuth()
+type Props = NativeStackScreenProps<TeamStackParamList, "DashboardTeamsScreen">
 
-    // @ts-expect-error
-    const usingFabric = global.nativeFabricUIManager != null
+export const DashboardTeamsScreen: FC<Props> = function DashboardTeamsScreen(_props) {
+  const { setThemeContextOverride, themeContext, themed } = useAppTheme()
+  const { logout } = useAuth()
 
-    const demoReactotron = useMemo(
-      () => async () => {
-        if (__DEV__) {
-          console.tron.display({
-            name: "DISPLAY",
-            value: {
-              appId: Application.applicationId,
-              appName: Application.applicationName,
-              appVersion: Application.nativeApplicationVersion,
-              appBuildVersion: Application.nativeBuildVersion,
-              hermesEnabled: usingHermes,
-            },
-            important: true,
-          })
-        }
-      },
-      [],
-    )
+  // @ts-expect-error
+  const usingFabric = global.nativeFabricUIManager != null
 
-    const toggleTheme = useCallback(() => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut) // Animate the transition
-      setThemeContextOverride(themeContext === "dark" ? "light" : "dark")
-    }, [themeContext, setThemeContextOverride])
+  const demoReactotron = useMemo(
+    () => async () => {
+      if (__DEV__) {
+        console.tron.display({
+          name: "DISPLAY",
+          value: {
+            appId: Application.applicationId,
+            appName: Application.applicationName,
+            appVersion: Application.nativeApplicationVersion,
+            appBuildVersion: Application.nativeBuildVersion,
+            hermesEnabled: usingHermes,
+          },
+          important: true,
+        })
+      }
+    },
+    [],
+  )
 
-    // Resets the theme to the system theme
-    const colorScheme = useColorScheme()
-    const resetTheme = useCallback(() => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-      setThemeContextOverride(undefined)
-    }, [setThemeContextOverride])
+  const toggleTheme = useCallback(() => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut) // Animate the transition
+    setThemeContextOverride(themeContext === "dark" ? "light" : "dark")
+  }, [themeContext, setThemeContextOverride])
 
-    return (
-      <Screen
-        preset="scroll"
-        safeAreaEdges={["top"]}
-        contentContainerStyle={[$styles.container, themed($container)]}
-      >
-        <Text
-          style={themed($reportBugsLink)}
-          tx="dashboardTeamsScreen:reportBugs"
-          onPress={() => openLinkInBrowser("https://github.com/infinitered/ignite/issues")}
+  // Resets the theme to the system theme
+  const colorScheme = useColorScheme()
+  const resetTheme = useCallback(() => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+    setThemeContextOverride(undefined)
+  }, [setThemeContextOverride])
+
+  return (
+    <Screen
+      preset="scroll"
+      safeAreaEdges={["top"]}
+      contentContainerStyle={[$styles.container, themed($container)]}
+    >
+      <Text
+        style={themed($reportBugsLink)}
+        tx="dashboardTeamsScreen:reportBugs"
+        onPress={() => openLinkInBrowser("https://github.com/infinitered/ignite/issues")}
+      />
+
+      <Text style={themed($title)} preset="heading" tx="dashboardTeamsScreen:title" />
+      <Text preset="bold">Current system theme: {colorScheme}</Text>
+      <Text preset="bold">Current app theme: {themeContext}</Text>
+      <Button onPress={resetTheme} text={`Reset`} />
+
+      <View style={themed($itemsContainer)}>
+        <Button onPress={toggleTheme} text={`Toggle Theme: ${themeContext}`} />
+      </View>
+      <View style={themed($itemsContainer)}>
+        <ListItem
+          LeftComponent={
+            <View style={themed($item)}>
+              <Text preset="bold">App Id</Text>
+              <Text>{Application.applicationId}</Text>
+            </View>
+          }
         />
-
-        <Text style={themed($title)} preset="heading" tx="dashboardTeamsScreen:title" />
-        <Text preset="bold">Current system theme: {colorScheme}</Text>
-        <Text preset="bold">Current app theme: {themeContext}</Text>
-        <Button onPress={resetTheme} text={`Reset`} />
-
-        <View style={themed($itemsContainer)}>
-          <Button onPress={toggleTheme} text={`Toggle Theme: ${themeContext}`} />
-        </View>
-        <View style={themed($itemsContainer)}>
-          <ListItem
-            LeftComponent={
-              <View style={themed($item)}>
-                <Text preset="bold">App Id</Text>
-                <Text>{Application.applicationId}</Text>
-              </View>
-            }
-          />
-          <ListItem
-            LeftComponent={
-              <View style={themed($item)}>
-                <Text preset="bold">App Name</Text>
-                <Text>{Application.applicationName}</Text>
-              </View>
-            }
-          />
-          <ListItem
-            LeftComponent={
-              <View style={themed($item)}>
-                <Text preset="bold">App Version</Text>
-                <Text>{Application.nativeApplicationVersion}</Text>
-              </View>
-            }
-          />
-          <ListItem
-            LeftComponent={
-              <View style={themed($item)}>
-                <Text preset="bold">App Build Version</Text>
-                <Text>{Application.nativeBuildVersion}</Text>
-              </View>
-            }
-          />
-          <ListItem
-            LeftComponent={
-              <View style={themed($item)}>
-                <Text preset="bold">Hermes Enabled</Text>
-                <Text>{String(usingHermes)}</Text>
-              </View>
-            }
-          />
-          <ListItem
-            LeftComponent={
-              <View style={themed($item)}>
-                <Text preset="bold">Fabric Enabled</Text>
-                <Text>{String(usingFabric)}</Text>
-              </View>
-            }
-          />
-        </View>
-        <View style={themed($buttonContainer)}>
-          <Button
-            style={themed($button)}
-            tx="dashboardTeamsScreen:reactotron"
-            onPress={demoReactotron}
-          />
-          <Text
-            style={themed($hint)}
-            tx={`dashboardTeamsScreen:${Platform.OS}ReactotronHint` as const}
-          />
-        </View>
-        <View style={themed($buttonContainer)}>
-          <Button style={themed($button)} tx="common:logOut" onPress={logout} />
-        </View>
-      </Screen>
-    )
-  }
+        <ListItem
+          LeftComponent={
+            <View style={themed($item)}>
+              <Text preset="bold">App Name</Text>
+              <Text>{Application.applicationName}</Text>
+            </View>
+          }
+        />
+        <ListItem
+          LeftComponent={
+            <View style={themed($item)}>
+              <Text preset="bold">App Version</Text>
+              <Text>{Application.nativeApplicationVersion}</Text>
+            </View>
+          }
+        />
+        <ListItem
+          LeftComponent={
+            <View style={themed($item)}>
+              <Text preset="bold">App Build Version</Text>
+              <Text>{Application.nativeBuildVersion}</Text>
+            </View>
+          }
+        />
+        <ListItem
+          LeftComponent={
+            <View style={themed($item)}>
+              <Text preset="bold">Hermes Enabled</Text>
+              <Text>{String(usingHermes)}</Text>
+            </View>
+          }
+        />
+        <ListItem
+          LeftComponent={
+            <View style={themed($item)}>
+              <Text preset="bold">Fabric Enabled</Text>
+              <Text>{String(usingFabric)}</Text>
+            </View>
+          }
+        />
+      </View>
+      <View style={themed($buttonContainer)}>
+        <Button
+          style={themed($button)}
+          tx="dashboardTeamsScreen:reactotron"
+          onPress={demoReactotron}
+        />
+        <Text
+          style={themed($hint)}
+          tx={`dashboardTeamsScreen:${Platform.OS}ReactotronHint` as const}
+        />
+      </View>
+      <View style={themed($buttonContainer)}>
+        <Button style={themed($button)} tx="common:logOut" onPress={logout} />
+      </View>
+    </Screen>
+  )
+}
 
 const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingBottom: spacing.xxl,
