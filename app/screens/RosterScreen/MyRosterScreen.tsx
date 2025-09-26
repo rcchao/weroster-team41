@@ -23,7 +23,7 @@ export function MyRosterScreen(_props: Props) {
 
   const accordionSections = [
     {
-      sectionText: format(today, "EEEE, MMM d"),
+      sectionText: format(today, "EEE, d MMM"),
       isCurrent: true,
       children: (
         <YStack padding={16} backgroundColor={themes.white100.val}>
@@ -32,7 +32,7 @@ export function MyRosterScreen(_props: Props) {
       ),
     },
     {
-      sectionText: format(tomorrow, "EEEE, MMM d"),
+      sectionText: format(tomorrow, "EEE, d MMM"),
       isCurrent: false,
       children: (
         <YStack padding={16} backgroundColor={themes.white100.val}>

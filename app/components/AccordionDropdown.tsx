@@ -56,7 +56,7 @@ const AccordionDropdown = ({ sections }: Props) => {
                 </View>
               </Accordion.Trigger>
             </Accordion.Header>
-            <Accordion.HeightAnimator animation="medium">
+            <Accordion.HeightAnimator>
               <Accordion.Content>{section.children}</Accordion.Content>
             </Accordion.HeightAnimator>
           </Accordion.Item>
