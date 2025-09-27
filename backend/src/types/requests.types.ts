@@ -9,3 +9,18 @@ export type Leave = Prisma.LeaveGetPayload<{
     leaveType: true
   }
 }>
+
+export type Assignment = Prisma.AssignmentRequestGetPayload<{
+  select: {
+    id: true
+    event_id: true
+    status: true
+    event: {
+      select: {
+        id: true
+        start_time: true
+        end_time: true
+      }
+    }
+  }
+}>
