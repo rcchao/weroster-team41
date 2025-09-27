@@ -197,13 +197,11 @@ model Leave {
 
   // Foreign keys
   user_id       Int?
-  leave_type_id Int?
 
   // Relations
   user User? @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_1")
 
   // Indexes
-  @@index([leave_type_id], map: "leave_type_id")
   @@index([user_id], map: "user_id")
 }
 
