@@ -26,7 +26,7 @@ router.get("/dashboard-preferences", authenticate, async (req, res) => {
     })
   } catch (error: any) {
     const status =
-      error.message === "Dashboard Settings not found"
+      error.message === "Dashboard Settings not found" //todo: change this to be consistent
         ? HttpStatus.NOT_FOUND
         : HttpStatus.INTERNAL_SERVER_ERROR
 
