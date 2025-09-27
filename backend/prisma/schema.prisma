@@ -196,30 +196,32 @@ model User {
 }
 
 model DashboardPreference {
-  id     Int  @id @default(autoincrement())
-  userId Int  @unique
-  user   User @relation(fields: [userId], references: [id])
+  id      Int  @id @default(autoincrement())
+  user_id Int  @unique
+  user    User @relation(fields: [user_id], references: [id])
 
-  whosOnDuty     Boolean @default(true)
-  upcomingShifts Boolean @default(true)
-  upcomingLeaves Boolean @default(true)
-  openShifts     Boolean @default(true)
-  teamRoster     Boolean @default(true)
+  whos_on_duty    Boolean @default(true)
+  upcoming_shifts Boolean @default(true)
+  upcoming_leaves Boolean @default(true)
+  open_shifts     Boolean @default(true)
+  team_roster     Boolean @default(true)
+
+  @@index([user_id], map: "user_id")
 }
 
 model SavedFilters {
   id   Int     @id @default(autoincrement())
   name String? @db.VarChar(255)
 
-  userId     Int
-  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user_id    Int
+  user       User       @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   filterType FilterType
 
   sessions     Json? // Store as ["AM", "PM"]
   locations    Json? // Store as ["PMC", "TSC Campus", "Clinical Support"]
   designations Json? // Store as ["Nurse", "Doctor", "Surgeon"]
 
-  @@index([userId], map: "userId_idx")
+  @@index([user_id], map: "user_id")
 }
 
 model Swap {

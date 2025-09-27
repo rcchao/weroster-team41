@@ -6,7 +6,7 @@ export class SettingsService {
 
   async getDashboardPreferences(userId: number): Promise<DashboardPreferences> {
     const dashboardPreferences = await this.prisma.dashboardPreference.findUnique({
-      where: { userId: userId },
+      where: { user_id: userId },
     })
 
     if (!dashboardPreferences) {
