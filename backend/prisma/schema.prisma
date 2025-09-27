@@ -18,7 +18,6 @@ enum Session {
   AM
   PM
   AH
-  OC
 }
 
 enum FilterType {
@@ -133,7 +132,8 @@ model Event {
   // Scalar fields
   start_time DateTime? @db.DateTime(0)
   end_time   DateTime? @db.DateTime(0)
-  session    Session?
+  on_call    Boolean   @default(false)
+  // Note: session field removed - now using many-to-many relation
 
   // Foreign keys
   activity_id Int?
@@ -145,6 +145,7 @@ model Event {
   assignmentRequests AssignmentRequest[]
   eventAssignments   EventAssignment[]
   Swap               Swap[]              @relation(map: "Swap_ibfk_3")
+  eventSessions      EventSession[]      // New relation for many-to-many
 
   // Indexes
   @@index([activity_id], map: "activity_id")
@@ -169,6 +170,22 @@ model EventAssignment {
   @@index([designation_id], map: "designation_id")
   @@index([event_id], map: "event_id")
   @@index([user_id], map: "user_id")
+}
+
+model EventSession {
+  // Primary key
+  id Int @id @default(autoincrement())
+  
+  // Foreign keys
+  event_id Int
+  session  Session
+  
+  // Relations
+  event Event @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  
+  // Indexes
+  @@unique([event_id, session]) // Prevent duplicate sessions for same event
+  @@index([event_id])
 }
 
 model Hospital {
