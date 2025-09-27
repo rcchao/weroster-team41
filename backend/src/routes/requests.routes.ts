@@ -55,4 +55,29 @@ router.get("/assignment", authenticate, async (req, res) => {
   return
 })
 
+router.get("/swap", authenticate, async (req, res) => {
+  try {
+    const service = new RequestsService(req.app.locals.prisma)
+
+    if (!req.userId) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        error: "User not authenticated",
+      })
+    }
+
+    const swapRequest = await service.getSwapRequest(req.userId)
+    res.json({
+      success: true,
+      data: swapRequest,
+    })
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: error.message,
+    })
+  }
+  return
+})
+
 export default router

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { Leave, Assignment } from "../../../backend/src/types/requests.types"
+import { Leave, Assignment, Swap } from "../../../backend/src/types/requests.types"
 
 export class RequestsService {
   constructor(private prisma: PrismaClient) {}
@@ -25,6 +25,28 @@ export class RequestsService {
       select: {
         id: true,
         status: true,
+        event: {
+          select: {
+            id: true,
+            start_time: true,
+            end_time: true,
+          },
+        },
+      },
+    })
+
+    return assignmentRequests
+  }
+
+  async getSwapRequest(user_id: number): Promise<Swap[]> {
+    const assignmentRequests = await this.prisma.swap.findMany({
+      where: { from_user: user_id },
+      select: {
+        id: true,
+        message: true,
+        status: true,
+        from_user: true,
+        to_user: true,
         event: {
           select: {
             id: true,

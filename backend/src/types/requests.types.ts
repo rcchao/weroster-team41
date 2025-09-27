@@ -23,3 +23,20 @@ export type Assignment = Prisma.AssignmentRequestGetPayload<{
     }
   }
 }>
+
+export type Swap = Prisma.SwapGetPayload<{
+  select: {
+    id: true
+    message: true
+    status: true
+    from_user: true
+    to_user: true
+    event: {
+      select: {
+        id: true
+        start_time: true
+        end_time: true
+      }
+    }
+  }
+}>
