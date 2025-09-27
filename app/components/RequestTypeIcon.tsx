@@ -2,14 +2,14 @@ import { Group, useTheme } from "tamagui"
 
 import { Icon, IconTypes } from "./Icon"
 
-const REQUEST_TYPE_ICON_MAP: Record<string, IconTypes> = {
+export const REQUEST_TYPE_ICON_MAP: Record<string, IconTypes> = {
   leave: "leave",
   swap: "swap",
   openShift: "openShift",
   default: "meh",
 }
 
-const REQUEST_TYPE_COLOR_MAP: Record<string, string> = {
+export const REQUEST_TYPE_COLOR_MAP: Record<string, string> = {
   leave: "secondary400",
   swap: "yellow400",
   openShift: "green500",
@@ -30,6 +30,7 @@ export const RequestTypeIcon = ({ requestType }: RequestTypeIconProps) => {
 
   return (
     <Group
+      testID="request-type-icon-container"
       width={74}
       height={74}
       bg={bgColor}
@@ -38,7 +39,7 @@ export const RequestTypeIcon = ({ requestType }: RequestTypeIconProps) => {
       justifyContent="center"
     >
       <Group.Item>
-        <Icon icon={icon} color={iconColor} size={24} />
+        <Icon testID={`request-type-icon-${requestType}`} icon={icon} color={iconColor} size={24} />
       </Group.Item>
     </Group>
   )
