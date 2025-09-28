@@ -22,7 +22,6 @@ export const BottomTabs = ({ items, onTabChange }: BottomTabsProps) => {
   const { bottom } = useSafeAreaInsets()
   return (
     <XStack
-      position="absolute"
       bottom={0}
       left={0}
       right={0}
@@ -61,6 +60,3 @@ export const BottomTabs = ({ items, onTabChange }: BottomTabsProps) => {
     </XStack>
   )
 }
-
-// Use to define bottom margin for floating components (e.g. FAB)
-export const NAV_BAR_HEIGHT = 70

@@ -1,7 +1,6 @@
 import { ViewStyle } from "react-native"
 import { TextStyle } from "react-native"
 
-import { NAV_BAR_HEIGHT } from "@/components/BottomTabs"
 import tamaguiConfig from "@/tamagui.config"
 
 import { spacing } from "./spacing"
@@ -52,7 +51,7 @@ export const $fabButton: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   backgroundColor: colors.palette.neutral100,
   borderRadius: tamaguiConfig.tokens.radius[7].val,
   borderWidth: 0,
-  bottom: spacing.md + NAV_BAR_HEIGHT + 25,
+  bottom: spacing.md,
   elevation: 5,
   height: 52,
   justifyContent: "center",
