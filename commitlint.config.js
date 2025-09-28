@@ -12,7 +12,7 @@ module.exports = {
         "dashboard",
         "my-roster",
         "team-roster",
-        "leave-requests",
+        "requests",
         "view-team",
         "profile",
         "notifications",
