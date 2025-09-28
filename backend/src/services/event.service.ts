@@ -61,4 +61,40 @@ export class EventService {
       numUsers: shift.eventAssignments.length,
     }))
   }
+
+  async getShift(shiftId: number): Promise<ShiftWithNumUsers | null> {
+    const shift = await this.prisma.event.findUnique({
+      where: { id: shiftId },
+      select: {
+        id: true,
+        start_time: true,
+        end_time: true,
+        on_call: true,
+        activity: true,
+        location: true,
+        eventAssignments: {
+          select: {
+            id: true,
+            user: {
+              select: {
+                id: true,
+                first_name: true,
+                last_name: true,
+              },
+            },
+            designation: true,
+          },
+        },
+      },
+    })
+
+    if (!shift) {
+      return null
+    }
+
+    return {
+      ...shift,
+      numUsers: shift.eventAssignments.length,
+    }
+  }
 }

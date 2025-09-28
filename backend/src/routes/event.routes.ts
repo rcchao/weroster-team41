@@ -43,4 +43,35 @@ router.get("/my-shifts", authenticate, async (req, res) => {
   return
 })
 
+router.get("/:shiftId", authenticate, async (req, res) => {
+  try {
+    const service = new EventService(req.app.locals.prisma)
+    const shiftId = Number(req.params.shiftId)
+
+    if (!Number.isInteger(shiftId)) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        error: "Invalid shift ID",
+      })
+    }
+
+    const shift = await service.getShift(shiftId)
+
+    if (!shift) {
+      return res.status(HttpStatus.NOT_FOUND).json({
+        success: false,
+        error: "Shift not found",
+      })
+    }
+
+    res.json({
+      success: true,
+      data: shift,
+    })
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: error.message })
+  }
+  return
+})
+
 export default router
