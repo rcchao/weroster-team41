@@ -2,6 +2,7 @@ import { Router } from "express"
 
 import { HttpStatus } from "../constants/httpResponse"
 import { EventService } from "../services/event.service"
+import { authenticate } from "../middleware/auth.middleware"
 
 const router = Router()
 
@@ -18,14 +19,28 @@ router.post("/", async (req, res) => {
 })
 
 // Get = Retrieve events for a specific activity at the endpoint /api/events/activity/:activityId/events
-router.get("/activity/:activityId/events", async (req, res) => {
+router.get("/my-shifts", authenticate, async (req, res) => {
   try {
     const service = new EventService(req.app.locals.prisma)
-    const events = await service.getActivityEvents(req.params.activityId)
-    res.json(events)
+
+    // Ensure user is authenticated
+    if (!req.userId) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        error: "User not authenticated",
+      })
+    }
+
+    const shifts = await service.getMyShifts(req.userId)
+
+    res.json({
+      success: true,
+      data: shifts,
+    })
   } catch (error: any) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: error.message })
   }
+  return
 })
 
 export default router
