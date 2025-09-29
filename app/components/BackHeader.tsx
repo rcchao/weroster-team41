@@ -40,8 +40,8 @@ const BackHeader = ({ navigation, title, onSavePress }: BackHeaderProps) => {
   return (
     <BaseTopBar>
       <XStack alignItems="center" gap="$4">
-        <Pressable onPress={() => navigation.goBack()}>
-          <Icon color={theme.white100.val} icon="left" />
+        <Pressable testID="back-button" onPress={() => navigation.goBack()}>
+          <Icon testID="back-icon" color={theme.white100.val} icon="left" />
         </Pressable>
         <HeaderText variant="h2" color={theme.white100.val}>
           {title}
@@ -50,6 +50,7 @@ const BackHeader = ({ navigation, title, onSavePress }: BackHeaderProps) => {
 
       {onSavePress && (
         <Pressable
+          testID="save-button"
           onPress={handleSavePress}
           disabled={isSaving}
           style={({ pressed }) => ({
