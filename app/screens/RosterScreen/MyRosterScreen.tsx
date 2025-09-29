@@ -50,7 +50,8 @@ export function MyRosterScreen(_props: Props) {
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.barContainer}>
-      <RosterCalendar />
+      <RosterCalendar events={events ?? []} />
+
       <HeaderText>My Roster</HeaderText>
 
       <View>
