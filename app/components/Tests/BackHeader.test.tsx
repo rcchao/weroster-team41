@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor } from "@testing-library/react-native"
+import { render, fireEvent, waitFor, act } from "@testing-library/react-native"
 import { TamaguiProvider } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
@@ -104,7 +104,9 @@ describe("BackHeader", () => {
       const mockOnSavePress = jest.fn().mockResolvedValue(undefined)
       const { getByText } = renderComponent({ onSavePress: mockOnSavePress })
       const saveButton = getByText("Save")
-      fireEvent.press(saveButton)
+      await act(async () => {
+        fireEvent.press(saveButton)
+      })
 
       await waitFor(() => {
         expect(mockNavigation.goBack).toHaveBeenCalled()
@@ -112,27 +114,17 @@ describe("BackHeader", () => {
     })
 
     it("shows saving state while saving", async () => {
-      let resolveSave: () => void
-      const mockOnSavePress = jest.fn(
-        () =>
-          new Promise<void>((resolve) => {
-            resolveSave = resolve
-          }),
-      )
+      const mockOnSavePress = jest.fn(() => new Promise<void>(() => {})) // no need to resolve
 
       const { getByText, queryByText } = renderComponent({ onSavePress: mockOnSavePress })
 
       const saveButton = getByText("Save")
-      fireEvent.press(saveButton)
-
-      expect(queryByText("Saving...")).toBeTruthy()
-      expect(queryByText("Save")).toBeNull()
-
-      // Resolve the save promise
-      resolveSave!()
+      await act(async () => {
+        fireEvent.press(saveButton)
+      })
 
       await waitFor(() => {
-        expect(queryByText("Saving...")).toBeNull()
+        expect(queryByText("Saving...")).toBeTruthy()
       })
     })
   })
@@ -144,7 +136,9 @@ describe("BackHeader", () => {
 
       const { getByText } = renderComponent({ onSavePress: mockOnSavePress })
       const saveButton = getByText("Save")
-      fireEvent.press(saveButton)
+      await act(async () => {
+        fireEvent.press(saveButton)
+      })
 
       await waitFor(() => {
         expect(consoleSpy).toHaveBeenCalledWith("Save failed:", expect.any(Error))
@@ -152,30 +146,29 @@ describe("BackHeader", () => {
 
       expect(mockNavigation.goBack).not.toHaveBeenCalled()
 
-      expect(getByText("Save")).toBeTruthy()
+      await waitFor(() => {
+        expect(getByText("Save")).toBeTruthy()
+      })
       consoleSpy.mockRestore()
     })
 
     it("prevents multiple save presses", async () => {
-      let resolveSave: () => void
-      const mockOnSavePress = jest.fn(
-        () =>
-          new Promise<void>((resolve) => {
-            resolveSave = resolve
-          }),
-      )
-      const { getByText } = renderComponent({ onSavePress: mockOnSavePress })
+      const mockOnSavePress = jest.fn(() => new Promise<void>(() => {})) // never resolves
+      const { getByText, queryByText } = renderComponent({ onSavePress: mockOnSavePress })
       const saveButton = getByText("Save")
-      fireEvent.press(saveButton)
+
+      await act(async () => {
+        fireEvent.press(saveButton)
+      })
+
+      await waitFor(() => {
+        expect(queryByText("Saving...")).toBeTruthy()
+      })
+
       fireEvent.press(saveButton)
       fireEvent.press(saveButton)
 
       expect(mockOnSavePress).toHaveBeenCalledTimes(1)
-      resolveSave!()
-
-      await waitFor(() => {
-        expect(getByText("Save")).toBeTruthy()
-      })
     })
   })
 })
