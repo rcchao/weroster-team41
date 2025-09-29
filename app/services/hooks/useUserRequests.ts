@@ -23,13 +23,28 @@ export const useUserRequests = () => {
         )
       }
 
+      // Unnest assignments and swap requests
+      const assignments = assignmentRes.data?.map(({ event, ...rest }) => ({
+        ...rest,
+        event_id: event?.id,
+        start_date: event?.start_time,
+        end_date: event?.end_time,
+      }))
+
+      const swaps = swapRes.data?.map(({ event, ...rest }) => ({
+        ...rest,
+        event_id: event?.id,
+        start_date: event?.start_time,
+        end_date: event?.end_time,
+      }))
+
       return {
         leave: leaveRes.data,
-        assignment: assignmentRes.data,
-        swap: swapRes.data,
+        assignment: assignments,
+        swap: swaps,
       }
     },
-    refetchOnMount: false,
+    refetchOnMount: true,
   })
 
   return { userRequests, error, isPending, isFetching }
