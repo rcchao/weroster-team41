@@ -19,15 +19,8 @@ export const TeamMemberCard = (props: TeamMemberCardProps) => {
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>()
 
   const goToUser = () => {
-    const { userId } = props
-    if (userId == null) return
-    navigation.navigate("Dashboard", {
-      screen: "DashboardTeams",
-      params: {
-        screen: "TeamDetails",
-        params: { userId },
-      },
-    })
+    if (!props.userId) return
+    navigation.navigate("TeamDetails", { userId: props.userId })
   }
 
   return (

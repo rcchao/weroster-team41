@@ -4,12 +4,12 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { BackHeader } from "@/components/BackHeader"
 import { BodyText } from "@/components/BodyText"
 import { Screen } from "@/components/Screen"
-import { TeamStackParamList } from "@/navigators/TeamNavigator"
+import type { AppStackParamList } from "@/navigators/AppNavigator"
 import { useAppTheme } from "@/theme/context"
 import { $container, $styles } from "@/theme/styles"
 
-type TeamDetailsRoute = RouteProp<TeamStackParamList, "TeamDetails">
-type DashboardTeamsNav = NativeStackNavigationProp<TeamStackParamList, "TeamDetails">
+type TeamDetailsRoute = RouteProp<AppStackParamList, "TeamDetails">
+type TeamDetailsNav = NativeStackNavigationProp<AppStackParamList, "TeamDetails">
 
 export const TeamDetailsScreen = () => {
   const { themed } = useAppTheme()
@@ -18,7 +18,7 @@ export const TeamDetailsScreen = () => {
     params: { userId },
   } = useRoute<TeamDetailsRoute>()
 
-  const navigation = useNavigation<DashboardTeamsNav>()
+  const navigation = useNavigation<TeamDetailsNav>()
 
   return (
     <Screen
