@@ -90,7 +90,7 @@ export const RosterCalendar = ({ events }: RosterCalendarProps) => {
               {item.name}
               {item.location ? ` · ${item.location}` : ""}
             </Text>
-            <Text>{item.numUsers} others working</Text>
+            <Text>{item.numUsers - 1} others working</Text>
           </View>
         )}
         ListEmptyComponent={
