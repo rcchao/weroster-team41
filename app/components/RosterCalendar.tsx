@@ -1,19 +1,19 @@
 import { useMemo, useState } from "react"
-import { format, parseISO, toDate } from "date-fns"
+import { format, parseISO } from "date-fns"
 import { AgendaList, CalendarProvider, ExpandableCalendar } from "react-native-calendars"
 import { View, Text } from "tamagui"
 
 import { ShiftWithNumUsers } from "backend/src/types/event.types"
 
 interface RosterCalendarProps {
-  events: ShiftWithNumUsers[] | undefined
+  events: ShiftWithNumUsers[]
 }
 
 type AgendaItem = {
   id: string
   name: string
   timeRange: string
-  location?: string | null
+  location: string
   start: Date
   numUsers: number
 }
@@ -24,40 +24,37 @@ type AgendaSection = {
 }
 
 // Group the events by day
-function buildAgendaSections(data: ShiftWithNumUsers[] | undefined) {
-  const safe = Array.isArray(data) ? data : []
-  const byDate: Record<string, AgendaItem[]> = {}
+function buildAgendaSections(shifts: ShiftWithNumUsers[]) {
+  // Store agenda sections to be displayed in the calendar.
+  const sections: AgendaSection[] = []
 
-  for (const ev of safe) {
-    const start = toDate(ev.start_time as any)
-    const end = toDate(ev.end_time as any)
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) continue // skip bad rows
+  // Store calendar markings to show on the calendar.
+  const marked: Record<string, any> = {}
+
+  for (const shift of shifts) {
+    const start = shift.start_time
+    const end = shift.end_time
 
     const dateKey = format(start, "yyyy-MM-dd")
 
     const item: AgendaItem = {
-      id: String(ev.id),
-      name: ev.activity?.name ?? "Shift",
+      id: String(shift.id),
+      name: shift.activity?.name ?? "Shift",
       timeRange: `${format(start, "h:mm a")} – ${format(end, "h:mm a")}`,
-      location: ev.location?.name ?? null,
+      location: shift.location.name,
       start,
-      numUsers: (ev as any).numUsers ?? 0,
+      numUsers: shift.numUsers,
     }
 
-    if (!byDate[dateKey]) byDate[dateKey] = []
-    byDate[dateKey].push(item)
+    const lastSection = sections[sections.length - 1]
+    if (lastSection && lastSection.title === dateKey) {
+      lastSection.data.push(item)
+    } else {
+      sections.push({ title: dateKey, data: [item] })
+    }
+
+    marked[dateKey] = { marked: true }
   }
-
-  const sections: AgendaSection[] = Object.entries(byDate)
-    .sort(([a], [b]) => (a < b ? -1 : 1)) // Sort dates in chronological order
-    .map(([dateKey, items]) => ({
-      title: dateKey,
-      data: items.sort((a, b) => a.start.getTime() - b.start.getTime()),
-    }))
-
-  // Build calendar markings to show on the calendar.
-  const marked: Record<string, any> = {}
-  for (const dateKey of Object.keys(byDate)) marked[dateKey] = { marked: true }
 
   return { sections, marked }
 }
@@ -76,6 +73,7 @@ export const RosterCalendar = ({ events }: RosterCalendarProps) => {
     }),
     [marked, selected],
   )
+
   return (
     <CalendarProvider date={selected} onDateChanged={setSelected} showTodayButton>
       <ExpandableCalendar firstDay={1} markedDates={markedDates} allowShadow />
