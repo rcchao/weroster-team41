@@ -2,7 +2,6 @@ import { FC } from "react"
 import { YStack } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
-import { BodyText } from "@/components/BodyText"
 import { ProfileInfoCard } from "@/components/ProfileInfoCard"
 import { Screen } from "@/components/Screen"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
@@ -23,8 +22,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
       <BackHeader navigation={navigation} title="Profile" onSavePress={handleSavePress} />
-      <BodyText variant="body4">{profile ? JSON.stringify(profile) : "Loading..."}</BodyText>
-      <YStack justifyContent="center" alignItems="center">
+      <YStack justifyContent="center" alignItems="center" margin={20} marginBlockStart={40}>
         <ProfileInfoCard profile={profile} />
       </YStack>
     </Screen>

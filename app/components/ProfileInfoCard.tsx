@@ -1,10 +1,11 @@
-import { Avatar, Card, XStack, YStack } from "tamagui"
+import { Avatar, Card, Separator, XStack, YStack } from "tamagui"
 
 import { ProfileData } from "backend/src/types/auth.types"
 
 import { BodyText } from "./BodyText"
 import { HeaderText } from "./HeaderText"
-import { Icon } from "./Icon"
+import { PressableIcon } from "./Icon"
+import { InfoSection } from "./InfoSection"
 
 interface ProfileInfoCardProps {
   profile: ProfileData | undefined
@@ -35,7 +36,7 @@ export const ProfileInfoCard = ({ profile }: ProfileInfoCardProps) => {
       backgroundColor="$white500"
       borderColor="$mono200"
       borderWidth="$0.5"
-      width="90%"
+      width="100%"
       padding="$4"
       elevation={4}
       shadowColor="$mono900"
@@ -60,13 +61,22 @@ export const ProfileInfoCard = ({ profile }: ProfileInfoCardProps) => {
               <HeaderText variant="h2" numberOfLines={1} ellipsizeMode="tail">
                 {displayName}
               </HeaderText>
-              <Icon icon="edit" size={22} />
+              <PressableIcon icon="edit" size={22} />
             </XStack>
             <BodyText variant="body2" color="$mono500">
               {profile?.role}
             </BodyText>
           </YStack>
         </XStack>
+        <YStack marginBlockStart={30} justifyContent="space-between" gap={10}>
+          <InfoSection infoType="phone" info={profile?.phone} canCopy={true} />
+          <Separator borderColor="$mono300" />
+          <InfoSection infoType="email" info={profile?.email} canCopy={true} />
+          <Separator borderColor="$mono300" />
+          <InfoSection infoType="preference" />
+          <Separator borderColor="$mono300" />
+          <InfoSection infoType="accreditation" />
+        </YStack>
       </YStack>
     </Card>
   )
