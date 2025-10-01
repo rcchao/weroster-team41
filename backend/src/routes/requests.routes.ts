@@ -16,7 +16,10 @@ router.get("/leave", authenticate, async (req, res) => {
       })
     }
 
-    const leaveRequests = await service.getLeaveRequests(req.userId)
+    const month = parseInt(req.query.month as string)
+    const year = parseInt(req.query.year as string)
+
+    const leaveRequests = await service.getLeaveRequests(req.userId, month, year)
     res.json({
       success: true,
       data: leaveRequests,
@@ -41,7 +44,10 @@ router.get("/assignment", authenticate, async (req, res) => {
       })
     }
 
-    const assignmentRequests = await service.getAssignmentRequests(req.userId)
+    const month = parseInt(req.query.month as string)
+    const year = parseInt(req.query.year as string)
+
+    const assignmentRequests = await service.getAssignmentRequests(req.userId, month, year)
     res.json({
       success: true,
       data: assignmentRequests,
@@ -66,7 +72,10 @@ router.get("/swap", authenticate, async (req, res) => {
       })
     }
 
-    const swapRequest = await service.getSwapRequest(req.userId)
+    const month = parseInt(req.query.month as string)
+    const year = parseInt(req.query.year as string)
+
+    const swapRequest = await service.getSwapRequest(req.userId, month, year)
     res.json({
       success: true,
       data: swapRequest,
