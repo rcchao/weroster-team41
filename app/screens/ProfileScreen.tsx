@@ -1,7 +1,8 @@
 import { FC } from "react"
-import { YStack } from "tamagui"
+import { Spinner, YStack } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
+import { BodyText } from "@/components/BodyText"
 import { ProfileInfoCard } from "@/components/ProfileInfoCard"
 import { Screen } from "@/components/Screen"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
@@ -12,8 +13,9 @@ interface ProfileScreenProps extends AppStackScreenProps<"ProfileScreen"> {}
 
 export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_props) {
   const { navigation } = _props
-  // Should consider what to render when profile is undefined here
-  const { profile } = useProfile()
+  const { profile, error, isFetching, isPending } = useProfile()
+
+  const isLoading = isPending || isFetching
 
   const handleSavePress = async () => {
     await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -22,6 +24,24 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
       <BackHeader navigation={navigation} title="Profile" onSavePress={handleSavePress} />
+      {isLoading && (
+        <YStack alignItems="center" justifyContent="center" py="$6" gap="$3">
+          <Spinner size="large" />
+          <BodyText variant="body" opacity={0.7}>
+            Loading your profile...
+          </BodyText>
+        </YStack>
+      )}
+
+      {!isLoading && error && (
+        <YStack px="$3" py="$4">
+          <BodyText variant="body">Couldn’t load your profile</BodyText>
+          <BodyText variant="body2" opacity={0.7}>
+            {error instanceof Error ? error.message : "Please try again."}
+          </BodyText>
+        </YStack>
+      )}
+
       <YStack justifyContent="center" alignItems="center" margin={20} marginBlockStart={40}>
         <ProfileInfoCard profile={profile} />
       </YStack>
