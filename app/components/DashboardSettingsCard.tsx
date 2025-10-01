@@ -31,6 +31,7 @@ export const DashboardSettingsCard: FC<DashboardSettingsCardProps> = ({
   return (
     <XStack style={themed($dashboardCard)}>
       <Checkbox
+        testID="checkbox"
         style={themed($checkbox)}
         checked={checked}
         onCheckedChange={(state) => onToggle(state === true)}
