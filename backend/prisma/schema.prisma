@@ -77,15 +77,15 @@ model AssignmentRequest {
   id Int @id
 
   // Scalar fields
-  status RequestStatus? @default(AWAITING)
+  status RequestStatus @default(AWAITING)
 
   // Foreign keys
-  user_id  Int?
-  event_id Int?
+  user_id  Int
+  event_id Int
 
   // Relations
-  user  User?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_1")
-  event Event? @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_2")
+  user  User  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_1")
+  event Event @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_2")
 
   // Indexes
   @@index([event_id], map: "event_id")
@@ -117,7 +117,7 @@ model Designation {
   id Int @id
 
   // Scalar fields
-  title       String? @db.VarChar(255)
+  title       String  @db.VarChar(255)
   description String? @db.VarChar(255)
 
   // Relations
@@ -130,9 +130,9 @@ model Event {
   id Int @id
 
   // Scalar fields
-  start_time DateTime? @db.DateTime(0)
-  end_time   DateTime? @db.DateTime(0)
-  on_call    Boolean   @default(false)
+  start_time DateTime @db.DateTime(0)
+  end_time   DateTime @db.DateTime(0)
+  on_call    Boolean  @default(false)
   // Note: session field removed - now using many-to-many relation
 
   // Foreign keys
@@ -145,7 +145,7 @@ model Event {
   assignmentRequests AssignmentRequest[]
   eventAssignments   EventAssignment[]
   Swap               Swap[]              @relation(map: "Swap_ibfk_3")
-  eventSessions      EventSession[]      // New relation for many-to-many
+  eventSessions      EventSession[] // New relation for many-to-many
 
   // Indexes
   @@index([activity_id], map: "activity_id")
@@ -157,13 +157,13 @@ model EventAssignment {
   id Int @id
 
   // Foreign keys
-  event_id       Int?
-  user_id        Int?
+  event_id       Int
+  user_id        Int
   designation_id Int?
 
   // Relations
-  event       Event?       @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "EventAssignment_ibfk_1")
-  user        User?        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "EventAssignment_ibfk_2")
+  event       Event        @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "EventAssignment_ibfk_1")
+  user        User         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "EventAssignment_ibfk_2")
   designation Designation? @relation(fields: [designation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "EventAssignment_ibfk_3")
 
   // Indexes
@@ -175,14 +175,14 @@ model EventAssignment {
 model EventSession {
   // Primary key
   id Int @id @default(autoincrement())
-  
+
   // Foreign keys
   event_id Int
   session  Session
-  
+
   // Relations
   event Event @relation(fields: [event_id], references: [id], onDelete: Cascade)
-  
+
   // Indexes
   @@unique([event_id, session]) // Prevent duplicate sessions for same event
   @@index([event_id])
@@ -193,7 +193,7 @@ model Hospital {
   id Int @id
 
   // Scalar fields
-  name    String? @db.VarChar(255)
+  name    String  @db.VarChar(255)
   address String? @db.VarChar(255)
 
   // Relations
@@ -207,16 +207,16 @@ model Leave {
   id Int @id
 
   // Scalar fields
-  start_date DateTime?      @db.DateTime(0)
-  end_date   DateTime?      @db.DateTime(0)
-  status     RequestStatus? @default(AWAITING)
-  leaveType  LeaveType?     @default(ANNUAL)
+  start_date DateTime      @db.DateTime(0)
+  end_date   DateTime      @db.DateTime(0)
+  status     RequestStatus @default(AWAITING)
+  leaveType  LeaveType     @default(ANNUAL)
 
   // Foreign keys
-  user_id       Int?
+  user_id Int
 
   // Relations
-  user User? @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_1")
+  user User @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_1")
 
   // Indexes
   @@index([user_id], map: "user_id")
@@ -227,13 +227,13 @@ model Location {
   id Int @id
 
   // Scalar fields
-  name String? @db.VarChar(255)
+  name String @db.VarChar(255)
 
   // Foreign keys
-  campus_id Int?
+  campus_id Int
 
   // Relations
-  campus     Campus?    @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Location_ibfk_1")
+  campus     Campus     @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Location_ibfk_1")
   activities Activity[]
   events     Event[]
 
@@ -266,7 +266,7 @@ model User {
   id Int @id @default(autoincrement())
 
   // Scalar fields
-  first_name String?     @db.VarChar(255)
+  first_name String      @db.VarChar(255)
   last_name  String?     @db.VarChar(255)
   email      String      @unique @db.VarChar(255)
   password   String      @db.VarChar(255)
@@ -277,12 +277,12 @@ model User {
   // Foreign keys
   designation_id Int?
   campus_id      Int?
-  hospital_id    Int?
+  hospital_id    Int
 
   // Relations
   designation         Designation?         @relation(fields: [designation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_1")
   campus              Campus?              @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_2")
-  hospital            Hospital?            @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_3")
+  hospital            Hospital             @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_3")
   assignmentRequests  AssignmentRequest[]
   eventAssignments    EventAssignment[]
   leaves              Leave[]
@@ -344,18 +344,18 @@ model Swap {
   id Int @id @default(autoincrement())
 
   // Scalar fields
-  message String?        @db.VarChar(255)
-  status  RequestStatus? @default(AWAITING)
+  message String?       @db.VarChar(255)
+  status  RequestStatus @default(AWAITING)
 
   // Foreign keys
-  from_user Int?
-  to_user   Int?
-  event_id  Int?
+  from_user Int
+  to_user   Int
+  event_id  Int
 
   // Relations
-  fromUser User?  @relation("SwapFromUser", fields: [from_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_1")
-  toUser   User?  @relation("SwapToUser", fields: [to_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_2")
-  event    Event? @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_3")
+  fromUser User  @relation("SwapFromUser", fields: [from_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_1")
+  toUser   User  @relation("SwapToUser", fields: [to_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_2")
+  event    Event @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_3")
 
   // Indexes
   @@index([event_id], map: "event_id")
