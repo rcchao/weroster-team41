@@ -14,7 +14,6 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
   const month = 1
   const year = 2025
   const { userRequests } = useUserRequests(month, year)
-  console.log(JSON.stringify(userRequests))
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.container} safeAreaEdges={["top"]}>
