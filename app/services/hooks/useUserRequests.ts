@@ -2,19 +2,19 @@ import { useQuery } from "@tanstack/react-query"
 
 import { requestsApi } from "../api/requestsApi"
 
-export const useUserRequests = () => {
+export const useUserRequests = (month: number, year: number) => {
   const {
     data: userRequests,
     error,
     isPending,
     isFetching,
   } = useQuery({
-    queryKey: ["user-requests"],
+    queryKey: ["user-requests", month, year],
     queryFn: async () => {
       const [leaveRes, assignmentRes, swapRes] = await Promise.all([
-        requestsApi.getLeaveRequests(),
-        requestsApi.getAssignmentRequests(),
-        requestsApi.getSwapRequests(),
+        requestsApi.getLeaveRequests(month, year),
+        requestsApi.getAssignmentRequests(month, year),
+        requestsApi.getSwapRequests(month, year),
       ])
       // If any request failed, throw an error to fail the whole query
       if (!leaveRes.success || !assignmentRes.success || !swapRes.success) {

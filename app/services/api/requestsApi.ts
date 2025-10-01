@@ -3,8 +3,10 @@ import { ApiResponse } from "../../../backend/src/types/api.types"
 import { Leave, Assignment, Swap } from "../../../backend/src/types/requests.types"
 
 export const requestsApi = {
-  getLeaveRequests: async () => {
-    const response = await api.get<ApiResponse<Leave[]>>("/requests/leave")
+  getLeaveRequests: async (month: number, year: number) => {
+    const response = await api.get<ApiResponse<Leave[]>>(
+      `/requests/leave?month=${month}&year=${year}`,
+    )
     console.log("\n\n[requestsApi.getLeaveRequests] response:", response.data)
     if (response.ok && response.data) {
       return response.data
@@ -15,8 +17,10 @@ export const requestsApi = {
     } as ApiResponse<Leave[]>
   },
 
-  getAssignmentRequests: async () => {
-    const response = await api.get<ApiResponse<Assignment[]>>("/requests/assignment")
+  getAssignmentRequests: async (month: number, year: number) => {
+    const response = await api.get<ApiResponse<Assignment[]>>(
+      `/requests/assignment?month=${month}&year=${year}`,
+    )
     console.log("\n\n[requestsApi.getAssignmentRequests] response:", response.data)
     if (response.ok && response.data) {
       return response.data
@@ -27,8 +31,10 @@ export const requestsApi = {
     } as ApiResponse<Assignment[]>
   },
 
-  getSwapRequests: async () => {
-    const response = await api.get<ApiResponse<Swap[]>>("/requests/swap")
+  getSwapRequests: async (month: number, year: number) => {
+    const response = await api.get<ApiResponse<Swap[]>>(
+      `/requests/swap?month=${month}&year=${year}`,
+    )
     console.log("\n\n[requestsApi.getSwapRequests] response:", response.data)
     if (response.ok && response.data) {
       return response.data

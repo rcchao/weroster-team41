@@ -10,7 +10,11 @@ import { $styles } from "@/theme/styles"
 export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardRequests">> = (
   _props,
 ) => {
-  const { userRequests } = useUserRequests()
+  // Harcoded values for demonstration
+  const month = 1
+  const year = 2025
+  const { userRequests } = useUserRequests(month, year)
+  console.log(JSON.stringify(userRequests))
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.container} safeAreaEdges={["top"]}>
