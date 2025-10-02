@@ -2,33 +2,21 @@ import { Avatar, Card, Separator, XStack, YStack } from "tamagui"
 
 import { ProfileData } from "backend/src/types/auth.types"
 
+import { getAbbreviatedName, getInitials } from "@/utils/nameFormatting"
+
 import { BodyText } from "./BodyText"
 import { HeaderText } from "./HeaderText"
 import { PressableIcon } from "./Icon"
 import { InfoSection } from "./InfoSection"
 
 interface ProfileInfoCardProps {
-  profile: ProfileData | undefined
-}
-
-export function getInitials(
-  firstName?: string | null,
-  lastName?: string | null,
-  withDots: boolean = false,
-): string {
-  const first = firstName?.trim()?.[0]?.toUpperCase() ?? ""
-  const last = lastName?.trim()?.[0]?.toUpperCase() ?? ""
-
-  if (withDots) {
-    return [first && first + ".", last && last + "."].filter(Boolean).join(" ")
-  }
-  return `${first}${last}`
+  profile: ProfileData
 }
 
 export const ProfileInfoCard = ({ profile }: ProfileInfoCardProps) => {
-  const initials = profile ? `${getInitials(profile.first_name, profile.last_name, false)}` : ""
+  const initials = profile ? `${getInitials(profile.first_name, profile.last_name)}` : ""
   const displayName = profile
-    ? `${profile.first_name ?? ""} ${getInitials(null, profile.last_name, true)}`
+    ? `${profile.first_name ?? ""} ${getAbbreviatedName(null, profile.last_name)}`
     : ""
 
   return (

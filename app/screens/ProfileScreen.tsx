@@ -15,6 +15,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
   const { navigation } = _props
   const { profile, error, isFetching, isPending } = useProfile()
 
+  // Can be refactored - useProfile() should return isLoading
   const isLoading = isPending || isFetching
 
   const handleSavePress = async () => {
@@ -37,14 +38,16 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
         <YStack px="$3" py="$4">
           <BodyText variant="body">Couldn’t load your profile</BodyText>
           <BodyText variant="body2" opacity={0.7}>
-            {error instanceof Error ? error.message : "Please try again."}
+            {error ? error.message : "Please try again."}
           </BodyText>
         </YStack>
       )}
 
-      <YStack justifyContent="center" alignItems="center" margin={20} marginBlockStart={40}>
-        <ProfileInfoCard profile={profile} />
-      </YStack>
+      {profile && (
+        <YStack justifyContent="center" alignItems="center" margin={20} marginBlockStart={40}>
+          <ProfileInfoCard profile={profile} />
+        </YStack>
+      )}
     </Screen>
   )
 }
