@@ -11,7 +11,7 @@ import { PressableIcon } from "./Icon"
 
 interface TeamMemberCardProps {
   name: string
-  userId: number | undefined
+  userId: number
 }
 
 export const TeamMemberCard = (props: TeamMemberCardProps) => {

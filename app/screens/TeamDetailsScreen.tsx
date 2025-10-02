@@ -1,24 +1,25 @@
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { FC } from "react"
+import { RouteProp, useRoute } from "@react-navigation/native"
 
 import { BackHeader } from "@/components/BackHeader"
 import { BodyText } from "@/components/BodyText"
 import { Screen } from "@/components/Screen"
 import type { AppStackParamList } from "@/navigators/AppNavigator"
+import type { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useAppTheme } from "@/theme/context"
 import { $container, $styles } from "@/theme/styles"
 
 type TeamDetailsRoute = RouteProp<AppStackParamList, "TeamDetails">
-type TeamDetailsNav = NativeStackNavigationProp<AppStackParamList, "TeamDetails">
 
-export const TeamDetailsScreen = () => {
+interface TeamDetailsScreenProps extends AppStackScreenProps<"TeamDetails"> {}
+
+export const TeamDetailsScreen: FC<TeamDetailsScreenProps> = function TeamDetailsScreen(_props) {
   const { themed } = useAppTheme()
+  const { navigation } = _props
 
   const {
     params: { userId },
   } = useRoute<TeamDetailsRoute>()
-
-  const navigation = useNavigation<TeamDetailsNav>()
 
   return (
     <Screen
