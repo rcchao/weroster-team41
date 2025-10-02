@@ -137,11 +137,11 @@ model Event {
 
   // Foreign keys
   activity_id Int?
-  location_id Int?
+  location_id Int
 
   // Relations
   activity           Activity?           @relation(fields: [activity_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Event_ibfk_1")
-  location           Location?           @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Event_ibfk_2")
+  location           Location            @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Event_ibfk_2")
   assignmentRequests AssignmentRequest[]
   eventAssignments   EventAssignment[]
   Swap               Swap[]              @relation(map: "Swap_ibfk_3")
