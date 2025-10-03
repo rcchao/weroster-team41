@@ -1,6 +1,9 @@
 import { api } from "./apiClient"
 import { ApiResponse } from "../../../backend/src/types/api.types"
-import { ShiftWithNumUsers } from "../../../backend/src/types/event.types"
+import {
+  ShiftWithNumUsers,
+  CampusWithLocationsAndEvents,
+} from "../../../backend/src/types/event.types"
 
 export const eventApi = {
   getMyShifts: async () => {
@@ -27,5 +30,20 @@ export const eventApi = {
       success: false,
       error: (response.data as any)?.error || "Failed to retrieve event",
     } as ApiResponse<ShiftWithNumUsers>
+  },
+
+  getTeamShifts: async (month: number, year: number, session: string) => {
+    const response = await api.get<ApiResponse<CampusWithLocationsAndEvents[]>>(
+      `/events/team-shifts?month=${month}&year=${year}&session=${session}`,
+    )
+    console.log("\n\n[eventApi.getTeamShifts] response:", response.data)
+
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to retrieve team shifts",
+    } as ApiResponse<CampusWithLocationsAndEvents[]>
   },
 }
