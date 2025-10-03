@@ -1,4 +1,8 @@
+import { useNavigation } from "@react-navigation/native"
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { Avatar, Card, useTheme, XStack, YStack } from "tamagui"
+
+import type { AppStackParamList } from "@/navigators/AppNavigator"
 
 import { BodyText } from "./BodyText"
 import { StyledIcon } from "./common/StyledIcon"
@@ -7,10 +11,18 @@ import { PressableIcon } from "./Icon"
 
 interface TeamMemberCardProps {
   name: string
+  userId: number
 }
 
 export const TeamMemberCard = (props: TeamMemberCardProps) => {
   const theme = useTheme()
+  const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>()
+
+  const goToUser = () => {
+    if (!props.userId) return
+    navigation.navigate("TeamDetails", { userId: props.userId })
+  }
+
   return (
     <Card
       backgroundColor="$white200"
@@ -51,7 +63,7 @@ export const TeamMemberCard = (props: TeamMemberCardProps) => {
           </YStack>
         </XStack>
         <YStack justifyContent="center" paddingInlineEnd="$3">
-          <PressableIcon icon="right" color={theme.accent500.val} onPress={() => <></>} />
+          <PressableIcon icon="right" color={theme.accent500.val} onPress={goToUser} />
         </YStack>
       </XStack>
     </Card>
