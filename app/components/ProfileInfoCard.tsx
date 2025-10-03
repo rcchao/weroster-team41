@@ -14,10 +14,8 @@ interface ProfileInfoCardProps {
 }
 
 export const ProfileInfoCard = ({ profile }: ProfileInfoCardProps) => {
-  const initials = profile ? `${getInitials(profile.first_name, profile.last_name)}` : ""
-  const displayName = profile
-    ? `${profile.first_name ?? ""} ${getAbbreviatedName(null, profile.last_name)}`
-    : ""
+  const initials = getInitials(profile.first_name, profile.last_name ?? "")
+  const displayName = getAbbreviatedName(profile.first_name, profile.last_name ?? "")
 
   return (
     <Card
@@ -57,9 +55,9 @@ export const ProfileInfoCard = ({ profile }: ProfileInfoCardProps) => {
           </YStack>
         </XStack>
         <YStack marginBlockStart={30} justifyContent="space-between" gap={10}>
-          <InfoSection infoType="phone" info={profile?.phone} canCopy={true} />
+          <InfoSection infoType="phone" info={profile.phone} canCopy={true} />
           <Separator borderColor="$mono300" />
-          <InfoSection infoType="email" info={profile?.email} canCopy={true} />
+          <InfoSection infoType="email" info={profile.email} canCopy={true} />
           <Separator borderColor="$mono300" />
           <InfoSection infoType="preference" />
           <Separator borderColor="$mono300" />

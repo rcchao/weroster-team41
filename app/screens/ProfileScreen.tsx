@@ -38,7 +38,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
         <YStack px="$3" py="$4">
           <BodyText variant="body">Couldn’t load your profile</BodyText>
           <BodyText variant="body2" opacity={0.7}>
-            {error ? error.message : "Please try again."}
+            {error.message}
           </BodyText>
         </YStack>
       )}
