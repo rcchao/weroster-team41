@@ -13,6 +13,7 @@ export class AuthService {
       {
         userId: user.id,
         email: user.email,
+        userHospitalId: user.hospital_id,
         role: user.role,
       },
       process.env.JWT_SECRET as string,
