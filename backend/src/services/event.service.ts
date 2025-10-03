@@ -199,7 +199,7 @@ export class EventService {
     // Build the where clause for events
     // (1) Starts or ends within the month specified
     // (2) Has the specified session (AM/PM/AH)
-    const eventWhereClause: Prisma.EventWhereInput = {
+    const eventsForDayAndSession: Prisma.EventWhereInput = {
       AND: [
         {
           OR: [
@@ -231,7 +231,7 @@ export class EventService {
             id: true,
             name: true,
             events: {
-              where: eventWhereClause,
+              where: eventsForDayAndSession,
               select: {
                 id: true,
                 start_time: true,
