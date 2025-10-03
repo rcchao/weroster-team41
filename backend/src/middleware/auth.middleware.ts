@@ -9,12 +9,14 @@ declare module "express-serve-static-core" {
     userId?: number
     userEmail?: string
     user?: User
+    userHospitalId?: number
   }
 }
 
 interface JWTPayload {
   userId: number
   email: string
+  userHospitalId: number
 }
 
 // Authentication middleware to verify JWT tokens and attach user info to the request object
@@ -34,6 +36,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
     }
 
     const token = parts[1]
+    console.log("\n\n\n TOKEN", token)
 
     try {
       // Decode and verify existing JWT token
@@ -42,6 +45,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
       // Attach user info to request object for downstream handlers
       req.userId = decoded.userId
       req.userEmail = decoded.email
+      req.userHospitalId = decoded.userHospitalId
 
       // next() call passes control to the next function in the route handler chain
       next()
