@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
+import { compareAsc } from "date-fns"
 
 import { requestsApi } from "../api/requestsApi"
 
@@ -23,26 +24,37 @@ export const useUserRequests = (month: number, year: number) => {
         )
       }
 
-      // Unnest assignments and swap requests
-      const assignments = assignmentRes.data?.map(({ event, ...rest }) => ({
-        ...rest,
-        event_id: event?.id,
-        start_date: event?.start_time,
-        end_date: event?.end_time,
-      }))
+      // Unnest assignments and add type
+      const assignments =
+        assignmentRes.data?.map(({ event, ...rest }) => ({
+          type: "ASSIGNMENT",
+          ...rest,
+          event_id: event?.id,
+          start_date: event?.start_time,
+          end_date: event?.end_time,
+        })) || []
 
-      const swaps = swapRes.data?.map(({ event, ...rest }) => ({
-        ...rest,
-        event_id: event?.id,
-        start_date: event?.start_time,
-        end_date: event?.end_time,
-      }))
+      // Unnest swaps and add type
+      const swaps =
+        swapRes.data?.map(({ event, ...rest }) => ({
+          type: "SWAP",
+          ...rest,
+          event_id: event?.id,
+          start_date: event?.start_time,
+          end_date: event?.end_time,
+        })) || []
 
-      return {
-        leave: leaveRes.data,
-        assignment: assignments,
-        swap: swaps,
-      }
+      // Add type to leave requests
+      const leave =
+        leaveRes.data?.map((item) => ({
+          type: "LEAVE",
+          ...item,
+        })) || []
+
+      // Combine all arrays into a single flat array
+      return [...assignments, ...swaps, ...leave].sort((a, b) =>
+        compareAsc(a.start_date, b.start_date),
+      )
     },
     refetchOnMount: true,
   })
