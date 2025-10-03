@@ -1,5 +1,11 @@
-import { PrismaClient } from "@prisma/client"
-import { ShiftDetails, ShiftWithNumUsers, OpenShift } from "../types/event.types"
+import { Prisma, PrismaClient, Session } from "@prisma/client"
+import {
+  ShiftDetails,
+  ShiftWithNumUsers,
+  OpenShift,
+  CampusWithLocationsAndEvents,
+  TeamShift,
+} from "../types/event.types"
 
 export class EventService {
   // Use prisma client for DB operations/interactions -> Prisma is how we interact with the DB
@@ -103,6 +109,27 @@ export class EventService {
     })
   }
 
+  private transformTeamShifts(campuses: CampusWithLocationsAndEvents[]): TeamShift[] {
+    return campuses.map((campus) => ({
+      ...campus,
+      locations: campus.locations.map((location) => ({
+        ...location,
+        events: location.events.map((event) => ({
+          id: event.id,
+          start_time: event.start_time,
+          end_time: event.end_time,
+          on_call: event.on_call,
+          activity: event.activity?.name ?? null,
+          eventAssignments: event.eventAssignments.map((assignment) => ({
+            id: assignment.user.id,
+            first_name: assignment.user.first_name,
+            last_name: assignment.user.last_name,
+          })),
+        })),
+      })),
+    }))
+  }
+
   async getMyShifts(user_id: number): Promise<ShiftWithNumUsers[]> {
     const shifts = await this.prisma.event.findMany({
       where: {
@@ -156,5 +183,93 @@ export class EventService {
     }
 
     return this.annotateWithNumUsers(shift)
+  }
+
+  async getTeamShifts(
+    hospitalId: number,
+    day: number,
+    month: number,
+    year: number,
+    session: Session,
+  ): Promise<TeamShift[]> {
+    // Get start and end datetime of the day
+    const startDate = new Date(year, month, day, 0)
+    const endDate = new Date(year, month, day, 23, 59, 59, 999)
+
+    // Build the where clause for events
+    // (1) Starts or ends within the month specified
+    // (2) Has the specified session (AM/PM/AH)
+    const eventWhereClause: Prisma.EventWhereInput = {
+      AND: [
+        {
+          OR: [
+            {
+              start_time: { gte: startDate, lte: endDate },
+            },
+            {
+              end_time: { gte: startDate, lte: endDate },
+            },
+          ],
+        },
+        {
+          eventSessions: {
+            some: { session },
+          },
+        },
+      ],
+    }
+
+    const campuses: CampusWithLocationsAndEvents[] = await this.prisma.campus.findMany({
+      where: {
+        hospital_id: hospitalId,
+      },
+      select: {
+        id: true,
+        name: true,
+        locations: {
+          select: {
+            id: true,
+            name: true,
+            events: {
+              where: eventWhereClause,
+              select: {
+                id: true,
+                start_time: true,
+                end_time: true,
+                on_call: true,
+                activity: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
+                eventAssignments: {
+                  select: {
+                    user: {
+                      select: {
+                        id: true,
+                        first_name: true,
+                        last_name: true,
+                      },
+                    },
+                  },
+                },
+              },
+              orderBy: {
+                start_time: "asc",
+              },
+            },
+          },
+          orderBy: {
+            name: "asc",
+          },
+        },
+      },
+      orderBy: {
+        name: "asc",
+      },
+    })
+
+    return this.transformTeamShifts(campuses)
   }
 }
