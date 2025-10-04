@@ -13,18 +13,19 @@ import { $styles } from "@/theme/styles"
 export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardRequests">> = (
   _props,
 ) => {
-  // Harcoded values for demonstration
-  const month = 1
-  const year = 2025
-  const { userRequests } = useUserRequests(month, year)
   const [date, setDate] = useState(new Date())
+  const month = date.getMonth() + 1
+  const year = date.getFullYear()
+  const { userRequests, isPending } = useUserRequests(month, year)
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
       <Header title="My Requests" />
       <DateSelectorBar mode="month" selectedDate={date} setSelectedDate={setDate} />
       <YStack gap="$4" paddingVertical="$4">
-        {userRequests && userRequests.length > 0 ? (
+        {isPending ? (
+          <BodyText variant="body4">Loading...</BodyText>
+        ) : userRequests && userRequests.length > 0 ? (
           userRequests.map((request) => (
             <XStack key={request.id} justifyContent="center">
               <RequestCard
@@ -37,7 +38,7 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
             </XStack>
           ))
         ) : (
-          <BodyText variant="body4">Loading...</BodyText>
+          <BodyText variant="body4">No requests found</BodyText>
         )}
       </YStack>
     </Screen>
