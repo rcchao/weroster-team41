@@ -5,6 +5,7 @@ import authRoutes from "./auth.routes"
 import settingsRoutes from "./settings.routes"
 import requestsRoutes from "./requests.routes"
 import userRoutes from "./users.routes"
+import campusRoutes from "./campus.routes"
 
 const router = Router()
 
@@ -14,5 +15,6 @@ router.use("/events", eventRoutes)
 router.use("/settings", settingsRoutes)
 router.use("/requests", requestsRoutes)
 router.use("/user", userRoutes)
+router.use("/campus", campusRoutes)
 
 export default router

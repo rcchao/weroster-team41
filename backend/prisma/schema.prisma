@@ -45,7 +45,7 @@ model Activity {
   id Int @id
 
   // Scalar fields
-  name String? @db.VarChar(255)
+  name String @db.VarChar(255)
 
   // Foreign keys
   group_id    Int?
@@ -97,7 +97,8 @@ model Campus {
   id Int @id
 
   // Scalar fields
-  name String? @db.VarChar(255)
+  name    String  @db.VarChar(255)
+  address String? @db.VarChar(255)
 
   // Foreign keys
   hospital_id Int?
@@ -267,7 +268,7 @@ model User {
 
   // Scalar fields
   first_name String      @db.VarChar(255)
-  last_name  String?     @db.VarChar(255)
+  last_name  String      @db.VarChar(255)
   email      String      @unique @db.VarChar(255)
   password   String      @db.VarChar(255)
   phone      String?     @db.VarChar(255)
