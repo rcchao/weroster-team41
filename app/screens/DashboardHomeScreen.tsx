@@ -1,9 +1,11 @@
 import { FC, ReactElement } from "react"
 import { Pressable } from "react-native"
 import { View } from "react-native"
+import { YStack } from "tamagui"
 
 import { BodyText } from "@/components/BodyText"
 import { Button } from "@/components/Button"
+import { DashboardCard } from "@/components/DashboardCard"
 import { HeaderText } from "@/components/HeaderText"
 import { Icon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
@@ -50,6 +52,12 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
           <BodyText variant="body2">Body2 Text</BodyText>
           <BodyText variant="body3">Body3 Text</BodyText>
           <BodyText variant="body4">Body4 Text</BodyText>
+          <YStack gap={20}>
+            <DashboardCard type="leave" date={new Date()} />
+            <DashboardCard type="team" teamLocation="TSC Campus" />
+            <DashboardCard type="allocatedShift" date={new Date()} />
+            <DashboardCard type="openShift" date={new Date()} />
+          </YStack>
         </Screen>
 
         {/* FAB positioned relative to the outer View */}
