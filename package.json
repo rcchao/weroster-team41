@@ -65,6 +65,7 @@
     "react-hook-form": "^7.62.0",
     "react-i18next": "^15.0.1",
     "react-native": "0.79.5",
+    "react-native-calendars": "^1.1313.0",
     "react-native-draggable-flatlist": "^4.0.3",
     "react-native-drawer-layout": "^4.0.1",
     "react-native-edge-to-edge": "1.6.0",
