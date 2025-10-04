@@ -39,9 +39,9 @@ function buildAgendaSections(shifts: ShiftWithNumUsers[]) {
 
     const item: AgendaItem = {
       id: String(shift.id),
-      name: shift.activity?.name ?? "Shift",
+      name: shift.activity ?? "Shift",
       timeRange: `${format(start, "h:mm a")} – ${format(end, "h:mm a")}`,
-      location: shift.location.name,
+      location: shift.location,
       start,
       numUsers: shift.numUsers,
     }

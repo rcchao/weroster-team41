@@ -9,7 +9,7 @@ export const useMyShifts = () => {
     isPending,
     isFetching,
   } = useQuery({
-    queryKey: ["myShifts"],
+    queryKey: ["my-shifts"],
     queryFn: eventApi.getMyShifts,
     select: (result) => result.data,
     refetchOnMount: false,

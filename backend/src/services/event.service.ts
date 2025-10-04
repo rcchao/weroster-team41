@@ -34,10 +34,23 @@ export class EventService {
     },
   } as const
 
-  // Helper to add numUsers to a shift
-  private annotateNumUsers(shift: ShiftDetails): ShiftWithNumUsers {
+  private annotateWithNumUsers(shift: ShiftDetails): ShiftWithNumUsers {
     return {
-      ...shift,
+      id: shift.id,
+      start_time: shift.start_time,
+      end_time: shift.end_time,
+      on_call: shift.on_call,
+      activity: shift.activity?.name ?? null,
+      location: shift.location.name,
+      eventAssignments: shift.eventAssignments.map((assignment) => ({
+        user: {
+          id: assignment.user.id,
+          first_name: assignment.user.first_name,
+          last_name: assignment.user.last_name ?? null,
+        },
+        designation: assignment.designation?.title ?? null,
+      })),
+      eventSessions: shift.eventSessions.map((es) => es.session),
       numUsers: shift.eventAssignments.length,
     }
   }
@@ -58,7 +71,7 @@ export class EventService {
       },
     })
 
-    return shifts.map(this.annotateNumUsers)
+    return shifts.map(this.annotateWithNumUsers)
   }
 
   async getOpenShifts(hospitalId: number): Promise<ShiftWithNumUsers[]> {
@@ -80,7 +93,7 @@ export class EventService {
       },
     })
 
-    return shifts.map(this.annotateNumUsers)
+    return shifts.map(this.annotateWithNumUsers)
   }
 
   async getShift(shiftId: number): Promise<ShiftWithNumUsers | null> {
@@ -93,6 +106,6 @@ export class EventService {
       return null
     }
 
-    return this.annotateNumUsers(shift)
+    return this.annotateWithNumUsers(shift)
   }
 }
