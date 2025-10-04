@@ -62,6 +62,51 @@ export class EventService {
     }))
   }
 
+  async getOpenShifts(hospitalId: number): Promise<ShiftDetails[]> {
+    const shifts = await this.prisma.event.findMany({
+      where: {
+        location: {
+          campus: {
+            hospital_id: hospitalId,
+          },
+        },
+        eventAssignments: {
+          // Find all events where there are no event assignments
+          none: {},
+        },
+      },
+      select: {
+        id: true,
+        start_time: true,
+        end_time: true,
+        on_call: true,
+        activity: true,
+        location: true,
+        eventAssignments: {
+          select: {
+            id: true,
+            user: {
+              select: {
+                id: true,
+                first_name: true,
+                last_name: true,
+              },
+            },
+            designation: true,
+          },
+        },
+      },
+      orderBy: {
+        start_time: "asc",
+      },
+    })
+
+    return shifts.map((shift: ShiftDetails) => ({
+      ...shift,
+      numUsers: shift.eventAssignments.length,
+    }))
+  }
+
   async getShift(shiftId: number): Promise<ShiftWithNumUsers | null> {
     const shift = await this.prisma.event.findUnique({
       where: { id: shiftId },

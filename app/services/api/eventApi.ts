@@ -16,6 +16,19 @@ export const eventApi = {
     } as ApiResponse<ShiftWithNumUsers[]>
   },
 
+  getOpenShifts: async () => {
+    const response = await api.get<ApiResponse<ShiftWithNumUsers[]>>("/events/open-shifts")
+    console.log("\n\n[eventApi.getOpenShifts] response:", response.data)
+
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to retrieve events",
+    } as ApiResponse<ShiftWithNumUsers[]>
+  },
+
   getShiftById: async (shiftId: number) => {
     const response = await api.get<ApiResponse<ShiftWithNumUsers>>(`/events/${shiftId}`)
     console.log("\n\n[eventApi.getShiftById] response:", response.data)
