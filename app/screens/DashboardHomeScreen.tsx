@@ -1,10 +1,12 @@
 import { FC, ReactElement } from "react"
 import { View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { YStack } from "tamagui"
 
 import { BodyText } from "@/components/BodyText"
 import { Button } from "@/components/Button"
 import { DashboardHomeHeader } from "@/components/DashboardHomeHeader"
+import { DashboardCard } from "@/components/DashboardCard"
 import { HeaderText } from "@/components/HeaderText"
 import { Icon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
@@ -64,6 +66,12 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
           <BodyText variant="body2">Body2 Text</BodyText>
           <BodyText variant="body3">Body3 Text</BodyText>
           <BodyText variant="body4">Body4 Text</BodyText>
+          <YStack gap={20}>
+            <DashboardCard type="leave" date={new Date()} />
+            <DashboardCard type="team" teamLocation="TSC Campus" />
+            <DashboardCard type="allocatedShift" date={new Date()} />
+            <DashboardCard type="openShift" date={new Date()} />
+          </YStack>
           <SubmitButton text="apply to swap shift" onPress={postSwapShiftRequest} />
         </Screen>
 
