@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native"
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import { format } from "date-fns"
 import { Avatar, Card, useTheme, XStack, YStack } from "tamagui"
 
 import type { AppStackParamList } from "@/navigators/AppNavigator"
@@ -12,11 +13,24 @@ import { PressableIcon } from "./Icon"
 interface TeamMemberCardProps {
   name: string
   userId: number
+  startDate: Date
+  endDate: Date
+  role: string
+  location: string
 }
 
 export const TeamMemberCard = (props: TeamMemberCardProps) => {
   const theme = useTheme()
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>()
+  const startDateStr = format(props.startDate, "d MMM")
+  const endDateStr = format(props.endDate, "d MMM")
+  const startTimeStr = format(props.startDate, "HH:mm")
+  const endTimeStr = format(props.endDate, "HH:mm")
+  const isOvernightShift = startTimeStr > endTimeStr
+
+  const displayDate = isOvernightShift
+    ? `${startDateStr} ${startTimeStr} - ${endDateStr} ${endTimeStr}`
+    : `${startDateStr} ${startTimeStr} - ${endTimeStr}`
 
   const goToUser = () => {
     if (!props.userId) return
@@ -49,15 +63,15 @@ export const TeamMemberCard = (props: TeamMemberCardProps) => {
             <YStack gap="$1.5">
               <XStack alignItems="center" gap="$1">
                 <StyledIcon icon="clock" />
-                <BodyText variant="body2">Shift time</BodyText>
+                <BodyText variant="body2">{displayDate}</BodyText>
               </XStack>
               <XStack alignItems="center" gap="$1">
                 <StyledIcon icon="stethoscope" />
-                <BodyText variant="body2">Role name</BodyText>
+                <BodyText variant="body2">{props.role}</BodyText>
               </XStack>
               <XStack alignItems="center" gap="$1">
                 <StyledIcon icon="location" />
-                <BodyText variant="body2">Shift location</BodyText>
+                <BodyText variant="body2">{props.location}</BodyText>
               </XStack>
             </YStack>
           </YStack>
