@@ -6,20 +6,6 @@ export class EventService {
   // Use prisma client for DB operations/interactions -> Prisma is how we interact with the DB
   constructor(private prisma: PrismaClient) {}
 
-  // Async as it involves DB operations
-  // Create a new event given the payload of type CreateEventDTO
-  async create(data: Event) {
-    // Validation logic
-    if (data.start_time && data.end_time && data.start_time >= data.end_time) {
-      throw new Error("Invalid time range")
-    }
-
-    return this.prisma.event.create({
-      data,
-      include: { activity: true },
-    })
-  }
-
   // Common select clause used across all shift queries
   private readonly shiftSelect = {
     id: true,
