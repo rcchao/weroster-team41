@@ -34,7 +34,9 @@ export type ShiftWithNumUsers = {
   start_time: Date
   end_time: Date
   on_call: boolean
+  activity_id: number | null
   activity: string | null
+  location_id: number
   location: string
   eventAssignments: Array<{
     user: {
