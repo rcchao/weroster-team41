@@ -1,0 +1,25 @@
+appId: com.weroster
+---
+- launchApp
+- waitForAnimationToEnd
+
+# Check login screen loads properly
+- assertVisible:
+    id: "logo"
+- assertVisible: "Welcome"
+- assertVisible: "Domain"
+- assertVisible: "Email"
+- assertVisible: "Password"
+- assertVisible: "Login"
+
+# Perform login
+- tapOn: "Email"
+- inputText: "a@gmail.com"
+- tapOn: "Password"
+- inputText: "password"
+- tapOn: "Login"
+- waitForAnimationToEnd
+
+# Check home screen loads properly
+- assertVisible: "Home"
+- assertNotVisible: "Login"
