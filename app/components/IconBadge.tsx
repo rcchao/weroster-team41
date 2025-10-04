@@ -36,8 +36,10 @@ const ICON_BADGE_CONFIG: Record<string, IconBadgeConfig> = {
   },
 }
 
+export type IconBadgeType = "AMShift" | "PMShift" | "AHShift" | "halfDay" | "fullDay"
+
 interface IconBadgeProps {
-  type: "AMShift" | "PMShift" | "AHShift" | "halfDay" | "fullDay"
+  type: IconBadgeType
 }
 
 export const IconBadge = ({ type }: IconBadgeProps) => {
