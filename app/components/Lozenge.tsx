@@ -4,19 +4,21 @@ import { Button, useTheme } from "tamagui"
 import { BodyText } from "./BodyText"
 import { Icon, IconTypes } from "./Icon"
 
+export type LozengeType =
+  | "leave"
+  | "swap"
+  | "event"
+  | "available"
+  | "requested"
+  | "urgent"
+  | "approved"
+  | "awaiting"
+  | "declined"
+  | "assigned"
+  | "openShift"
+
 interface LozengeProps {
-  type:
-    | "leave"
-    | "swap"
-    | "event"
-    | "available"
-    | "requested"
-    | "urgent"
-    | "approved"
-    | "awaiting"
-    | "declined"
-    | "assigned"
-    | "openShift"
+  type: LozengeType
   active?: boolean
   onPress?: () => void
 }
