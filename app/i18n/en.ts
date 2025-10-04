@@ -3,7 +3,6 @@ const en = {
     ok: "OK!",
     cancel: "Cancel",
     back: "Back",
-    logOut: "Log Out",
   },
   errorScreen: {
     title: "Something went wrong!",

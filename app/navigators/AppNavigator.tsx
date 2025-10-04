@@ -77,6 +77,14 @@ const AppStack = () => {
         <>
           <Stack.Screen name="Dashboard" component={DashboardNavigator} />
           <Stack.Screen name="EditDashboard" component={DashboardEditScreen} />
+          <Stack.Screen
+            name="ProfileScreen"
+            component={ProfileScreen}
+            options={{
+              presentation: "fullScreenModal",
+              animation: "fade",
+            }}
+          />
         </>
       ) : (
         <>
@@ -85,14 +93,6 @@ const AppStack = () => {
       )}
 
       {/** 🔥 Your screens go here */}
-      <Stack.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
-        options={{
-          presentation: "fullScreenModal",
-          animation: "fade",
-        }}
-      />
 
       <Stack.Screen
         name="Notifications"

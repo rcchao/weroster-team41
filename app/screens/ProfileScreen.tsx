@@ -1,10 +1,11 @@
 import { FC } from "react"
-import { Spinner, YStack } from "tamagui"
+import { Spinner, YStack, Button } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
 import { BodyText } from "@/components/BodyText"
 import { ProfileInfoCard } from "@/components/ProfileInfoCard"
 import { Screen } from "@/components/Screen"
+import { useAuth } from "@/context/AuthContext"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useProfile } from "@/services/hooks/useProfile"
 import { $styles } from "@/theme/styles"
@@ -14,6 +15,7 @@ interface ProfileScreenProps extends AppStackScreenProps<"ProfileScreen"> {}
 export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_props) {
   const { navigation } = _props
   const { profile, error, isFetching, isPending } = useProfile()
+  const { logout } = useAuth()
 
   // Can be refactored - useProfile() should return isLoading
   const isLoading = isPending || isFetching
@@ -48,6 +50,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
           <ProfileInfoCard profile={profile} />
         </YStack>
       )}
+      <Button onPress={logout}> Log out </Button>
     </Screen>
   )
 }
