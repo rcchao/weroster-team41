@@ -2,7 +2,8 @@
 /* eslint-disable react-native/no-color-literals */
 import { TouchableOpacity, StyleSheet } from "react-native"
 import { format, getHours, parseISO } from "date-fns"
-import { DateData } from "react-native-calendars"
+import type { DateData } from "react-native-calendars"
+import type { DayProps } from "react-native-calendars/src/calendar/day"
 import { useTheme, View } from "tamagui"
 
 import { BodyText } from "./BodyText"
@@ -16,15 +17,30 @@ export type DayEvent = {
   status: EventStatus
 }
 
-interface DayPillProps {
-  date: DateData
-  isSelected?: boolean
-  events: DayEvent[]
-  onPress: () => void
+// Minimal shape we actually use + our custom field
+export type CustomMarking = {
+  selected?: boolean
+  marked?: boolean
+  disabled?: boolean
+  disableTouchEvent?: boolean
+  events?: DayEvent[]
 }
 
-export const DayPill = ({ date, isSelected, events, onPress }: DayPillProps) => {
+/** ── Component compatible with ExpandableCalendar.dayComponent ─────────── */
+export const DayPill = ({
+  date,
+  state,
+  marking,
+  onPress,
+}: DayProps & { date?: DateData; marking?: CustomMarking }) => {
   const theme = useTheme()
+  if (!date) return null
+
+  // typed access to our extended marking fields (if present)
+  const m = (marking as CustomMarking) ?? ({} as CustomMarking)
+
+  const isSelected = Boolean(m.selected)
+  const events: DayEvent[] = Array.isArray(m.events) ? m.events : []
 
   const day = parseISO(date.dateString)
   const hasEvents = events.length > 0
@@ -49,8 +65,15 @@ export const DayPill = ({ date, isSelected, events, onPress }: DayPillProps) => 
       ? colors.pillWithEvents
       : colors.pillDefault
 
+  const disabled = state === "disabled"
+
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={onPress} style={styles.container}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={() => onPress?.(date)}
+      style={[styles.container, disabled && { opacity: 0.35 }]}
+      disabled={disabled}
+    >
       {/* Pill */}
       <View style={[styles.pill, { backgroundColor: pillBg }]}>
         {/* Icon (or nothing if no events) */}

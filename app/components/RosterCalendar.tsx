@@ -5,6 +5,8 @@ import { View, Text } from "tamagui"
 
 import { ShiftWithNumUsers } from "backend/src/types/event.types"
 
+import { CustomMarking, DayEvent, DayPill } from "./DayPill"
+
 interface RosterCalendarProps {
   events: ShiftWithNumUsers[]
 }
@@ -29,7 +31,7 @@ function buildAgendaSections(shifts: ShiftWithNumUsers[]) {
   const sections: AgendaSection[] = []
 
   // Store calendar markings to show on the calendar.
-  const marked: Record<string, any> = {}
+  const marked: Record<string, CustomMarking> = {}
 
   for (const shift of shifts) {
     const start = shift.start_time
@@ -53,7 +55,19 @@ function buildAgendaSections(shifts: ShiftWithNumUsers[]) {
       sections.push({ title: dateKey, data: [item] })
     }
 
-    marked[dateKey] = { marked: true }
+    // Add data to your DayPill needs on each date
+    const dayEvent: DayEvent = {
+      id: String(shift.id),
+      startsAt: start,
+      // Used to distinguish between assigned and open shifts (currently just assumed all assigned)
+      status: "assigned",
+    }
+
+    if (marked[dateKey]) {
+      marked[dateKey].events?.push(dayEvent)
+    } else {
+      marked[dateKey] = { marked: true, events: [dayEvent] }
+    }
   }
 
   return { sections, marked }
@@ -76,7 +90,12 @@ export const RosterCalendar = ({ events }: RosterCalendarProps) => {
 
   return (
     <CalendarProvider date={selected} onDateChanged={setSelected} showTodayButton>
-      <ExpandableCalendar firstDay={1} markedDates={markedDates} allowShadow />
+      <ExpandableCalendar
+        firstDay={1}
+        markedDates={markedDates}
+        allowShadow
+        dayComponent={DayPill}
+      />
       <AgendaList
         sections={sections}
         keyExtractor={(item) => item.id}
