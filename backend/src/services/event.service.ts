@@ -40,7 +40,9 @@ export class EventService {
       start_time: shift.start_time,
       end_time: shift.end_time,
       on_call: shift.on_call,
+      activity_id: shift.activity?.id ?? null,
       activity: shift.activity?.name ?? null,
+      location_id: shift.location.id,
       location: shift.location.name,
       eventAssignments: shift.eventAssignments.map((assignment) => ({
         user: {
