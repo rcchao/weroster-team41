@@ -53,10 +53,37 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
           <BodyText variant="body3">Body3 Text</BodyText>
           <BodyText variant="body4">Body4 Text</BodyText>
           <YStack gap={20}>
-            <DashboardCard type="leave" date={new Date()} />
-            <DashboardCard type="team" teamLocation="TSC Campus" />
-            <DashboardCard type="allocatedShift" date={new Date()} />
-            <DashboardCard type="openShift" date={new Date()} />
+            <DashboardCard
+              type="leave"
+              date={new Date()}
+              leaveDuration="Half-day"
+              leaveType="Annual Leave"
+              leaveStatus="approved"
+            />
+            <DashboardCard
+              type="team"
+              date={new Date()}
+              teamCampus="TSC Campus"
+              teamLocation="Theatre 1"
+              teamOnCall={4}
+              teamInPerson={3}
+            />
+            <DashboardCard
+              type="allocatedShift"
+              date={new Date()}
+              shiftTimeRange="13:00 - 18:00"
+              shiftLocation="PMCC"
+              shiftDesignation="Anaes Coordinator"
+              shiftNumUsers={3}
+            />
+            <DashboardCard
+              type="openShift"
+              date={new Date()}
+              shiftTimeRange="8:00 - 12:00"
+              shiftLocation="PMCC"
+              shiftDesignation="Neurosurgery"
+              openShiftExtraPay={500}
+            />
           </YStack>
         </Screen>
 
