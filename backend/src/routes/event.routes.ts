@@ -1,10 +1,13 @@
 import { Router } from "express"
+// import { MMKV } from "react-native-mmkv"
 
 import { HttpStatus } from "../constants/httpResponse"
 import { EventService } from "../services/event.service"
 import { authenticate } from "../middleware/auth.middleware"
+import { Session } from "@prisma/client"
 
 const router = Router()
+// const storage = new MMKV()
 
 // Post = Create a new event at the endpoint /api/events
 router.post("/", async (req, res) => {
@@ -32,6 +35,34 @@ router.get("/my-shifts", authenticate, async (req, res) => {
     }
 
     const shifts = await service.getMyShifts(req.userId)
+
+    res.json({
+      success: true,
+      data: shifts,
+    })
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: error.message })
+  }
+  return
+})
+
+router.get("/team-shifts", authenticate, async (req, res) => {
+  try {
+    const month = parseInt(req.query.month as string)
+    const year = parseInt(req.query.year as string)
+    const session = req.query.session as Session
+
+    const service = new EventService(req.app.locals.prisma)
+
+    // Ensure user is authenticated
+    if (!req.userHospitalId) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        error: "User does not belong to a hospital",
+      })
+    }
+
+    const shifts = await service.getTeamShifts(req.userHospitalId, month, year, session)
 
     res.json({
       success: true,
