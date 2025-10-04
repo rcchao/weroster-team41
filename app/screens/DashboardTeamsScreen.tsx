@@ -1,8 +1,10 @@
 import { FC } from "react"
-import { format } from "date-fns"
+import { XStack, YStack } from "tamagui"
 
 import { BodyText } from "@/components/BodyText"
+import { Header } from "@/components/Header"
 import { Screen } from "@/components/Screen"
+import { TeamMemberCard } from "@/components/TeamMemberCard"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useTeamMemberData } from "@/services/hooks/useTeamMemberData"
 import { $styles } from "@/theme/styles"
@@ -10,22 +12,28 @@ import { $styles } from "@/theme/styles"
 export const DashboardTeamsScreen: FC<DashboardTabScreenProps<"DashboardTeams">> =
   function DashboardTeamsScreen(_props) {
     const { teamMemberData } = useTeamMemberData()
-    const firstTeamMember = teamMemberData?.[0]
 
     return (
       <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
-        {firstTeamMember && (
-          <BodyText variant="body4">
-            {firstTeamMember.first_name} {firstTeamMember.last_name}
-            {"\n"}
-            {format(firstTeamMember.start_time!, "HH:mm")} -{" "}
-            {format(firstTeamMember.end_time!, "HH:mm")}
-            {"\n"}
-            {firstTeamMember.designation_title}
-            {"\n"}
-            {firstTeamMember.location_name}
-          </BodyText>
-        )}
+        <Header title="My Team" />
+        <YStack gap="$4" paddingVertical="$4">
+          {teamMemberData && teamMemberData.length > 0 ? (
+            teamMemberData.map((request) => (
+              <XStack key={request.id} justifyContent="center">
+                <TeamMemberCard
+                  name={`${request.first_name} ${request.last_name}`}
+                  userId={request.user_id}
+                  startDate={request.start_time}
+                  endDate={request.end_time}
+                  role={request.designation_title ?? "General Staff"}
+                  location={request.location_name}
+                />
+              </XStack>
+            ))
+          ) : (
+            <BodyText variant="body4">Loading...</BodyText>
+          )}
+        </YStack>
       </Screen>
     )
   }
