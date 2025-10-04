@@ -21,6 +21,11 @@ export type ShiftDetails = Prisma.EventGetPayload<{
         designation: true
       }
     }
+    eventSessions: {
+      select: {
+        session: true
+      }
+    }
   }
 }>
 

@@ -20,6 +20,42 @@ export class EventService {
     })
   }
 
+  // Common select clause used across all shift queries
+  private readonly shiftSelect = {
+    id: true,
+    start_time: true,
+    end_time: true,
+    on_call: true,
+    activity: true,
+    location: true,
+    eventAssignments: {
+      select: {
+        id: true,
+        user: {
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+          },
+        },
+        designation: true,
+      },
+    },
+    eventSessions: {
+      select: {
+        session: true,
+      },
+    },
+  } as const
+
+  // Helper to add numUsers to a shift
+  private annotateNumUsers(shift: ShiftDetails): ShiftWithNumUsers {
+    return {
+      ...shift,
+      numUsers: shift.eventAssignments.length,
+    }
+  }
+
   async getMyShifts(user_id: number): Promise<ShiftWithNumUsers[]> {
     const shifts = await this.prisma.event.findMany({
       where: {
@@ -30,39 +66,16 @@ export class EventService {
           },
         },
       },
-      select: {
-        id: true,
-        start_time: true,
-        end_time: true,
-        on_call: true,
-        activity: true,
-        location: true,
-        eventAssignments: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                id: true,
-                first_name: true,
-                last_name: true,
-              },
-            },
-            designation: true,
-          },
-        },
-      },
+      select: this.shiftSelect,
       orderBy: {
         start_time: "asc",
       },
     })
 
-    return shifts.map((shift: ShiftDetails) => ({
-      ...shift,
-      numUsers: shift.eventAssignments.length,
-    }))
+    return shifts.map(this.annotateNumUsers)
   }
 
-  async getOpenShifts(hospitalId: number): Promise<ShiftDetails[]> {
+  async getOpenShifts(hospitalId: number): Promise<ShiftWithNumUsers[]> {
     const shifts = await this.prisma.event.findMany({
       where: {
         location: {
@@ -75,71 +88,25 @@ export class EventService {
           none: {},
         },
       },
-      select: {
-        id: true,
-        start_time: true,
-        end_time: true,
-        on_call: true,
-        activity: true,
-        location: true,
-        eventAssignments: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                id: true,
-                first_name: true,
-                last_name: true,
-              },
-            },
-            designation: true,
-          },
-        },
-      },
+      select: this.shiftSelect,
       orderBy: {
         start_time: "asc",
       },
     })
 
-    return shifts.map((shift: ShiftDetails) => ({
-      ...shift,
-      numUsers: shift.eventAssignments.length,
-    }))
+    return shifts.map(this.annotateNumUsers)
   }
 
   async getShift(shiftId: number): Promise<ShiftWithNumUsers | null> {
     const shift = await this.prisma.event.findUnique({
       where: { id: shiftId },
-      select: {
-        id: true,
-        start_time: true,
-        end_time: true,
-        on_call: true,
-        activity: true,
-        location: true,
-        eventAssignments: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                id: true,
-                first_name: true,
-                last_name: true,
-              },
-            },
-            designation: true,
-          },
-        },
-      },
+      select: this.shiftSelect,
     })
 
     if (!shift) {
       return null
     }
 
-    return {
-      ...shift,
-      numUsers: shift.eventAssignments.length,
-    }
+    return this.annotateNumUsers(shift)
   }
 }
