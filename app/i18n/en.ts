@@ -60,26 +60,6 @@ const en = {
     demoViaTxProp: "Via `tx` Prop",
     demoViaSpecifiedTxProp: "Via `{{prop}}Tx` Prop",
   },
-  dashboardTeamsScreen: {
-    howTo: "HOW TO",
-    title: "Teams Page (currently has debugging info)",
-    tagLine:
-      "Congratulations, you've got a very advanced React Native app template here.  Take advantage of this boilerplate!",
-    reactotron: "Send to Reactotron",
-    reportBugs: "Report Bugs",
-    demoList: "Demo List",
-    dashboardRequests: "Dashboard Requests",
-    androidReactotronHint:
-      "If this doesn't work, ensure the Reactotron desktop app is running, run adb reverse tcp:9090 tcp:9090 from your terminal, and reload the app.",
-    iosReactotronHint:
-      "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
-    macosReactotronHint:
-      "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
-    webReactotronHint:
-      "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
-    windowsReactotronHint:
-      "If this doesn't work, ensure the Reactotron desktop app is running and reload app.",
-  },
   dashboardRequestsScreen: {
     title: "Requests",
     helperText:
