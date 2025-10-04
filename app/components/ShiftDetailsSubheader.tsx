@@ -4,7 +4,7 @@ import { useTheme, XStack } from "tamagui"
 import { BodyText } from "./BodyText"
 import { Icon } from "./Icon"
 
-const SESSION_LABEL_BG_COLOUR_MAP: Record<Session, string> = {
+export const SESSION_LABEL_BG_COLOUR_MAP: Record<Session, string> = {
   AM: "yellow300",
   PM: "red300",
   AH: "secondary300",
