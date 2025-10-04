@@ -12,9 +12,9 @@ interface LozengeProps {
     | "available"
     | "requested"
     | "urgent"
-    | "approved"
-    | "awaiting"
-    | "declined"
+    | "APPROVED"
+    | "AWAITING"
+    | "DECLINED"
     | "assigned"
     | "openShift"
   active?: boolean
@@ -65,19 +65,19 @@ export const LOZENGE_CONFIG: Record<LozengeProps["type"], LozengeConfig> = {
     bgColor: "red500",
     textColor: "red800",
   },
-  approved: {
+  APPROVED: {
     text: "Approved",
     bgColor: "green500",
     selectedBgColor: "green500",
     textColor: "green800",
   },
-  awaiting: {
+  AWAITING: {
     text: "Awaiting",
     bgColor: "yellow400",
     selectedBgColor: "yellow400",
     textColor: "yellow800",
   },
-  declined: {
+  DECLINED: {
     text: "Declined",
     bgColor: "red500",
     selectedBgColor: "red500",
