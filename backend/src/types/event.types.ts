@@ -21,9 +21,29 @@ export type ShiftDetails = Prisma.EventGetPayload<{
         designation: true
       }
     }
+    eventSessions: {
+      select: {
+        session: true
+      }
+    }
   }
 }>
 
-export type ShiftWithNumUsers = ShiftDetails & {
+export type ShiftWithNumUsers = {
+  id: number
+  start_time: Date
+  end_time: Date
+  on_call: boolean
+  activity: string | null
+  location: string
+  eventAssignments: Array<{
+    user: {
+      id: number
+      first_name: string
+      last_name: string | null
+    }
+    designation: string | null
+  }>
+  eventSessions: string[]
   numUsers: number
 }

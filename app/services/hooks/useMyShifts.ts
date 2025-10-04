@@ -2,18 +2,18 @@ import { useQuery } from "@tanstack/react-query"
 
 import { eventApi } from "../api/eventApi"
 
-export const useEvents = () => {
+export const useMyShifts = () => {
   const {
-    data: events,
+    data: myShifts,
     error,
     isPending,
     isFetching,
   } = useQuery({
-    queryKey: ["events"],
+    queryKey: ["my-shifts"],
     queryFn: eventApi.getMyShifts,
     select: (result) => result.data,
     refetchOnMount: false,
   })
 
-  return { events, error, isPending, isFetching }
+  return { myShifts, error, isPending, isFetching }
 }

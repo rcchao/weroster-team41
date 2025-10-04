@@ -37,7 +37,7 @@ export function OpenShiftsScreen(_props: Props) {
           {openShifts.map((event: ShiftWithNumUsers) => (
             <View key={event.id}>
               <BodyText variant="body4">
-                {event.id}: {event.activity?.name} @ {event.location?.name} on{" "}
+                {event.id}: {event.activity} @ {event.location} on{" "}
                 {format(event.start_time!, "dd MMM yyyy 'at' h:mma")} to{" "}
                 {format(event.end_time!, "h:mma")} with {event.numUsers} users
               </BodyText>
