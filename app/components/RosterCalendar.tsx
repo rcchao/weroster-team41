@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
 import { format, parseISO } from "date-fns"
 import { AgendaList, CalendarProvider, ExpandableCalendar } from "react-native-calendars"
-import { View, Text } from "tamagui"
+import { View, Text, useTheme } from "tamagui"
 
 import { ShiftWithNumUsers } from "backend/src/types/event.types"
 
@@ -74,6 +74,8 @@ function buildAgendaSections(shifts: ShiftWithNumUsers[]) {
 }
 
 export const RosterCalendar = ({ events }: RosterCalendarProps) => {
+  const theme = useTheme()
+
   // Default day chosen should be today
   const firstDate = format(new Date(), "yyyy-MM-dd")
 
@@ -95,6 +97,19 @@ export const RosterCalendar = ({ events }: RosterCalendarProps) => {
         markedDates={markedDates}
         allowShadow
         dayComponent={DayPill}
+        calendarHeight={200}
+        theme={{
+          monthTextColor: theme.primary500.val,
+          textMonthFontSize: 16,
+          textMonthFontFamily: "Inter",
+
+          textSectionTitleColor: theme.mono900.val,
+          textSectionTitleDisabledColor: "#DDD",
+          textDayHeaderFontSize: 14,
+
+          arrowColor: theme.accent400.val,
+          disabledArrowColor: theme.mono400.val,
+        }}
       />
       <AgendaList
         sections={sections}

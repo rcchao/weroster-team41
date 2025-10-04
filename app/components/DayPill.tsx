@@ -47,15 +47,15 @@ export const DayPill = ({
 
   const hasNight = events.some((e) => isNight(e.startsAt))
   const hasDay = events.some((e) => isDay(e.startsAt))
-  const icon: "moon" | "sun" | null = hasNight ? "moon" : hasDay ? "sun" : null
+  const icon: "afterHours" | "am" | null = hasNight ? "afterHours" : hasDay ? "am" : null
 
   // Build up to two dots; filled if assigned
   const dots = events.slice(0, 2).map((e) => e.status === "assigned")
 
   const colors = {
-    pillDefault: theme.white400.val,
+    pillDefault: theme.white100.val,
     pillSelected: theme.secondary500.val,
-    pillWithEvents: theme.mono200.val,
+    pillWithEvents: theme.white400.val,
     textDark: theme.mono900.val,
   }
 
@@ -78,7 +78,13 @@ export const DayPill = ({
       <View style={[styles.pill, { backgroundColor: pillBg }]}>
         {/* Icon (or nothing if no events) */}
         <View style={styles.iconWrapper}>
-          {icon && <Icon icon={icon} size={14} color={isSelected ? "#fff" : colors.textDark} />}
+          {icon && (
+            <Icon
+              icon={icon}
+              size={16}
+              color={isSelected ? theme.white100.val : theme.mono300.val}
+            />
+          )}
         </View>
 
         {/* Day number */}
@@ -111,15 +117,15 @@ export const DayPill = ({
 }
 
 // Checks if the given date can be classified as "nighttime"
-function isNight(v: Date): boolean {
-  const h = getHours(v)
-  return h >= 18 || h < 6
+function isNight(date: Date): boolean {
+  const hour = getHours(date)
+  return hour >= 18 || hour < 6
 }
 
 // Checks if the given date can be classified as "daytime"
-function isDay(v: Date): boolean {
-  const h = getHours(v)
-  return h >= 6 && h < 18
+function isDay(date: Date): boolean {
+  const hour = getHours(date)
+  return hour >= 6 && hour < 18
 }
 
 const styles = StyleSheet.create({
@@ -135,9 +141,9 @@ const styles = StyleSheet.create({
   pill: {
     alignItems: "center",
     borderRadius: 12,
-    height: 60,
+    height: 55,
     justifyContent: "space-between", // spreads icon, number, dots vertically
     paddingVertical: 6,
-    width: 45,
+    width: 40,
   },
 })

@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-calendars/src/expandableCalendar/index.js b/node_modules/react-native-calendars/src/expandableCalendar/index.js
+index bea00e0..9d31354 100644
+--- a/node_modules/react-native-calendars/src/expandableCalendar/index.js
++++ b/node_modules/react-native-calendars/src/expandableCalendar/index.js
+@@ -23,7 +23,7 @@ export var Positions;
+ })(Positions || (Positions = {}));
+ const SPEED = 20;
+ const BOUNCINESS = 6;
+-const WEEK_HEIGHT = 46;
++const WEEK_HEIGHT = 70;
+ const DAY_NAMES_PADDING = 24;
+ const PAN_GESTURE_THRESHOLD = 30;
+ const LEFT_ARROW = require('../calendar/img/previous.png');
