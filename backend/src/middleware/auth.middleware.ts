@@ -36,7 +36,6 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
     }
 
     const token = parts[1]
-    console.log("\n\n\n TOKEN", token)
 
     try {
       // Decode and verify existing JWT token

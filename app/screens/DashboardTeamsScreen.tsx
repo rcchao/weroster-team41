@@ -9,7 +9,9 @@ import {
   ViewStyle,
 } from "react-native"
 import * as Application from "expo-application"
+import { format } from "date-fns"
 
+import { BodyText } from "@/components/BodyText"
 import { Button } from "@/components/Button"
 import { ListItem } from "@/components/ListItem"
 import { Screen } from "@/components/Screen"
@@ -17,6 +19,7 @@ import { Text } from "@/components/Text"
 import { useAuth } from "@/context/AuthContext"
 import { isRTL } from "@/i18n"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
+import { useTeamMemberData } from "@/services/hooks/useTeamMemberData"
 import { useAppTheme } from "@/theme/context"
 import { $styles } from "@/theme/styles"
 import type { ThemedStyle } from "@/theme/types"
@@ -35,6 +38,8 @@ export const DashboardTeamsScreen: FC<DashboardTabScreenProps<"DashboardTeams">>
   function DashboardTeamsScreen(_props) {
     const { setThemeContextOverride, themeContext, themed } = useAppTheme()
     const { logout } = useAuth()
+    const { teamMemberData } = useTeamMemberData()
+    const firstTeamMember = teamMemberData?.[0]
 
     // @ts-expect-error
     const usingFabric = global.nativeFabricUIManager != null
@@ -83,6 +88,18 @@ export const DashboardTeamsScreen: FC<DashboardTabScreenProps<"DashboardTeams">>
         />
 
         <Text style={themed($title)} preset="heading" tx="dashboardTeamsScreen:title" />
+        {firstTeamMember && (
+          <BodyText variant="body4">
+            {firstTeamMember.first_name} {firstTeamMember.last_name}
+            {"\n"}
+            {format(firstTeamMember.start_time!, "HH:mm")} -{" "}
+            {format(firstTeamMember.end_time!, "HH:mm")}
+            {"\n"}
+            {firstTeamMember.designation_title}
+            {"\n"}
+            {firstTeamMember.location_name}
+          </BodyText>
+        )}
         <Text preset="bold">Current system theme: {colorScheme}</Text>
         <Text preset="bold">Current app theme: {themeContext}</Text>
         <Button onPress={resetTheme} text={`Reset`} />
