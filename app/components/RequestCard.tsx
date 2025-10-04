@@ -5,18 +5,18 @@ import { BodyText } from "./BodyText"
 import { Lozenge } from "./Lozenge"
 import { RequestTypeIcon } from "./RequestTypeIcon"
 
-type RequestType = "leave" | "swap" | "openShift"
+export type RequestType = "LEAVE" | "SWAP" | "ASSIGNMENT"
 
 interface RequestCardProps {
   requestType: RequestType
   date: Date
-  status: "approved" | "awaiting" | "declined"
+  status: "APPROVED" | "AWAITING" | "DECLINED"
 }
 
 const REQUEST_MAP: Record<RequestType, string> = {
-  leave: "Leave",
-  swap: "Swap",
-  openShift: "OpenShift",
+  LEAVE: "Leave",
+  SWAP: "Swap",
+  ASSIGNMENT: "OpenShift",
 }
 
 export const RequestCard = (props: RequestCardProps) => {
