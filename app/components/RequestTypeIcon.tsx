@@ -3,16 +3,16 @@ import { Group, useTheme } from "tamagui"
 import { Icon, IconTypes } from "./Icon"
 
 export const REQUEST_TYPE_ICON_MAP: Record<string, IconTypes> = {
-  leave: "leave",
-  swap: "swap",
-  openShift: "openShift",
+  LEAVE: "leave",
+  SWAP: "swap",
+  ASSIGNMENT: "openShift",
   default: "meh",
 }
 
 export const REQUEST_TYPE_COLOR_MAP: Record<string, string> = {
-  leave: "secondary400",
-  swap: "yellow400",
-  openShift: "green500",
+  LEAVE: "secondary400",
+  SWAP: "yellow400",
+  ASSIGNMENT: "green500",
   default: "mono300",
 }
 
