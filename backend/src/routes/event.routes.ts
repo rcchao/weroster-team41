@@ -36,14 +36,14 @@ router.get("/open-shifts", authenticate, async (req, res) => {
     const service = new EventService(req.app.locals.prisma)
 
     // Ensure user is authenticated
-    if (!req.userId) {
+    if (!req.userId || !req.userHospitalId) {
       return res.status(HttpStatus.UNAUTHORIZED).json({
         success: false,
-        error: "User not authenticated",
+        error: "User not authenticated or Hospital unknown",
       })
     }
 
-    const openShifts = await service.getOpenShifts(req.userId)
+    const openShifts = await service.getOpenShifts(req.userId, req.userHospitalId)
 
     res.json({
       success: true,
