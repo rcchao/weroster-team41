@@ -1,11 +1,10 @@
 import { FC } from "react"
 import { Pressable } from "react-native"
 import { ViewStyle } from "react-native"
-import { TextStyle } from "react-native"
-import { XStack, YStack, Checkbox } from "tamagui"
+import { XStack, YStack, Checkbox, useTheme } from "tamagui"
 
+import { BodyText } from "@/components/BodyText"
 import { Icon } from "@/components/Icon"
-import { Text } from "@/components/Text"
 import { colors } from "@/theme/colors"
 import { useAppTheme } from "@/theme/context"
 import { spacing } from "@/theme/spacing"
@@ -27,26 +26,32 @@ export const DashboardSettingsCard: FC<DashboardSettingsCardProps> = ({
   onDrag,
 }) => {
   const { themed } = useAppTheme()
+  const theme = useTheme()
 
   return (
     <XStack style={themed($dashboardCard)}>
       <Checkbox
         testID="checkbox"
-        style={themed($checkbox)}
+        borderColor={theme.accent500.val}
+        borderWidth={1.5}
         checked={checked}
         onCheckedChange={(state) => onToggle(state === true)}
       >
         <Checkbox.Indicator>
-          <Icon icon="check" size={16} color={colors.palette.secondary200} />
+          <Icon icon="check" size={16} color={theme.accent500.val} />
         </Checkbox.Indicator>
       </Checkbox>
       <YStack flex={1}>
-        <Text testID="settings-card-title" style={themed($titleStyle)}>
+        <BodyText testID="settings-card-title" variant="body" marginLeft={16}>
+          
           {title}
-        </Text>
-        <Text testID="settings-card-subtitle" style={themed($subtitleStyle)}>
+        
+        </BodyText>
+        <BodyText testID="settings-card-subtitle" variant="body3" marginLeft={16}>
+          
           {subtitle}
-        </Text>
+        
+        </BodyText>
       </YStack>
       <Pressable onPress={onDrag} hitSlop={10}>
         <Icon icon="alignJustify" size={24} color={colors.border} />
@@ -55,32 +60,9 @@ export const DashboardSettingsCard: FC<DashboardSettingsCardProps> = ({
   )
 }
 
-export const $checkbox: ThemedStyle<ViewStyle> = () => ({
-  borderColor: colors.palette.secondary200,
-  borderWidth: 3,
-  size: 16,
-})
-
-export const $titleStyle: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontFamily: typography.primary.bold,
-  fontSize: 16,
-  marginLeft: spacing.md,
-})
-
-export const $subtitleStyle: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontFamily: typography.primary.regular,
-  fontSize: 12,
-  marginLeft: spacing.md,
-})
-
 export const $dashboardCard: ThemedStyle<ViewStyle> = (theme) => ({
   alignItems: "center",
   backgroundColor: theme.colors.background,
-  borderBottomWidth: 1,
-  borderBottomColor: theme.colors.border,
-  borderRadius: spacing.sm,
   justifyContent: "space-between",
-  marginBottom: spacing.md,
-  marginVertical: spacing.xs,
   padding: spacing.md,
 })
