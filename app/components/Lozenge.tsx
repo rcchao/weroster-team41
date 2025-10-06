@@ -4,19 +4,21 @@ import { Button, useTheme } from "tamagui"
 import { BodyText } from "./BodyText"
 import { Icon, IconTypes } from "./Icon"
 
+export type LozengeType =
+  | "leave"
+  | "swap"
+  | "event"
+  | "AVAILABLE"
+  | "REQUESTED"
+  | "URGENT"
+  | "APPROVED"
+  | "AWAITING"
+  | "DECLINED"
+  | "assigned"
+  | "openShift"
+
 interface LozengeProps {
-  type:
-    | "leave"
-    | "swap"
-    | "event"
-    | "available"
-    | "requested"
-    | "urgent"
-    | "APPROVED"
-    | "AWAITING"
-    | "DECLINED"
-    | "assigned"
-    | "openShift"
+  type: LozengeType
   active?: boolean
   onPress?: () => void
 }
@@ -50,17 +52,17 @@ export const LOZENGE_CONFIG: Record<LozengeProps["type"], LozengeConfig> = {
     bgColor: "mono100",
     textColor: "mono900",
   },
-  available: {
+  AVAILABLE: {
     text: "Available",
     bgColor: "green500",
     textColor: "green800",
   },
-  requested: {
+  REQUESTED: {
     text: "Requested",
     bgColor: "mono100",
     textColor: "mono900",
   },
-  urgent: {
+  URGENT: {
     text: "Urgent",
     bgColor: "red500",
     textColor: "red800",
