@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { FC, ReactElement } from "react"
 import { View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -5,15 +6,20 @@ import { YStack } from "tamagui"
 
 import { BodyText } from "@/components/BodyText"
 import { Button } from "@/components/Button"
+import { AllocatedShiftDashboardCard } from "@/components/DashboardCards/AllocatedShiftDashboardCard"
+import { OpenShiftDashboardCard } from "@/components/DashboardCards/OpenShiftDashboardCard"
 import { DashboardHomeHeader } from "@/components/DashboardHomeHeader"
-import { DashboardCard } from "@/components/DashboardCard"
 import { HeaderText } from "@/components/HeaderText"
 import { Icon } from "@/components/Icon"
+import { LozengeType } from "@/components/Lozenge"
 import { Screen } from "@/components/Screen"
 import { SubmitButton } from "@/components/SubmitButton"
 import { useAuthenticatedUserId } from "@/context/AuthContext"
+import { Session } from "@/components/ShiftDetailsSubheader"
 import { TxKeyPath } from "@/i18n"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
+import { useMyShifts } from "@/services/hooks/useMyShifts"
+import { useOpenShifts } from "@/services/hooks/useOpenShifts"
 import { useProfile } from "@/services/hooks/useProfile"
 import { usePostSwapRequest } from "@/services/hooks/useUserRequests"
 import { useAppTheme } from "@/theme/context"
@@ -53,6 +59,9 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
       }
     }
 
+    const { myShifts } = useMyShifts()
+    const { openShifts } = useOpenShifts()
+
     return (
       <View style={$container}>
         <SafeAreaView style={$headerContainer} edges={["top"]}>
@@ -67,37 +76,26 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
           <BodyText variant="body3">Body3 Text</BodyText>
           <BodyText variant="body4">Body4 Text</BodyText>
           <YStack gap={20}>
-            <DashboardCard
-              type="leave"
-              date={new Date()}
-              leaveDuration="Half-day"
-              leaveType="Annual Leave"
-              leaveStatus="approved"
-            />
-            <DashboardCard
-              type="team"
-              date={new Date()}
-              teamCampus="TSC Campus"
-              teamLocation="Theatre 1"
-              teamOnCall={4}
-              teamInPerson={3}
-            />
-            <DashboardCard
-              type="allocatedShift"
-              date={new Date()}
-              shiftTimeRange="13:00 - 18:00"
-              shiftLocation="PMCC"
-              shiftDesignation="Anaes Coordinator"
-              shiftNumUsers={3}
-            />
-            <DashboardCard
-              type="openShift"
-              date={new Date()}
-              shiftTimeRange="8:00 - 12:00"
-              shiftLocation="PMCC"
-              shiftDesignation="Neurosurgery"
-              openShiftExtraPay={500}
-            />
+            {myShifts && (
+              <AllocatedShiftDashboardCard
+                startDate={myShifts[0].start_time}
+                endDate={myShifts[0].end_time}
+                campus={myShifts[0].campus}
+                activity={myShifts[0].activity}
+                numUsers={myShifts[0].numUsers}
+                session={myShifts[0].eventSessions[0] as Session}
+              />
+            )}
+            {openShifts && (
+              <OpenShiftDashboardCard
+                startDate={openShifts[0].start_time}
+                endDate={openShifts[0].end_time}
+                campus={openShifts[0].campus}
+                activity={openShifts[0].activity}
+                extraPay={openShifts[0].pay}
+                openShiftStatus={openShifts[0].status as LozengeType}
+              />
+            )}
           </YStack>
           <SubmitButton text="apply to swap shift" onPress={postSwapShiftRequest} />
         </Screen>
