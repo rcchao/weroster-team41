@@ -1,9 +1,11 @@
 import { useMemo, useState } from "react"
 import { format, parseISO } from "date-fns"
 import { AgendaList, CalendarProvider, ExpandableCalendar } from "react-native-calendars"
-import { View, Text } from "tamagui"
+import { View, Text, useTheme } from "tamagui"
 
 import { ShiftWithNumUsers } from "backend/src/types/event.types"
+
+import { CustomMarking, DayEvent, DayPill } from "./DayPill"
 
 interface RosterCalendarProps {
   events: ShiftWithNumUsers[]
@@ -29,7 +31,7 @@ function buildAgendaSections(shifts: ShiftWithNumUsers[]) {
   const sections: AgendaSection[] = []
 
   // Store calendar markings to show on the calendar.
-  const marked: Record<string, any> = {}
+  const marked: Record<string, CustomMarking> = {}
 
   for (const shift of shifts) {
     const start = shift.start_time
@@ -53,13 +55,27 @@ function buildAgendaSections(shifts: ShiftWithNumUsers[]) {
       sections.push({ title: dateKey, data: [item] })
     }
 
-    marked[dateKey] = { marked: true }
+    // Add data to your DayPill needs on each date
+    const dayEvent: DayEvent = {
+      id: String(shift.id),
+      startsAt: start,
+      // Used to distinguish between assigned and open shifts (currently just assumed all assigned)
+      status: "assigned",
+    }
+
+    if (marked[dateKey]) {
+      marked[dateKey].events?.push(dayEvent)
+    } else {
+      marked[dateKey] = { marked: true, events: [dayEvent] }
+    }
   }
 
   return { sections, marked }
 }
 
 export const RosterCalendar = ({ events }: RosterCalendarProps) => {
+  const theme = useTheme()
+
   // Default day chosen should be today
   const firstDate = format(new Date(), "yyyy-MM-dd")
 
@@ -76,7 +92,25 @@ export const RosterCalendar = ({ events }: RosterCalendarProps) => {
 
   return (
     <CalendarProvider date={selected} onDateChanged={setSelected} showTodayButton>
-      <ExpandableCalendar firstDay={1} markedDates={markedDates} allowShadow />
+      <ExpandableCalendar
+        firstDay={1}
+        markedDates={markedDates}
+        allowShadow
+        dayComponent={DayPill}
+        calendarHeight={200}
+        theme={{
+          monthTextColor: theme.primary500.val,
+          textMonthFontSize: 16,
+          textMonthFontFamily: "Inter",
+
+          textSectionTitleColor: theme.mono900.val,
+          textSectionTitleDisabledColor: "#DDD",
+          textDayHeaderFontSize: 14,
+
+          arrowColor: theme.accent400.val,
+          disabledArrowColor: theme.mono400.val,
+        }}
+      />
       <AgendaList
         sections={sections}
         keyExtractor={(item) => item.id}
