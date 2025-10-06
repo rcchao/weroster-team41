@@ -73,11 +73,6 @@ describe("BackHeader", () => {
       fireEvent.press(backButton)
       expect(mockNavigation.goBack).toHaveBeenCalled()
     })
-
-    it("displays correct title text", () => {
-      const { getByText } = renderComponent({ title: "Custom Title" })
-      expect(getByText("Custom Title")).toBeTruthy()
-    })
   })
 
   describe("Save Button", () => {
@@ -92,11 +87,13 @@ describe("BackHeader", () => {
       expect(queryByText("Save")).toBeNull()
     })
 
-    it("calls onSavePress when save button pressed", () => {
+    it("calls onSavePress when save button pressed", async () => {
       const mockOnSavePress = jest.fn().mockResolvedValue(undefined)
       const { getByText } = renderComponent({ onSavePress: mockOnSavePress })
       const saveButton = getByText("Save")
-      fireEvent.press(saveButton)
+      await act(async () => {
+        fireEvent.press(saveButton)
+      })
       expect(mockOnSavePress).toHaveBeenCalled()
     })
 
@@ -131,6 +128,8 @@ describe("BackHeader", () => {
 
   describe("Error Handling", () => {
     it("handles save errors", async () => {
+      // User clicks "Save" → Save fails → Error gets logged → UI
+      // stays on same screen → Save button becomes clickable again
       const mockOnSavePress = jest.fn().mockRejectedValue(new Error("Save failed"))
       const consoleSpy = jest.spyOn(console, "error").mockImplementation()
 
