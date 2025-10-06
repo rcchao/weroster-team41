@@ -13,10 +13,10 @@ jest.mock("@/components/Icon", () => ({
 }))
 
 jest.mock("@/components/Text", () => ({
-  Text: ({ children, style }: any) => {
+  Text: ({ children, style, testID }: any) => {
     const MockText = require("react-native").Text
     return (
-      <MockText style={style} testID="mock-text">
+      <MockText style={style} testID={testID}>
         {children}
       </MockText>
     )
@@ -52,9 +52,9 @@ describe("DashboardSettingsCard", () => {
   })
 
   it("renders title and subtitle", () => {
-    const { getByText } = renderComponent()
-    expect(getByText("Test Card")).toBeTruthy()
-    expect(getByText("Test Subtitle")).toBeTruthy()
+    const { getByTestId } = renderComponent()
+    expect(getByTestId("settings-card-title").props.children).toBe("Test Card")
+    expect(getByTestId("settings-card-subtitle").props.children).toBe("Test Subtitle")
   })
 
   it("renders checkbox correctly", () => {
@@ -64,18 +64,16 @@ describe("DashboardSettingsCard", () => {
   })
 
   it("calls onToggle when checkbox pressed", () => {
-    const mockOnToggle = jest.fn()
-    const { getByTestId } = renderComponent({ onToggle: mockOnToggle })
+    const { getByTestId } = renderComponent()
     const checkbox = getByTestId("checkbox")
     fireEvent.press(checkbox)
-    expect(mockOnToggle).toHaveBeenCalled()
+    expect(defaultProps.onToggle).toHaveBeenCalled()
   })
 
   it("calls onDrag when drag icon pressed", () => {
-    const mockOnDrag = jest.fn()
-    const { getByText } = renderComponent({ onDrag: mockOnDrag })
+    const { getByText } = renderComponent()
     const dragIcon = getByText("Icon: alignJustify")
     fireEvent.press(dragIcon.parent)
-    expect(mockOnDrag).toHaveBeenCalled()
+    expect(defaultProps.onDrag).toHaveBeenCalled()
   })
 })

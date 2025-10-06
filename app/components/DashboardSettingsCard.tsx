@@ -41,8 +41,12 @@ export const DashboardSettingsCard: FC<DashboardSettingsCardProps> = ({
         </Checkbox.Indicator>
       </Checkbox>
       <YStack flex={1}>
-        <Text style={themed($titleStyle)}>{title}</Text>
-        <Text style={themed($subtitleStyle)}>{subtitle}</Text>
+        <Text testID="settings-card-title" style={themed($titleStyle)}>
+          {title}
+        </Text>
+        <Text testID="settings-card-subtitle" style={themed($subtitleStyle)}>
+          {subtitle}
+        </Text>
       </YStack>
       <Pressable onPress={onDrag} hitSlop={10}>
         <Icon icon="alignJustify" size={24} color={colors.border} />
