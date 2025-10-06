@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import type { Event } from ".prisma/client"
-import { ShiftDetails, ShiftWithNumUsers } from "../types/event.types"
+import { ShiftDetails, ShiftWithNumUsers, OpenShift } from "../types/event.types"
 
 export class EventService {
   // Use prisma client for DB operations/interactions -> Prisma is how we interact with the DB
@@ -13,7 +12,20 @@ export class EventService {
     end_time: true,
     on_call: true,
     activity: true,
-    location: true,
+    pay: true,
+    location: {
+      select: {
+        id: true,
+        name: true,
+        campus: {
+          select: {
+            id: true,
+            name: true,
+            address: true,
+          },
+        },
+      },
+    },
     eventAssignments: {
       select: {
         id: true,
@@ -44,6 +56,10 @@ export class EventService {
       activity: shift.activity?.name ?? null,
       location_id: shift.location.id,
       location: shift.location.name,
+      campus_id: shift.location.campus.id,
+      campus: shift.location.campus.name,
+      campus_address: shift.location.campus.address,
+      pay: shift.pay,
       eventAssignments: shift.eventAssignments.map((assignment) => ({
         user: {
           id: assignment.user.id,
@@ -55,6 +71,36 @@ export class EventService {
       eventSessions: shift.eventSessions.map((es) => es.session),
       numUsers: shift.eventAssignments.length,
     }
+  }
+
+  private async annotateWithStatus(
+    shifts: ShiftWithNumUsers[],
+    userId: number,
+  ): Promise<OpenShift[]> {
+    // Fetch all requests made by this user
+    const requests = await this.prisma.assignmentRequest.findMany({
+      where: { user_id: userId },
+      select: { event_id: true },
+    })
+
+    const requestedEventIds = new Set(requests.map((r) => r.event_id))
+    const now = new Date()
+    const threeDaysFromNow = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000)
+
+    // Enforcing status must be one of the following 3 statuses
+    let status: "URGENT" | "REQUESTED" | "AVAILABLE"
+
+    return shifts.map((shift) => {
+      if (requestedEventIds.has(shift.id)) {
+        status = "REQUESTED"
+      } else if (shift.start_time < threeDaysFromNow) {
+        status = "URGENT"
+      } else {
+        status = "AVAILABLE"
+      }
+
+      return { ...shift, status }
+    })
   }
 
   async getMyShifts(user_id: number): Promise<ShiftWithNumUsers[]> {
@@ -76,7 +122,7 @@ export class EventService {
     return shifts.map(this.annotateWithNumUsers)
   }
 
-  async getOpenShifts(hospitalId: number): Promise<ShiftWithNumUsers[]> {
+  async getOpenShifts(user_id: number, hospitalId: number): Promise<OpenShift[]> {
     const shifts = await this.prisma.event.findMany({
       where: {
         location: {
@@ -95,7 +141,8 @@ export class EventService {
       },
     })
 
-    return shifts.map(this.annotateWithNumUsers)
+    const withNumUsers = shifts.map(this.annotateWithNumUsers)
+    return await this.annotateWithStatus(withNumUsers, user_id)
   }
 
   async getShift(shiftId: number): Promise<ShiftWithNumUsers | null> {

@@ -7,7 +7,20 @@ export type ShiftDetails = Prisma.EventGetPayload<{
     end_time: true
     on_call: true
     activity: true
-    location: true
+    pay: true
+    location: {
+      select: {
+        id: true
+        name: true
+        campus: {
+          select: {
+            id: true
+            name: true
+            address: true
+          }
+        }
+      }
+    }
     eventAssignments: {
       select: {
         id: true
@@ -38,6 +51,9 @@ export type ShiftWithNumUsers = {
   activity: string | null
   location_id: number
   location: string
+  campus_id: number
+  campus: string
+  campus_address: string | null
   eventAssignments: Array<{
     user: {
       id: number
@@ -48,4 +64,9 @@ export type ShiftWithNumUsers = {
   }>
   eventSessions: string[]
   numUsers: number
+  pay: number | null
+}
+
+export type OpenShift = ShiftWithNumUsers & {
+  status: string
 }

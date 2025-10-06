@@ -2,7 +2,7 @@ import { View } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { format } from "date-fns"
 
-import { ShiftWithNumUsers } from "backend/src/types/event.types"
+import { OpenShift } from "backend/src/types/event.types"
 
 import { BodyText } from "@/components/BodyText"
 import { Screen } from "@/components/Screen"
@@ -34,12 +34,13 @@ export function OpenShiftsScreen(_props: Props) {
 
       {openShifts && (
         <View>
-          {openShifts.map((event: ShiftWithNumUsers) => (
+          {openShifts.map((event: OpenShift) => (
             <View key={event.id}>
               <BodyText variant="body4">
                 {event.id}: {event.activity} @ {event.location} on{" "}
                 {format(event.start_time!, "dd MMM yyyy 'at' h:mma")} to{" "}
-                {format(event.end_time!, "h:mma")} with {event.numUsers} users
+                {format(event.end_time!, "h:mma")} with {event.numUsers} users with pay {event.pay}{" "}
+                and status {event.status}
               </BodyText>
             </View>
           ))}
