@@ -14,7 +14,7 @@ interface InfoSectionProps {
 export const INFO_META_MAP: Record<InfoType, { title: string; icon: IconTypes }> = {
   phone: { title: "Phone Number", icon: "phone" },
   email: { title: "Email Address", icon: "mail" },
-  preference: { title: "Preference", icon: "lucideHeart" },
+  preference: { title: "Preference", icon: "heart" },
   accreditation: { title: "Accreditation", icon: "cross" },
 }
 
