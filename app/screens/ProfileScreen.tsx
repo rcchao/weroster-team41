@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useState } from "react"
 import { Spinner, YStack, Button } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
@@ -17,11 +17,27 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
   const { profile, error, isFetching, isPending } = useProfile()
   const { logout } = useAuth()
 
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
   // Can be refactored - useProfile() should return isLoading
   const isLoading = isPending || isFetching
 
   const handleSavePress = async () => {
     await new Promise((resolve) => setTimeout(resolve, 1000))
+  }
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return
+
+    setIsLoggingOut(true)
+
+    try {
+      // logout is synchronous
+      await new Promise((resolve) => setTimeout(resolve, 600))
+      logout()
+    } finally {
+      setIsLoggingOut(false)
+    }
   }
 
   return (
@@ -45,12 +61,26 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
         </YStack>
       )}
 
-      {profile && (
-        <YStack justifyContent="center" alignItems="center" margin={20} marginBlockStart={40}>
-          <ProfileInfoCard profile={profile} />
-        </YStack>
-      )}
-      <Button onPress={logout}> Log out </Button>
+      <YStack
+        justifyContent="center"
+        alignItems="center"
+        margin={20}
+        marginBlockStart={40}
+        gap={30}
+      >
+        {profile && <ProfileInfoCard profile={profile} />}
+        <Button
+          width="50%"
+          borderRadius="$radius.10"
+          borderColor="$red900"
+          backgroundColor="$red500"
+          fontWeight={900}
+          onPress={handleLogout}
+          disabled={isLoggingOut ? true : false}
+        >
+          {isLoggingOut ? "Logging out..." : "Log out"}
+        </Button>
+      </YStack>
     </Screen>
   )
 }
