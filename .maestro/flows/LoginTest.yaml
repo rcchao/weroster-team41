@@ -13,12 +13,7 @@ appId: com.weroster
 - assertVisible: "Login"
 
 # Perform login
-- tapOn: "Email"
-- inputText: "a@gmail.com"
-- tapOn: "Password"
-- inputText: "password"
-- tapOn: "Login"
-- waitForAnimationToEnd
+- runFlow: auth.yaml
 
 # Check home screen loads properly
 - assertVisible: "Home"

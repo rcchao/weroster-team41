@@ -1,8 +1,5 @@
 appId: com.weroster
 ---
-- launchApp
-- waitForAnimationToEnd
-
 # Perform login
 - tapOn: "Email"
 - inputText: "a@gmail.com"
