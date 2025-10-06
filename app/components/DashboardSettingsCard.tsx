@@ -36,7 +36,7 @@ export const DashboardSettingsCard: FC<DashboardSettingsCardProps> = ({
         onCheckedChange={(state) => onToggle(state === true)}
       >
         <Checkbox.Indicator>
-          <Icon icon="lucideCheck" size={16} color={colors.palette.secondary200} />
+          <Icon icon="check" size={16} color={colors.palette.secondary200} />
         </Checkbox.Indicator>
       </Checkbox>
       <YStack flex={1}>
