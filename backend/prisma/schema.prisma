@@ -134,7 +134,7 @@ model Event {
   start_time DateTime @db.DateTime(0)
   end_time   DateTime @db.DateTime(0)
   on_call    Boolean  @default(false)
-  // Note: session field removed - now using many-to-many relation
+  pay        Int      @default(0)
 
   // Foreign keys
   activity_id Int?
