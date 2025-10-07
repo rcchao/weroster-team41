@@ -10,7 +10,7 @@ export const HeaderText = styled(Text, {
   variants: {
     variant: {
       h1: {
-        fontSize: "$5",
+        fontSize: "$6",
         lineHeight: "$6",
       },
       h2: {

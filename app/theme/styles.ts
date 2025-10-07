@@ -46,6 +46,8 @@ export const $headerIcons: ThemedStyle<TextStyle> = () => ({
 
 export const $container: ViewStyle = { flex: 1 }
 
+export const $headerContainer: ViewStyle = { overflow: "visible", zIndex: 999 }
+
 export const $fabButton: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   alignItems: "center",
   backgroundColor: colors.palette.neutral100,
