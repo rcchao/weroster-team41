@@ -1,5 +1,8 @@
 appId: com.weroster
 ---
+- launchApp:
+    appId: com.weroster
+    clearState: true
 # Invalid email
 - tapOn: "Email"
 - inputText: "a@gmail"

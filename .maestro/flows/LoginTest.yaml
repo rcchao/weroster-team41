@@ -1,6 +1,8 @@
 appId: com.weroster
 ---
-- launchApp
+- launchApp:
+    appId: com.weroster
+    clearState: true
 - waitForAnimationToEnd
 
 # Check login screen loads properly
@@ -13,7 +15,7 @@ appId: com.weroster
 - assertVisible: "Login"
 
 # Perform login
-- runFlow: auth.yaml
+- runFlow: ../helpers/auth.yaml
 
 # Check home screen loads properly
 - assertVisible: "Home"
