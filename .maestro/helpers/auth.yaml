@@ -1,0 +1,9 @@
+appId: com.weroster
+---
+# Perform login
+- tapOn: "Email"
+- inputText: "a@gmail.com"
+- tapOn: "Password"
+- inputText: "password"
+- tapOn: "Login"
+- waitForAnimationToEnd

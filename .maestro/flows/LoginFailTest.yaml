@@ -1,0 +1,26 @@
+appId: com.weroster
+---
+- launchApp:
+    appId: com.weroster
+    clearState: true
+# Invalid email
+- tapOn: "Email"
+- inputText: "a@gmail"
+- assertVisible: "Enter a valid email."
+
+# Invalid password
+- tapOn: "Password"
+- inputText: "test"
+- assertVisible: "Min 6 characters are required."
+- eraseText
+- assertVisible: "Password is required."
+
+# Invalid credentials
+- tapOn: "Email"
+- eraseText
+- inputText: "b@gmail.com"
+- tapOn: "Password"
+- eraseText
+- inputText: "wrongpw"
+- tapOn: "Login"
+- assertVisible: "Incorrect email or password."

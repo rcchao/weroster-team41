@@ -1,0 +1,22 @@
+appId: com.weroster
+---
+- launchApp:
+    appId: com.weroster
+    clearState: true
+- waitForAnimationToEnd
+
+# Check login screen loads properly
+- assertVisible:
+    id: "logo"
+- assertVisible: "Welcome"
+- assertVisible: "Domain"
+- assertVisible: "Email"
+- assertVisible: "Password"
+- assertVisible: "Login"
+
+# Perform login
+- runFlow: ../helpers/auth.yaml
+
+# Check home screen loads properly
+- assertVisible: "Home"
+- assertNotVisible: "Login"

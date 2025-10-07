@@ -63,6 +63,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
       <YStack alignItems="stretch" padding={30} gap="$space.8">
         <YStack alignItems="center" gap={20}>
           <Image
+            testID="logo"
             source={require("../../assets/images/logo.png")}
             height={125}
             width={175}

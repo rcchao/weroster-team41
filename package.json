@@ -35,6 +35,8 @@
     "build:android:dev": "eas build --profile development:device --platform android --local",
     "build:android:preview": "eas build --profile preview --platform android --local",
     "build:android:prod": "eas build --profile production --platform android --local",
+    "build:ios:local": "cd ios && xcodebuild -workspace WeRoster.xcworkspace -scheme WeRoster -configuration Release -sdk iphonesimulator -derivedDataPath build && cd ..",
+    "install:ios:sim": "xcrun simctl install booted ios/build/Build/Products/Release-iphonesimulator/weroster.app",
     "prepare": "husky",
     "postinstall": "patch-package"
   },
