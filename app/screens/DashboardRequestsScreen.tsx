@@ -26,8 +26,8 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
         {isPending ? (
           <BodyText variant="body4">Loading...</BodyText>
         ) : userRequests && userRequests.length > 0 ? (
-          userRequests.map((request) => (
-            <XStack key={request.id} justifyContent="center">
+          userRequests.map((request, idx) => (
+            <XStack key={idx} justifyContent="center">
               <RequestCard
                 requestType={request.type as RequestType}
                 startDate={request.start_date}
