@@ -5,6 +5,7 @@ import { View, Text, useTheme } from "tamagui"
 
 import { ShiftWithNumUsers } from "backend/src/types/event.types"
 
+import { BodyText } from "./BodyText"
 import { CustomMarking, DayEvent, DayPill } from "./DayPill"
 import { ShiftCard } from "./ShiftCard"
 
@@ -107,8 +108,28 @@ export const RosterCalendar = ({ events }: RosterCalendarProps) => {
         sections={sections}
         keyExtractor={(item) => item.id}
         dayFormatter={(day) => format(parseISO(day), "EEE, d MMM")}
+        renderSectionHeader={(section) => {
+          const dateKey = section as unknown as string
+          const displayDate = format(dateKey, "yyyy-MM-dd")
+          const isToday = displayDate === format(new Date(), "yyyy-MM-dd")
+
+          return (
+            <View
+              backgroundColor={isToday ? "$secondary500" : "$white400"}
+              height={40}
+              justifyContent="center"
+              paddingInlineStart={30}
+            >
+              <BodyText variant="body2" color={isToday ? "$white100" : "$mono900"}>
+                {isToday
+                  ? `TODAY - ${format(parseISO(dateKey), "EEE, d MMM").toUpperCase()}`
+                  : format(parseISO(dateKey), "EEE, d MMM").toUpperCase()}
+              </BodyText>
+            </View>
+          )
+        }}
         renderItem={({ item }) => (
-          <View paddingHorizontal="$3" paddingVertical="$2">
+          <View paddingHorizontal="$3" paddingVertical={8} backgroundColor="$white100">
             <ShiftCard shift={item.shift} />
           </View>
         )}
