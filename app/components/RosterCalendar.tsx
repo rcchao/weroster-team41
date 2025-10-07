@@ -6,6 +6,7 @@ import { View, Text, useTheme } from "tamagui"
 import { ShiftWithNumUsers } from "backend/src/types/event.types"
 
 import { CustomMarking, DayEvent, DayPill } from "./DayPill"
+import { ShiftCard } from "./ShiftCard"
 
 interface RosterCalendarProps {
   events: ShiftWithNumUsers[]
@@ -13,11 +14,7 @@ interface RosterCalendarProps {
 
 type AgendaItem = {
   id: string
-  name: string
-  timeRange: string
-  location: string
-  start: Date
-  numUsers: number
+  shift: ShiftWithNumUsers
 }
 
 type AgendaSection = {
@@ -35,17 +32,12 @@ function buildAgendaSections(shifts: ShiftWithNumUsers[]) {
 
   for (const shift of shifts) {
     const start = shift.start_time
-    const end = shift.end_time
 
     const dateKey = format(start, "yyyy-MM-dd")
 
     const item: AgendaItem = {
       id: String(shift.id),
-      name: shift.activity ?? "Shift",
-      timeRange: `${format(start, "h:mm a")} – ${format(end, "h:mm a")}`,
-      location: shift.location,
-      start,
-      numUsers: shift.numUsers,
+      shift: shift,
     }
 
     const lastSection = sections[sections.length - 1]
@@ -117,12 +109,7 @@ export const RosterCalendar = ({ events }: RosterCalendarProps) => {
         dayFormatter={(day) => format(parseISO(day), "EEE, d MMM")}
         renderItem={({ item }) => (
           <View paddingHorizontal="$3" paddingVertical="$2">
-            <Text fontWeight="600">{item.timeRange}</Text>
-            <Text>
-              {item.name}
-              {item.location ? ` · ${item.location}` : ""}
-            </Text>
-            <Text>{item.numUsers - 1} others working</Text>
+            <ShiftCard shift={item.shift} />
           </View>
         )}
         ListEmptyComponent={
