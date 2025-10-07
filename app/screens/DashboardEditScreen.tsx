@@ -8,31 +8,47 @@ import { BackHeader } from "@/components/BackHeader"
 import { BodyText } from "@/components/BodyText"
 import { DashboardSettingsCard } from "@/components/DashboardSettingsCard"
 import { Screen } from "@/components/Screen"
-import { Text } from "@/components/Text"
 import { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useDashboardPreferences } from "@/services/hooks/useDashboardPreferences"
+import { usePostDashboardPreferences } from "@/services/hooks/useDashboardPreferences"
 import { tamaguiConfig } from "@/tamagui.config"
 import { spacing } from "@/theme/spacing"
 import { $styles } from "@/theme/styles"
 
-const initialCards = [
-  { id: "duty", title: "Who's on duty", subtitle: "See who's on duty based on your saved filters" },
+import { DashboardPreferences } from "../../backend/src/types/settings.types"
+
+type DashboardCard = {
+  id: keyof DashboardPreferences
+  title: string
+  subtitle: string
+}
+
+const DASHBOARD_CARDS: DashboardCard[] = [
   {
-    id: "upcomingShift",
+    id: "whos_on_duty",
+    title: "Who's on duty",
+    subtitle: "See who's on duty based on your saved filters",
+  },
+  {
+    id: "upcoming_shifts",
     title: "Upcoming shifts",
     subtitle: "View your scheduled shifts for this week",
   },
   {
-    id: "upcomingLeave",
+    id: "upcoming_leaves",
     title: "Upcoming leaves",
     subtitle: "Track your approved and pending leaves for this month",
   },
   {
-    id: "openShift",
+    id: "open_shifts",
     title: "Open shifts",
     subtitle: "Browse available shifts you can apply for this week",
   },
-  { id: "roster", title: "Team Roster", subtitle: "See Team Roster with your saved preferences" },
+  {
+    id: "team_roster",
+    title: "Team Roster",
+    subtitle: "See Team Roster with your saved preferences",
+  },
 ]
 
 const renderSeparator = () => (
@@ -47,12 +63,22 @@ const renderSeparator = () => (
 export const DashboardEditScreen: FC<AppStackScreenProps<"EditDashboard">> =
   function DashboardEditScreen(_props) {
     const { navigation } = _props
+    const mutation = usePostDashboardPreferences()
+    const [cards, setCards] = useState(DASHBOARD_CARDS)
 
-    const [cards, setCards] = useState(initialCards)
-    const [checkedStates, setCheckedStates] = useState<Record<string, boolean>>({})
+    const { dashboardPreferences } = useDashboardPreferences()
 
-    const toggleChecked = (id: string, newChecked: boolean) => {
-      setCheckedStates((prev) => ({ ...prev, [id]: newChecked }))
+    const [checkedStates, setCheckedStates] = useState<DashboardPreferences>(
+      dashboardPreferences ?? {
+        whos_on_duty: true,
+        upcoming_shifts: true,
+        upcoming_leaves: true,
+        open_shifts: true,
+        team_roster: true,
+      },
+    )
+    const toggleChecked = (id: keyof DashboardPreferences, checked: boolean) => {
+      setCheckedStates((prev) => ({ ...prev, [id]: checked }))
     }
 
     const renderItem = ({ item, drag }: RenderItemParams<(typeof cards)[0]>) => {
@@ -67,10 +93,19 @@ export const DashboardEditScreen: FC<AppStackScreenProps<"EditDashboard">> =
         />
       )
     }
-    const { dashboardPreferences } = useDashboardPreferences()
 
     const handleSavePress = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      console.log(checkedStates)
+      const payload: DashboardPreferences = DASHBOARD_CARDS.reduce((acc, card) => {
+        acc[card.id] = !!checkedStates[card.id]
+        return acc
+      }, {} as DashboardPreferences)
+      try {
+        const data = await mutation.mutateAsync(payload)
+        console.log("Posted successfully:", data)
+      } catch (error) {
+        console.error("Error posting:", error)
+      }
     }
 
     return (
@@ -90,7 +125,6 @@ export const DashboardEditScreen: FC<AppStackScreenProps<"EditDashboard">> =
             ItemSeparatorComponent={renderSeparator}
           />
           <Separator alignSelf="stretch" borderColor={tamaguiConfig.tokens.color.mono300} />
-          <Text>{dashboardPreferences ? JSON.stringify(dashboardPreferences) : "Loading..."}</Text>
         </YStack>
       </Screen>
     )

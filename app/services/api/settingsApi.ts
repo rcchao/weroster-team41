@@ -16,7 +16,9 @@ export const settingsApi = {
       error: (response.data as any)?.error || "Failed to retrieve dashboard preferences",
     } as ApiResponse<DashboardPreferences>
   },
-  setDashboardPreferences: async (preferences: DashboardPreferences): Promise<ApiResponse<any>> => {
+  setDashboardPreferences: async (
+    preferences: DashboardPreferences,
+  ): Promise<ApiResponse<DashboardPreferences>> => {
     const response = await api.post<ApiResponse<DashboardPreferences>>(
       "/settings/dashboard-preferences",
       preferences,

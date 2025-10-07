@@ -43,14 +43,10 @@ export const DashboardSettingsCard: FC<DashboardSettingsCardProps> = ({
       </Checkbox>
       <YStack flex={1}>
         <BodyText testID="settings-card-title" variant="body" marginLeft={16}>
-          
           {title}
-        
         </BodyText>
         <BodyText testID="settings-card-subtitle" variant="body3" marginLeft={16}>
-          
           {subtitle}
-        
         </BodyText>
       </YStack>
       <Pressable onPress={onDrag} hitSlop={10}>
