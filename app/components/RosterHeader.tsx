@@ -16,12 +16,12 @@ const TABS: ReadonlyArray<{ key: TabKey; label: string; route: RosterRouteName }
   { key: "openShifts", label: "Open Shifts", route: "OpenShifts" },
 ] as const
 
-const HEADER_CONTENT_HEIGHT = 40
+const HEADER_CONTENT_HEIGHT = 65
 
 const $header = (top: number) => ({
   height: top + HEADER_CONTENT_HEIGHT,
   paddingTop: top,
-  justifyContent: "center" as const,
+  justifyContent: "top" as const,
 })
 
 function RosterHeaderInner() {
