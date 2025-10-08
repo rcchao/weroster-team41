@@ -1,13 +1,15 @@
 import { FC, useRef, useState } from "react"
 import { ViewStyle } from "react-native"
 import { Controller, useForm } from "react-hook-form"
-import { Input, Text, Image, YStack, Anchor } from "tamagui"
+import { Input, Image, YStack, Anchor } from "tamagui"
 
+import { HeaderText } from "@/components/HeaderText"
 import { PressableIcon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
 import { SubmitButton } from "@/components/SubmitButton"
 import { useAuth } from "@/context/AuthContext"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
+import { tamaguiConfig } from "@/tamagui.config"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
@@ -61,7 +63,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
       safeAreaEdges={["top", "bottom"]}
     >
       <YStack alignItems="stretch" padding={30} gap="$space.8">
-        <YStack alignItems="center" gap={20}>
+        <YStack alignItems="center" gap={20} marginTop={52}>
           <Image
             testID="logo"
             source={require("../../assets/images/logo.png")}
@@ -70,9 +72,9 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
             objectFit="contain"
           />
           {/* TODO: Replace this Welcome text once typography is available */}
-          <Text>Welcome</Text>
+          <HeaderText variant="h2">Welcome</HeaderText>
         </YStack>
-        <YStack gap="$space.5">
+        <YStack gap={24}>
           <Controller
             control={control}
             name="domain"
@@ -85,6 +87,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
                 onBlur={onBlur}
                 returnKeyType="next"
                 autoCapitalize="none"
+                borderColor={tamaguiConfig.tokens.color.mono400}
               />
             )}
           />
@@ -113,6 +116,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
                 errorMessage={errors.email?.message}
                 returnKeyType="next"
                 onSubmitEditing={() => passwordInput.current?.focus()}
+                borderColor={tamaguiConfig.tokens.color.mono400}
               />
             )}
           />
@@ -137,6 +141,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
                 secureTextEntry={isPasswordHidden}
                 errorMessage={errors.password?.message}
                 onSubmitEditing={handleSubmit(onSubmit)}
+                borderColor={tamaguiConfig.tokens.color.mono400}
                 RightAccessory={() => (
                   // TODO: Replace this with a Tamagui Button when icon is made available
                   <PressableIcon
