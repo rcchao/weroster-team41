@@ -1,7 +1,8 @@
 import { Pressable } from "react-native"
 import { format, addMonths, addDays } from "date-fns"
-import { useTheme, XStack, Text } from "tamagui"
+import { useTheme, XStack } from "tamagui"
 
+import { BodyText } from "./BodyText"
 import { Icon } from "./Icon"
 
 type SelectorMode = "month" | "day"
@@ -43,9 +44,9 @@ const DateSelectorBar = ({ mode, selectedDate, setSelectedDate }: DateSelectorBa
         <Pressable onPress={() => adjustDate("previous")}>
           <Icon icon="left" size={24} color={theme.mono900.val} />
         </Pressable>
-        <Text fontSize={16} fontWeight="600" marginHorizontal={10}>
+        <BodyText variant="body" marginHorizontal={10}>
           {displayDate}
-        </Text>
+        </BodyText>
         <Pressable onPress={() => adjustDate("next")}>
           <Icon icon="right" size={24} color={theme.mono900.val} />
         </Pressable>

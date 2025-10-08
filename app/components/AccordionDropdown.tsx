@@ -1,5 +1,5 @@
 import { type ReactNode, useState } from "react"
-import { useTheme, View, Accordion, Square } from "tamagui"
+import { useTheme, View, Accordion, Square, XStack } from "tamagui"
 
 import { BodyText } from "./BodyText"
 import { Icon } from "./Icon"
@@ -38,26 +38,31 @@ const AccordionDropdown = ({ sections }: Props) => {
             <Accordion.Header>
               <Accordion.Trigger
                 borderRadius={0}
-                borderWidth={0}
+                borderWidth={1}
+                borderColor="$mono300"
                 flexDirection="row"
                 alignItems="center"
                 paddingVertical={12}
-                paddingHorizontal={16}
+                paddingHorizontal={12}
                 backgroundColor={backgroundColor}
                 width="100%"
                 height={48}
               >
-                <Square animation="quick" rotate={isOpen ? "90deg" : "0deg"}>
-                  <Icon icon={"right"} size={20} color={textColor} />
-                </Square>
+                <XStack gap={8}>
+                  <Square animation="quick" rotate={isOpen ? "90deg" : "0deg"}>
+                    <Icon icon={"right"} size={20} color={textColor} />
+                  </Square>
 
-                <View flexDirection="row" alignItems="center" gap={8}>
-                  <BodyText color={textColor}>{sectionText.toUpperCase()}</BodyText>
-                </View>
+                  <View flexDirection="row" alignItems="center" gap={8}>
+                    <BodyText variant="body2" fontWeight="800" color={textColor}>
+                      {sectionText.toUpperCase()}
+                    </BodyText>
+                  </View>
+                </XStack>
               </Accordion.Trigger>
             </Accordion.Header>
             <Accordion.HeightAnimator>
-              <Accordion.Content>{section.children}</Accordion.Content>
+              <Accordion.Content padding={0}>{section.children}</Accordion.Content>
             </Accordion.HeightAnimator>
           </Accordion.Item>
         )

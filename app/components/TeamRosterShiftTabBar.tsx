@@ -1,5 +1,6 @@
-import { useTheme, XStack, Text } from "tamagui"
+import { useTheme, XStack } from "tamagui"
 
+import { BodyText } from "./BodyText"
 import { Icon, IconTypes } from "./Icon"
 
 type TimeSection = "AM" | "PM" | "AH"
@@ -30,7 +31,14 @@ const TeamRosterShiftTabBar = ({ timeSection, setTimeSection }: TeamRosterShiftT
   }
 
   return (
-    <XStack height={40} width="100%" justifyContent="space-around" alignItems="center">
+    <XStack
+      height={40}
+      width="100%"
+      justifyContent="space-around"
+      alignItems="center"
+      zIndex={2}
+      backgroundColor={theme.white500.val}
+    >
       {sections.map((section) => (
         <XStack
           key={section.key}
@@ -40,7 +48,7 @@ const TeamRosterShiftTabBar = ({ timeSection, setTimeSection }: TeamRosterShiftT
           alignItems="center"
           justifyContent="center"
           gap={6}
-          borderColor={theme.mono700.val}
+          borderColor={theme.mono500.val}
           borderWidth={1}
           borderTopRightRadius={"$radius.4"}
           borderTopLeftRadius={"$radius.4"}
@@ -49,9 +57,9 @@ const TeamRosterShiftTabBar = ({ timeSection, setTimeSection }: TeamRosterShiftT
           onPress={() => handlePress(section.key)}
         >
           <Icon icon={section.icon} size={16} color={theme.mono900.val} />
-          <Text fontSize="$4" fontWeight="400" color={theme.mono900.val}>
+          <BodyText variant="body" color={theme.mono900.val}>
             {section.key}
-          </Text>
+          </BodyText>
         </XStack>
       ))}
     </XStack>
