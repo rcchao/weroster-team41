@@ -74,7 +74,7 @@ model ActivityGroup {
 
 model AssignmentRequest {
   // Primary key
-  id Int @id
+  id Int @id @default(autoincrement())
 
   // Scalar fields
   status RequestStatus @default(AWAITING)
