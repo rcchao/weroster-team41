@@ -20,7 +20,7 @@
     "lint:backend": "cd backend && npm run lint",
     "lint:all": "npm run lint:frontend && npm run lint:backend",
     "align-deps": "npx expo install --fix",
-    "test": "jest",
+    "test": "jest app",
     "test:watch": "jest --watch",
     "test:e2e": "maestro test -e MAESTRO_APP_ID=com.weroster .maestro/flows",
     "test:e2e:studio": "maestro studio",
