@@ -8,6 +8,7 @@ import { DashboardHomeHeader } from "@/components/DashboardHomeHeader"
 import { HeaderText } from "@/components/HeaderText"
 import { Icon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
+import { useAuthenticatedUserId } from "@/context/AuthContext"
 import { TxKeyPath } from "@/i18n"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useProfile } from "@/services/hooks/useProfile"
@@ -26,7 +27,8 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
   function DashboardHomeScreen(_props) {
     const { navigation } = _props
     const { themed } = useAppTheme()
-    const { profile } = useProfile()
+    const userId = useAuthenticatedUserId()
+    const { profile } = useProfile(userId)
 
     return (
       <View style={$container}>

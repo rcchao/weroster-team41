@@ -43,8 +43,8 @@ export const authApi = {
     }
   },
 
-  getProfile: async () => {
-    const response = await api.get<ApiResponse<ProfileData>>("/auth/profile")
+  getProfile: async (userId: number) => {
+    const response = await api.get<ApiResponse<ProfileData>>(`/auth/profile/${userId}`)
     console.log("\n\n[authApi.getProfile] response:", response.data)
     if (response.ok && response.data) {
       return response.data

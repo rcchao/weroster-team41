@@ -72,3 +72,9 @@ export const useAuth = () => {
   if (!context) throw new Error("useAuth must be used within an AuthProvider")
   return context
 }
+
+export function useAuthenticatedUserId() {
+  const { userId } = useAuth()
+  if (userId === undefined) throw new Error("User must be authenticated")
+  return userId
+}

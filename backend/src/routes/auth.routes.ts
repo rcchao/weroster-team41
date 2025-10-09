@@ -26,19 +26,29 @@ router.post("/login", async (req, res) => {
 })
 
 // Protected routes with authentication middleware
-router.get("/profile", authenticate, async (req, res) => {
+router.get("/profile/:userId", authenticate, async (req, res) => {
   try {
     const service = new AuthService(req.app.locals.prisma)
+    const currentUserId = req.userId
+    const targetUserId = Number(req.params.userId) // Profile being fetched
 
     // Ensure user is authenticated
-    if (!req.userId) {
+    if (!currentUserId) {
       return res.status(HttpStatus.UNAUTHORIZED).json({
         success: false,
         error: "User not authenticated",
       })
     }
 
-    const user = await service.getProfile(req.userId)
+    if (!Number.isInteger(targetUserId)) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        error: "Invalid user ID",
+      })
+    }
+
+    // now should take multiple user ids
+    const user = await service.getProfile(targetUserId)
     res.json({
       success: true,
       data: {
