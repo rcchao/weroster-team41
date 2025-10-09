@@ -9,10 +9,15 @@ import {
 } from "../../../backend/src/types/requests.types"
 
 export const requestsApi = {
-  getLeaveRequests: async (month: number, year: number) => {
-    const response = await api.get<ApiResponse<Leave[]>>(
-      `/requests/leave?month=${month}&year=${year}`,
-    )
+  getLeaveRequests: async (month?: number, year?: number) => {
+    const params = new URLSearchParams()
+    if (month !== undefined) params.append("month", month.toString())
+    if (year !== undefined) params.append("year", year.toString())
+
+    const queryString = params.toString()
+    const url = `/requests/leave${queryString ? `?${queryString}` : ""}`
+
+    const response = await api.get<ApiResponse<Leave[]>>(url)
     console.log("\n\n[requestsApi.getLeaveRequests] response:", response.data)
     if (response.ok && response.data) {
       return response.data

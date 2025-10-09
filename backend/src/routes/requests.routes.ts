@@ -17,8 +17,8 @@ router.get("/leave", authenticate, async (req, res) => {
       })
     }
 
-    const month = parseInt(req.query.month as string)
-    const year = parseInt(req.query.year as string)
+    const month = req.query.month ? parseInt(req.query.month as string) : undefined
+    const year = req.query.year ? parseInt(req.query.year as string) : undefined
 
     const leaveRequests = await service.getLeaveRequests(req.userId, month, year)
     res.json({

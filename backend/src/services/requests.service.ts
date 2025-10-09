@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client"
+import { Prisma, PrismaClient } from "@prisma/client"
 import {
   Leave,
   Assignment,
@@ -10,40 +10,57 @@ import {
 export class RequestsService {
   constructor(private prisma: PrismaClient) {}
 
-  async getLeaveRequests(user_id: number, month: number, year: number): Promise<Leave[]> {
-    // Beginning (midnight) on the first day of the month
-    const start = new Date(year, month - 1, 1)
+  async getLeaveRequests(user_id: number, month?: number, year?: number): Promise<Leave[]> {
+    // Build where clause based on optional params
+    const leaveAtDate: Prisma.LeaveWhereInput = {
+      user_id: user_id,
+    }
 
-    // End (23:59:59.999) of the last day of of the month
-    const end = new Date(year, month, 0, 23, 59, 59, 999)
+    if (month !== undefined && year !== undefined) {
+      // Beginning (midnight) on the first day of the month
+      const start = new Date(year, month - 1, 1)
 
-    // A request is considered to be part of the month if:
-    // the start date is within the month OR
-    // the end date is within the month
+      // End (23:59:59.999) of the last day of the month
+      const end = new Date(year, month, 0, 23, 59, 59, 999)
+
+      // A request is considered to be part of the month if:
+      // the start date is within the month OR
+      // the end date is within the month
+      leaveAtDate.OR = [
+        {
+          start_date: {
+            gte: start,
+            lte: end,
+          },
+        },
+        {
+          end_date: {
+            gte: start,
+            lte: end,
+          },
+        },
+      ]
+    } else {
+      // If no month/year provided, get all leave requests after today
+      const today = new Date()
+
+      leaveAtDate.end_date = {
+        gte: today,
+      }
+    }
+
+    // Find all leave requests
     const leaveRequests = await this.prisma.leave.findMany({
-      where: {
-        user_id: user_id,
-        OR: [
-          {
-            start_date: {
-              gte: start,
-              lte: end,
-            },
-          },
-          {
-            end_date: {
-              gte: start,
-              lte: end,
-            },
-          },
-        ],
-      },
+      where: leaveAtDate,
       select: {
         id: true,
         start_date: true,
         end_date: true,
         status: true,
         leaveType: true,
+      },
+      orderBy: {
+        start_date: "asc",
       },
     })
 
