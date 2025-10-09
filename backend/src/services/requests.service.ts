@@ -5,6 +5,8 @@ import {
   AssignmentPostResponse,
   AssignmentRequestPayload,
   Swap,
+  SwapRequestPayload,
+  SwapPostResponse,
 } from "../../../backend/src/types/requests.types"
 
 export class RequestsService {
@@ -168,5 +170,23 @@ export class RequestsService {
     })
 
     return swapRequests
+  }
+
+  async setSwapRequest(
+    userId: number,
+    assignmentRequest: SwapRequestPayload,
+  ): Promise<SwapPostResponse> {
+    const eventId = assignmentRequest.event_id
+    const toUser = assignmentRequest.to_user
+    const message = assignmentRequest.message
+    const assignment = await this.prisma.swap.create({
+      data: {
+        from_user: userId,
+        to_user: toUser,
+        event_id: eventId,
+        message: message,
+      },
+    })
+    return assignment
   }
 }
