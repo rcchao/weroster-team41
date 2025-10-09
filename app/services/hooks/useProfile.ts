@@ -2,15 +2,15 @@ import { useQuery } from "@tanstack/react-query"
 
 import { authApi } from "../api/authApi"
 
-export const useProfile = () => {
+export const useProfile = (userId: number) => {
   const {
     data: profile,
     error,
     isPending,
     isFetching,
   } = useQuery({
-    queryKey: ["profile"],
-    queryFn: authApi.getProfile,
+    queryKey: ["profile", userId],
+    queryFn: () => authApi.getProfile(userId),
     select: (result) => result.data,
     refetchOnMount: false,
   })
