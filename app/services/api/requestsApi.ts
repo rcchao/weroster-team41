@@ -1,6 +1,12 @@
 import { api } from "./apiClient"
 import { ApiResponse } from "../../../backend/src/types/api.types"
-import { Leave, Assignment, Swap } from "../../../backend/src/types/requests.types"
+import {
+  Leave,
+  Assignment,
+  AssignmentRequestPayload,
+  AssignmentPostResponse,
+  Swap,
+} from "../../../backend/src/types/requests.types"
 
 export const requestsApi = {
   getLeaveRequests: async (month: number, year: number) => {
@@ -29,6 +35,21 @@ export const requestsApi = {
       success: false,
       error: (response.data as any)?.error || "Failed to retrieve assignment requests",
     } as ApiResponse<Assignment[]>
+  },
+
+  setAssignmentRequests: async (assignmentRequest: AssignmentRequestPayload) => {
+    const response = await api.post<ApiResponse<AssignmentPostResponse>>(
+      `/requests/assignment`,
+      assignmentRequest,
+    )
+    console.log("\n\n[requestsApi.setAssignmentRequests] response:", response.data)
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to post assignment requests",
+    } as ApiResponse<AssignmentPostResponse>
   },
 
   getSwapRequests: async (month: number, year: number) => {

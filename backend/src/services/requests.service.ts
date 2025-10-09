@@ -1,5 +1,11 @@
 import { PrismaClient } from "@prisma/client"
-import { Leave, Assignment, Swap } from "../../../backend/src/types/requests.types"
+import {
+  Leave,
+  Assignment,
+  AssignmentPostResponse,
+  AssignmentRequestPayload,
+  Swap,
+} from "../../../backend/src/types/requests.types"
 
 export class RequestsService {
   constructor(private prisma: PrismaClient) {}
@@ -85,6 +91,20 @@ export class RequestsService {
     })
 
     return assignmentRequests
+  }
+
+  async setAssignmentRequest(
+    userId: number,
+    assignmentRequest: AssignmentRequestPayload,
+  ): Promise<AssignmentPostResponse> {
+    const eventId = assignmentRequest.event_id
+    const assignment = await this.prisma.assignmentRequest.create({
+      data: {
+        user_id: userId,
+        event_id: eventId,
+      },
+    })
+    return assignment
   }
 
   async getSwapRequest(user_id: number, month: number, year: number): Promise<Swap[]> {

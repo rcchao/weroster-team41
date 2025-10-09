@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `AssignmentRequest` MODIFY `id` INTEGER NOT NULL AUTO_INCREMENT;
