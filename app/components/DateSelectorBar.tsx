@@ -1,6 +1,10 @@
 import { Pressable } from "react-native"
+import { ViewStyle } from "react-native"
 import { format, addMonths, addDays } from "date-fns"
 import { useTheme, XStack } from "tamagui"
+
+import { useAppTheme } from "@/theme/context"
+import { ThemedStyle } from "@/theme/types"
 
 import { BodyText } from "./BodyText"
 import { Icon } from "./Icon"
@@ -15,6 +19,7 @@ interface DateSelectorBarProps {
 
 const DateSelectorBar = ({ mode, selectedDate, setSelectedDate }: DateSelectorBarProps) => {
   const theme = useTheme()
+  const { themed } = useAppTheme()
 
   const adjustDate = (direction: "next" | "previous") => {
     const adjustment = direction === "next" ? 1 : -1
@@ -40,11 +45,11 @@ const DateSelectorBar = ({ mode, selectedDate, setSelectedDate }: DateSelectorBa
       </Pressable>
 
       {/* Month increment/decrement selector */}
-      <XStack gap={4} alignItems="center">
+      <XStack gap={1} alignItems="center">
         <Pressable onPress={() => adjustDate("previous")}>
           <Icon icon="left" size={24} color={theme.mono900.val} />
         </Pressable>
-        <BodyText variant="body" marginHorizontal={10}>
+        <BodyText variant="body" marginHorizontal={10} width={130} textAlign="center">
           {displayDate}
         </BodyText>
         <Pressable onPress={() => adjustDate("next")}>
@@ -53,7 +58,7 @@ const DateSelectorBar = ({ mode, selectedDate, setSelectedDate }: DateSelectorBa
       </XStack>
 
       {/* Search icon - disabled, not in use */}
-      <Pressable disabled={true}>
+      <Pressable disabled={true} style={themed($searchIcon)}>
         <Icon icon="search" size={24} color={theme.mono900.val} />
       </Pressable>
     </XStack>
@@ -61,3 +66,7 @@ const DateSelectorBar = ({ mode, selectedDate, setSelectedDate }: DateSelectorBa
 }
 
 export { DateSelectorBar }
+
+export const $searchIcon: ThemedStyle<ViewStyle> = () => ({
+  opacity: 0,
+})
