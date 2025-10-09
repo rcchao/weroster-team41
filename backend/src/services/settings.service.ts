@@ -15,4 +15,16 @@ export class SettingsService {
 
     return dashboardPreferences
   }
+
+  async setDashboardPreferences(
+    userId: number,
+    preferences: DashboardPreferences,
+  ): Promise<DashboardPreferences> {
+    const dashboardPreferences = await this.prisma.dashboardPreference.upsert({
+      where: { user_id: userId },
+      update: preferences,
+      create: { user_id: userId, ...preferences },
+    })
+    return dashboardPreferences
+  }
 }

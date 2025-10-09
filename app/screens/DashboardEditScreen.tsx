@@ -1,51 +1,84 @@
 import { FC } from "react"
 import { useState } from "react"
-import { Pressable } from "react-native"
-import { View } from "react-native"
-import { TextStyle } from "react-native"
 import DraggableFlatList, { RenderItemParams } from "react-native-draggable-flatlist"
+import { YStack } from "tamagui"
+import { Separator } from "tamagui"
 
+import { BackHeader } from "@/components/BackHeader"
+import { BodyText } from "@/components/BodyText"
 import { DashboardSettingsCard } from "@/components/DashboardSettingsCard"
-import { Icon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
-import { Text } from "@/components/Text"
 import { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useDashboardPreferences } from "@/services/hooks/useDashboardPreferences"
-import { useAppTheme } from "@/theme/context"
+import { usePostDashboardPreferences } from "@/services/hooks/useDashboardPreferences"
+import { tamaguiConfig } from "@/tamagui.config"
 import { spacing } from "@/theme/spacing"
-import { $topRightIcons, $headerIcons } from "@/theme/styles"
-import type { ThemedStyle } from "@/theme/types"
+import { $styles } from "@/theme/styles"
 
-const initialCards = [
-  { id: "duty", title: "Who's on duty", subtitle: "See who's on duty based on your saved filters" },
+import { DashboardPreferences } from "../../backend/src/types/settings.types"
+
+type DashboardCard = {
+  id: keyof DashboardPreferences
+  title: string
+  subtitle: string
+}
+
+const DASHBOARD_CARDS: DashboardCard[] = [
   {
-    id: "upcomingShift",
+    id: "whos_on_duty",
+    title: "Who's on duty",
+    subtitle: "See who's on duty based on your saved filters",
+  },
+  {
+    id: "upcoming_shifts",
     title: "Upcoming shifts",
     subtitle: "View your scheduled shifts for this week",
   },
   {
-    id: "upcomingLeave",
+    id: "upcoming_leaves",
     title: "Upcoming leaves",
     subtitle: "Track your approved and pending leaves for this month",
   },
   {
-    id: "openShift",
+    id: "open_shifts",
     title: "Open shifts",
     subtitle: "Browse available shifts you can apply for this week",
   },
-  { id: "roster", title: "Team Roster", subtitle: "See Team Roster with your saved preferences" },
+  {
+    id: "team_roster",
+    title: "Team Roster",
+    subtitle: "See Team Roster with your saved preferences",
+  },
 ]
+
+const renderSeparator = () => (
+  <Separator
+    marginVertical={spacing.xxxs}
+    marginHorizontal={spacing.sm}
+    alignSelf="stretch"
+    borderColor={tamaguiConfig.tokens.color.mono300}
+  />
+)
 
 export const DashboardEditScreen: FC<AppStackScreenProps<"EditDashboard">> =
   function DashboardEditScreen(_props) {
     const { navigation } = _props
-    const { themed } = useAppTheme()
+    const mutation = usePostDashboardPreferences()
+    const [cards, setCards] = useState(DASHBOARD_CARDS)
 
-    const [cards, setCards] = useState(initialCards)
-    const [checkedStates, setCheckedStates] = useState<Record<string, boolean>>({})
+    const { dashboardPreferences } = useDashboardPreferences()
 
-    const toggleChecked = (id: string, newChecked: boolean) => {
-      setCheckedStates((prev) => ({ ...prev, [id]: newChecked }))
+    const [checkedStates, setCheckedStates] = useState<DashboardPreferences>(
+      dashboardPreferences ?? {
+        whos_on_duty: true,
+        upcoming_shifts: true,
+        upcoming_leaves: true,
+        open_shifts: true,
+        team_roster: true,
+      },
+    )
+    const toggleChecked = (id: keyof DashboardPreferences, checked: boolean) => {
+      setCheckedStates((prev) => ({ ...prev, [id]: checked }))
     }
 
     const renderItem = ({ item, drag }: RenderItemParams<(typeof cards)[0]>) => {
@@ -60,36 +93,39 @@ export const DashboardEditScreen: FC<AppStackScreenProps<"EditDashboard">> =
         />
       )
     }
-    const { dashboardPreferences } = useDashboardPreferences()
+
+    const handleSavePress = async () => {
+      console.log(checkedStates)
+      const payload: DashboardPreferences = DASHBOARD_CARDS.reduce((acc, card) => {
+        acc[card.id] = !!checkedStates[card.id]
+        return acc
+      }, {} as DashboardPreferences)
+      try {
+        const data = await mutation.mutateAsync(payload)
+        console.log("Posted successfully:", data)
+      } catch (error) {
+        console.error("Error posting:", error)
+      }
+    }
 
     return (
-      <Screen preset="fixed" safeAreaEdges={["top"]}>
-        <View style={themed($topRightIcons)}>
-          <Pressable onPress={() => navigation.goBack()} style={themed($headerIcons)}>
-            <Icon icon="anchor" />
-          </Pressable>
-        </View>
-
-        <Text style={themed($editDashboardText)}>Customise what you see on your dashboard</Text>
-
-        <DraggableFlatList
-          data={cards}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-          onDragEnd={({ data }) => setCards(data)} // update card order
-          scrollEnabled={false}
-          activationDistance={Number.MAX_SAFE_INTEGER}
-        />
-        <Text>{dashboardPreferences ? JSON.stringify(dashboardPreferences) : "Loading..."}</Text>
+      <Screen preset="fixed" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
+        <BackHeader navigation={navigation} title="Edit Dashboard" onSavePress={handleSavePress} />
+        <YStack marginTop="$4">
+          <BodyText variant="body" marginLeft={16}>
+            Customise what you see on your dashboard
+          </BodyText>
+          <DraggableFlatList
+            data={cards}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            onDragEnd={({ data }) => setCards(data)} // update card order
+            scrollEnabled={false}
+            activationDistance={Number.MAX_SAFE_INTEGER}
+            ItemSeparatorComponent={renderSeparator}
+          />
+          <Separator alignSelf="stretch" borderColor={tamaguiConfig.tokens.color.mono300} />
+        </YStack>
       </Screen>
     )
   }
-
-export const $editDashboardText: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
-  color: colors.text,
-  fontFamily: typography.primary.regular,
-  fontSize: 16,
-  lineHeight: 20,
-  marginLeft: spacing.md,
-  marginTop: spacing.xxxl,
-})
