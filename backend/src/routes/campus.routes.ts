@@ -6,6 +6,28 @@ import { CampusService } from "../services/campus.service"
 
 const router = Router()
 
+router.get("/next-shift", authenticate, async (req, res) => {
+  try {
+    const service = new CampusService(req.app.locals.prisma)
+
+    if (!req.userId) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        error: "User not authenticated",
+      })
+    }
+
+    const upcomingCampusEvents = await service.getUpcomingCampusEvents(req.userId)
+    res.json({
+      success: true,
+      data: upcomingCampusEvents,
+    })
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: error.message })
+  }
+  return
+})
+
 router.get("/:locationId", authenticate, async (req, res) => {
   try {
     const service = new CampusService(req.app.locals.prisma)
