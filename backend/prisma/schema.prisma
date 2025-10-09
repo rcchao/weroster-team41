@@ -90,6 +90,7 @@ model AssignmentRequest {
   // Indexes
   @@index([event_id], map: "event_id")
   @@index([user_id], map: "user_id")
+  @@unique([user_id, event_id])
 }
 
 model Campus {
