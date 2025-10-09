@@ -62,6 +62,22 @@ export const useUserRequests = (month: number, year: number) => {
   return { userRequests, error, isPending, isFetching }
 }
 
+export const useLeaveRequests = () => {
+  const {
+    data: leaveRequests,
+    error,
+    isPending,
+    isFetching,
+  } = useQuery({
+    queryKey: ["leave-requests"],
+    queryFn: () => requestsApi.getLeaveRequests(),
+    select: (result) => result.data,
+    refetchOnMount: true,
+  })
+
+  return { leaveRequests, error, isPending, isFetching }
+}
+
 export function usePostAssignmentRequest() {
   const queryClient = useQueryClient()
   return useMutation({

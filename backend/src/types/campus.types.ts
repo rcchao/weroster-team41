@@ -7,3 +7,10 @@ export type Campus = Prisma.CampusGetPayload<{
     address: true
   }
 }>
+
+export type UpcomingCampusEvent = {
+  campus_name: string
+  location_name: string
+  start_date: Date
+  num_assignments: number
+}
