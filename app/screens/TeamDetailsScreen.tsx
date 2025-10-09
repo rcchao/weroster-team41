@@ -6,6 +6,7 @@ import { BodyText } from "@/components/BodyText"
 import { Screen } from "@/components/Screen"
 import type { AppStackParamList } from "@/navigators/AppNavigator"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
+import { useProfile } from "@/services/hooks/useProfile"
 import { useAppTheme } from "@/theme/context"
 import { $container, $styles } from "@/theme/styles"
 
@@ -20,6 +21,7 @@ export const TeamDetailsScreen: FC<TeamDetailsScreenProps> = function TeamDetail
   const {
     params: { userId },
   } = useRoute<TeamDetailsRoute>()
+  const { profile } = useProfile(userId)
 
   return (
     <Screen
@@ -28,7 +30,7 @@ export const TeamDetailsScreen: FC<TeamDetailsScreenProps> = function TeamDetail
       contentContainerStyle={[$styles.barContainer, themed($container)]}
     >
       <BackHeader title={"Profile"} navigation={navigation} />
-      <BodyText>User ID: {userId}</BodyText>
+      {profile && <BodyText>{JSON.stringify(profile)}</BodyText>}
     </Screen>
   )
 }
