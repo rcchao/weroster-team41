@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { compareAsc } from "date-fns"
 
 import { requestsApi } from "../api/requestsApi"
@@ -60,4 +60,14 @@ export const useUserRequests = (month: number, year: number) => {
   })
 
   return { userRequests, error, isPending, isFetching }
+}
+
+export function usePostAssignmentRequest() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: requestsApi.setAssignmentRequests,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user-requests"] })
+    },
+  })
 }
