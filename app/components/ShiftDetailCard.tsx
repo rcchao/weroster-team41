@@ -121,6 +121,7 @@ const ShiftDetailCard = ({ shift }: ShiftDetailCardProps) => {
       shadowRadius={8}
       borderRadius="$radius.4"
       padding="$5"
+      alignItems="center"
     >
       <YStack gap="$4">
         <ShiftHeader location={shift.location} address={campus?.address} />

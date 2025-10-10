@@ -40,7 +40,7 @@ export const ShiftDetailsSubheader = ({
         alignItems="center"
         justifyContent="center"
         borderRadius="$3"
-        minWidth={110}
+        minWidth={100}
         gap="$2"
       >
         <Icon icon={dateIcon} size={16} />
@@ -52,7 +52,7 @@ export const ShiftDetailsSubheader = ({
         alignItems="center"
         justifyContent="center"
         borderRadius="$3"
-        minWidth={100}
+        minWidth={90}
       >
         <BodyText variant="body3">{timeRange}</BodyText>
       </XStack>
@@ -62,7 +62,7 @@ export const ShiftDetailsSubheader = ({
         alignItems="center"
         justifyContent="center"
         borderRadius="$3"
-        minWidth={110}
+        minWidth={100}
         gap="$2"
       >
         <Icon icon="clock" size={16} />
