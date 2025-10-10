@@ -1,8 +1,9 @@
 import { FC } from "react"
 import { RouteProp, useRoute } from "@react-navigation/native"
+import { YStack } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
-import { BodyText } from "@/components/BodyText"
+import { ProfileInfoCard } from "@/components/ProfileInfoCard"
 import { Screen } from "@/components/Screen"
 import type { AppStackParamList } from "@/navigators/AppNavigator"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
@@ -30,7 +31,15 @@ export const TeamDetailsScreen: FC<TeamDetailsScreenProps> = function TeamDetail
       contentContainerStyle={[$styles.barContainer, themed($container)]}
     >
       <BackHeader title={"Profile"} navigation={navigation} />
-      {profile && <BodyText>{JSON.stringify(profile)}</BodyText>}
+      <YStack
+        justifyContent="center"
+        alignItems="center"
+        margin={20}
+        marginBlockStart={40}
+        gap={30}
+      >
+        {profile && <ProfileInfoCard profile={profile} editable={false} />}
+      </YStack>
     </Screen>
   )
 }
