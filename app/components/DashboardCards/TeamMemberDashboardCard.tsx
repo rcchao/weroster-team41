@@ -3,11 +3,11 @@ import { Avatar, Card, XStack, YStack } from "tamagui"
 
 import { getAbbreviatedName, getInitials } from "@/utils/nameFormatting"
 
-import { BodyText } from "./BodyText"
-import { StyledIcon } from "./common/StyledIcon"
-import { HeaderText } from "./HeaderText"
+import { BodyText } from "../BodyText"
+import { StyledIcon } from "../common/StyledIcon"
+import { HeaderText } from "../HeaderText"
 
-interface DashboardTeamMemberCardProps {
+interface TeamMemberDashboardCardProps {
   firstName: string
   lastName: string
   designation?: string
@@ -17,7 +17,7 @@ interface DashboardTeamMemberCardProps {
   shiftEndTime: Date
 }
 
-export const DashboardTeamMemberCard = ({
+export const TeamMemberDashboardCard = ({
   firstName,
   lastName,
   designation,
@@ -25,7 +25,7 @@ export const DashboardTeamMemberCard = ({
   campus,
   shiftStartTime,
   shiftEndTime,
-}: DashboardTeamMemberCardProps) => (
+}: TeamMemberDashboardCardProps) => (
   <Card
     backgroundColor="$white200"
     minWidth={270}
