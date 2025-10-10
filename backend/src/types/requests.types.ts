@@ -53,3 +53,20 @@ export type Swap = Prisma.SwapGetPayload<{
     }
   }
 }>
+
+export type SwapPostResponse = Prisma.SwapGetPayload<{
+  select: {
+    id: true
+    message: true
+    status: true
+    from_user: true
+    to_user: true
+    event_id: true
+  }
+}>
+
+export type SwapRequestPayload = {
+  to_user: number
+  event_id: number
+  message?: string
+}

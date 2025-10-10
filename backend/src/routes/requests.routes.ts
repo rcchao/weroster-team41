@@ -143,4 +143,53 @@ router.get("/swap", authenticate, async (req, res) => {
   return
 })
 
+router.post("/swap", authenticate, async (req, res) => {
+  try {
+    const service = new RequestsService(req.app.locals.prisma)
+    const eventService = new EventService(req.app.locals.prisma)
+
+    if (!req.userId) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        error: "User not authenticated",
+      })
+    }
+
+    const to_user = req.body.to_user
+    const event_id = req.body.event_id
+
+    if (!event_id || !to_user) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        error: "Invalid swap request payload",
+      })
+    }
+
+    // Validate event id from request body
+    const event = await eventService.getShift(event_id)
+    if (!event) {
+      return res.status(HttpStatus.NOT_FOUND).json({
+        success: false,
+        error: "Event not found",
+      })
+    }
+
+    // TODO: Validate to user from request body
+    // Add this check when there's an endpoint for getting
+    // one user
+
+    const swapRequest = await service.setSwapRequest(req.userId, req.body)
+    res.json({
+      success: true,
+      data: swapRequest,
+    })
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: error.message,
+    })
+  }
+  return
+})
+
 export default router

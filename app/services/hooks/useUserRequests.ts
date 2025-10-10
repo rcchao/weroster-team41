@@ -87,3 +87,13 @@ export function usePostAssignmentRequest() {
     },
   })
 }
+
+export function usePostSwapRequest() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: requestsApi.setSwapRequests,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user-requests"] })
+    },
+  })
+}
