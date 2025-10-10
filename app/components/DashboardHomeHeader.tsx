@@ -10,9 +10,14 @@ import { Icon } from "./Icon"
 interface DashboardHomeHeaderProps {
   userName: string
   navigation: NavigationProp<any>
+  paddingTop?: number
 }
 
-export const DashboardHomeHeader = ({ userName, navigation }: DashboardHomeHeaderProps) => {
+export const DashboardHomeHeader = ({
+  userName,
+  navigation,
+  paddingTop = 0,
+}: DashboardHomeHeaderProps) => {
   const theme = useTheme()
 
   const todayDate = format(new Date(), "EEE, d MMMM yyyy")
@@ -28,6 +33,7 @@ export const DashboardHomeHeader = ({ userName, navigation }: DashboardHomeHeade
       shadowOpacity={0.25}
       shadowRadius={4}
       padding={20}
+      paddingTop={paddingTop}
     >
       <YStack gap={8} width="75%">
         <Image
