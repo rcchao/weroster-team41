@@ -8,10 +8,12 @@ import { DashboardHomeHeader } from "@/components/DashboardHomeHeader"
 import { HeaderText } from "@/components/HeaderText"
 import { Icon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
+import { SubmitButton } from "@/components/SubmitButton"
 import { useAuthenticatedUserId } from "@/context/AuthContext"
 import { TxKeyPath } from "@/i18n"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useProfile } from "@/services/hooks/useProfile"
+import { usePostSwapRequest } from "@/services/hooks/useUserRequests"
 import { useAppTheme } from "@/theme/context"
 import { $headerContainer, $styles } from "@/theme/styles"
 import { $container, $fabButton } from "@/theme/styles"
@@ -29,6 +31,25 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
     const { themed } = useAppTheme()
     const userId = useAuthenticatedUserId()
     const { profile } = useProfile(userId)
+    const mutation = usePostSwapRequest()
+
+    const postSwapShiftRequest = async () => {
+      const swapRequest = {
+        message: "I think I'll be sick that day soz", // Including a message is optional
+        event_id: 1,
+        to_user: 18,
+      }
+      try {
+        const data = await mutation.mutateAsync(swapRequest)
+        if (data.success) {
+          console.log("Posted successfully", data)
+        } else {
+          console.log("Post failed", data.error)
+        }
+      } catch (error) {
+        console.error("Error posting:", error)
+      }
+    }
 
     return (
       <View style={$container}>
@@ -43,6 +64,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
           <BodyText variant="body2">Body2 Text</BodyText>
           <BodyText variant="body3">Body3 Text</BodyText>
           <BodyText variant="body4">Body4 Text</BodyText>
+          <SubmitButton text="apply to swap shift" onPress={postSwapShiftRequest} />
         </Screen>
 
         {/* FAB positioned relative to the outer View */}
