@@ -6,6 +6,8 @@ import {
   AssignmentRequestPayload,
   AssignmentPostResponse,
   Swap,
+  SwapRequestPayload,
+  SwapPostResponse,
 } from "../../../backend/src/types/requests.types"
 
 export const requestsApi = {
@@ -69,5 +71,17 @@ export const requestsApi = {
       success: false,
       error: (response.data as any)?.error || "Failed to retrieve swap requests",
     } as ApiResponse<Swap[]>
+  },
+
+  setSwapRequests: async (swapRequest: SwapRequestPayload) => {
+    const response = await api.post<ApiResponse<SwapPostResponse>>(`/requests/swap`, swapRequest)
+    console.log("\n\n[requestsApi.setSwapRequests] response:", response.data)
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to post swap requests",
+    } as ApiResponse<SwapPostResponse>
   },
 }
