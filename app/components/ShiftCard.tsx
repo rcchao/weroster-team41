@@ -1,9 +1,11 @@
+import { useState } from "react"
 import { Pressable } from "react-native"
 import { format } from "date-fns"
 import { Card, Dialog, ScrollView, useTheme, XStack, YStack } from "tamagui"
 
 import { ShiftWithNumUsers, OpenShift } from "backend/src/types/event.types"
 
+import { navigationRef } from "@/navigators/navigationUtilities"
 import { ThemeProvider } from "@/theme/context"
 
 import { BodyText } from "./BodyText"
@@ -72,8 +74,10 @@ const ShiftCard = ({ shift, clashes }: ShiftCardProps) => {
 
   const config = getShiftConfig()
 
+  const [dialogOpen, setDialogOpen] = useState(false)
+
   return (
-    <Dialog modal>
+    <Dialog modal open={dialogOpen} onOpenChange={setDialogOpen}>
       <Dialog.Trigger asChild>
         <Card
           backgroundColor={config.cardBgColor}
@@ -166,7 +170,15 @@ const ShiftCard = ({ shift, clashes }: ShiftCardProps) => {
                   session={shift.eventSessions[0] as Session}
                 />
                 <YStack width="90%">
-                  <ShiftDetailCard shift={shift} />
+                  <ShiftDetailCard
+                    shift={shift}
+                    onRequestSwap={(shift) => {
+                      setDialogOpen?.(false)
+                      requestAnimationFrame(() => {
+                        navigationRef.navigate("SwapShift", { shiftId: shift.id })
+                      })
+                    }}
+                  />
                 </YStack>
               </YStack>
             </ScrollView>

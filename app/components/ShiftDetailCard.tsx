@@ -2,7 +2,6 @@ import { Button, Card, Separator, TextArea, XStack, YStack } from "tamagui"
 
 import { ShiftWithNumUsers } from "backend/src/types/event.types"
 
-import { navigationRef } from "@/navigators/navigationUtilities"
 import { useCampusByLocationId } from "@/services/hooks/useCampus"
 
 import { BodyText } from "./BodyText"
@@ -11,6 +10,7 @@ import { Icon } from "./Icon"
 
 interface ShiftDetailCardProps {
   shift: ShiftWithNumUsers
+  onRequestSwap?: (shift: ShiftWithNumUsers) => void
 }
 
 const ShiftHeader = ({ location, address }: { location: string; address?: string | null }) => {
@@ -112,11 +112,11 @@ const RequestButton = ({ isOpenShift, onPress }: { isOpenShift: boolean; onPress
   </Button>
 )
 
-const ShiftDetailCard = ({ shift }: ShiftDetailCardProps) => {
+const ShiftDetailCard = ({ shift, onRequestSwap }: ShiftDetailCardProps) => {
   const { campus } = useCampusByLocationId(shift.location_id)
   const isOpenShift = shift?.numUsers === 0
 
-  const onPress = () => navigationRef.navigate("SwapShift", { shiftId: shift.id })
+  const onPress = () => onRequestSwap?.(shift)
 
   return (
     <Card
