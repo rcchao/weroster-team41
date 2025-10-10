@@ -2,6 +2,7 @@ import { Button, Card, Separator, TextArea, XStack, YStack } from "tamagui"
 
 import { ShiftWithNumUsers } from "backend/src/types/event.types"
 
+import { navigationRef } from "@/navigators/navigationUtilities"
 import { useCampusByLocationId } from "@/services/hooks/useCampus"
 
 import { BodyText } from "./BodyText"
@@ -94,7 +95,7 @@ const PaySection = ({ amount }: { amount: number }) => (
   </YStack>
 )
 
-const RequestButton = ({ isOpenShift }: { isOpenShift: boolean }) => (
+const RequestButton = ({ isOpenShift, onPress }: { isOpenShift: boolean; onPress: () => void }) => (
   <Button
     height={36}
     backgroundColor="$secondary500"
@@ -103,6 +104,7 @@ const RequestButton = ({ isOpenShift }: { isOpenShift: boolean }) => (
     alignItems="center"
     alignSelf="flex-end"
     marginTop="$2"
+    onPress={onPress}
   >
     <BodyText variant="body2" color="$white100">
       {isOpenShift ? "Request Shift" : "Request Swap"}
@@ -113,6 +115,8 @@ const RequestButton = ({ isOpenShift }: { isOpenShift: boolean }) => (
 const ShiftDetailCard = ({ shift }: ShiftDetailCardProps) => {
   const { campus } = useCampusByLocationId(shift.location_id)
   const isOpenShift = shift?.numUsers === 0
+
+  const onPress = () => navigationRef.navigate("SwapShift", { shiftId: shift.id })
 
   return (
     <Card
@@ -143,7 +147,7 @@ const ShiftDetailCard = ({ shift }: ShiftDetailCardProps) => {
 
         {isOpenShift && <PaySection amount={500} />}
 
-        <RequestButton isOpenShift={isOpenShift} />
+        <RequestButton isOpenShift={isOpenShift} onPress={onPress} />
       </YStack>
     </Card>
   )
