@@ -363,4 +363,5 @@ model Swap {
   @@index([event_id], map: "event_id")
   @@index([from_user], map: "from_user")
   @@index([to_user], map: "to_user")
+  @@unique([from_user, to_user, event_id])
 }
