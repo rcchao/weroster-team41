@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, memo } from "react"
 import { Pressable } from "react-native"
 import { format } from "date-fns"
 import { Card, Dialog, ScrollView, useTheme, XStack, YStack } from "tamagui"
@@ -29,7 +29,7 @@ interface ShiftCardProps {
   clashes?: boolean
 }
 
-const ShiftCard = ({ shift, clashes }: ShiftCardProps) => {
+const ShiftCard = memo(({ shift, clashes }: ShiftCardProps) => {
   const theme = useTheme()
 
   const isOpenShift = "status" in shift
@@ -188,7 +188,7 @@ const ShiftCard = ({ shift, clashes }: ShiftCardProps) => {
       </Dialog.Portal>
     </Dialog>
   )
-}
+})
 
 export { ShiftCard }
 

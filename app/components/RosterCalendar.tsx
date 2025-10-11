@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { format, parseISO } from "date-fns"
 import { AgendaList, CalendarProvider, ExpandableCalendar } from "react-native-calendars"
 import { View, Text, useTheme } from "tamagui"
@@ -83,61 +83,83 @@ export const RosterCalendar = ({ events }: RosterCalendarProps) => {
     [marked, selected],
   )
 
+  // Memoise components within the calendar
+  const calendarTheme = useMemo(
+    () => ({
+      monthTextColor: theme.primary500.val,
+      textMonthFontSize: 16,
+      textMonthFontFamily: "Inter",
+      textSectionTitleColor: theme.mono900.val,
+      textSectionTitleDisabledColor: "#DDD",
+      textDayHeaderFontSize: 14,
+      arrowColor: theme.accent400.val,
+      disabledArrowColor: theme.mono400.val,
+    }),
+    [theme.primary500.val, theme.mono900.val, theme.accent400.val, theme.mono400.val],
+  )
+
+  const keyExtractor = useCallback((item: any) => item.id, [])
+
+  const dayFormatter = useCallback((day: string) => format(parseISO(day), "EEE, d MMM"), [])
+
+  const renderSectionHeader = useCallback((section: any) => {
+    const dateKey = section as unknown as string
+    const displayDate = format(dateKey, "yyyy-MM-dd")
+    const isToday = displayDate === format(new Date(), "yyyy-MM-dd")
+
+    return (
+      <View
+        backgroundColor={isToday ? "$secondary500" : "$white400"}
+        height={40}
+        justifyContent="center"
+        paddingInlineStart={30}
+      >
+        <BodyText variant="body2" color={isToday ? "$white100" : "$mono900"}>
+          {isToday
+            ? `TODAY - ${format(parseISO(dateKey), "EEE, d MMM").toUpperCase()}`
+            : format(parseISO(dateKey), "EEE, d MMM").toUpperCase()}
+        </BodyText>
+      </View>
+    )
+  }, [])
+
+  const renderItem = useCallback(
+    ({ item }: any) => (
+      <View paddingHorizontal="$3" paddingVertical={8} backgroundColor="$white100">
+        <ShiftCard shift={item.shift} />
+      </View>
+    ),
+    [],
+  )
+
+  const listEmptyComponent = useMemo(
+    () => (
+      <View padding="$4">
+        <Text>No shifts found.</Text>
+      </View>
+    ),
+    [],
+  )
+
+  const dayComponent = useCallback((props: any) => <DayPill {...props} />, [])
+
   return (
     <CalendarProvider date={selected} onDateChanged={setSelected} showTodayButton>
       <ExpandableCalendar
         firstDay={1}
         markedDates={markedDates}
         allowShadow
-        dayComponent={DayPill}
+        dayComponent={dayComponent}
         calendarHeight={200}
-        theme={{
-          monthTextColor: theme.primary500.val,
-          textMonthFontSize: 16,
-          textMonthFontFamily: "Inter",
-
-          textSectionTitleColor: theme.mono900.val,
-          textSectionTitleDisabledColor: "#DDD",
-          textDayHeaderFontSize: 14,
-
-          arrowColor: theme.accent400.val,
-          disabledArrowColor: theme.mono400.val,
-        }}
+        theme={calendarTheme}
       />
       <AgendaList
         sections={sections}
-        keyExtractor={(item) => item.id}
-        dayFormatter={(day) => format(parseISO(day), "EEE, d MMM")}
-        renderSectionHeader={(section) => {
-          const dateKey = section as unknown as string
-          const displayDate = format(dateKey, "yyyy-MM-dd")
-          const isToday = displayDate === format(new Date(), "yyyy-MM-dd")
-
-          return (
-            <View
-              backgroundColor={isToday ? "$secondary500" : "$white400"}
-              height={40}
-              justifyContent="center"
-              paddingInlineStart={30}
-            >
-              <BodyText variant="body2" color={isToday ? "$white100" : "$mono900"}>
-                {isToday
-                  ? `TODAY - ${format(parseISO(dateKey), "EEE, d MMM").toUpperCase()}`
-                  : format(parseISO(dateKey), "EEE, d MMM").toUpperCase()}
-              </BodyText>
-            </View>
-          )
-        }}
-        renderItem={({ item }) => (
-          <View paddingHorizontal="$3" paddingVertical={8} backgroundColor="$white100">
-            <ShiftCard shift={item.shift} />
-          </View>
-        )}
-        ListEmptyComponent={
-          <View padding="$4">
-            <Text>No shifts found.</Text>
-          </View>
-        }
+        keyExtractor={keyExtractor}
+        dayFormatter={dayFormatter}
+        renderSectionHeader={renderSectionHeader}
+        renderItem={renderItem}
+        ListEmptyComponent={listEmptyComponent}
       />
     </CalendarProvider>
   )
