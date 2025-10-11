@@ -12,21 +12,25 @@ interface ShiftDetailCardProps {
   shift: ShiftWithNumUsers
 }
 
-const ShiftHeader = ({ location, address }: { location: string; address?: string | null }) => (
-  <YStack gap="$2">
-    <XStack alignItems="center" gap="$2">
-      <StyledIcon icon="building" size={20} />
-      <YStack gap="$1.5">
-        <BodyText variant="body2">{location}</BodyText>
-        {address && <BodyText variant="body4">{address}</BodyText>}
-      </YStack>
-    </XStack>
-    <XStack alignItems="center" gap="$2">
-      <StyledIcon icon="location" size={20} />
-      <BodyText variant="body2">Theatre 1</BodyText>
-    </XStack>
-  </YStack>
-)
+const ShiftHeader = ({ location, address }: { location: string; address?: string | null }) => {
+  const addressName = address ? address : ""
+
+  return (
+    <YStack gap="$2">
+      <XStack alignItems="center" gap="$2">
+        <StyledIcon icon="building" size={20} />
+        <YStack gap="$1.5">
+          <BodyText variant="body2">{location}</BodyText>
+          <BodyText variant="body4">{addressName}</BodyText>
+        </YStack>
+      </XStack>
+      <XStack alignItems="center" gap="$2">
+        <StyledIcon icon="location" size={20} />
+        <BodyText variant="body2">Theatre 1</BodyText>
+      </XStack>
+    </YStack>
+  )
+}
 
 const WorkingWith = ({ eventAssignments }: { eventAssignments: any[] }) => (
   <YStack gap="$3">
@@ -122,7 +126,7 @@ const ShiftDetailCard = ({ shift }: ShiftDetailCardProps) => {
       borderRadius="$radius.4"
       padding="$5"
     >
-      <YStack gap="$4">
+      <YStack gap="$4" minWidth="100%">
         <ShiftHeader location={shift.location} address={campus?.address} />
 
         <Separator borderColor="$mono300" />
