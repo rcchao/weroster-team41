@@ -11,9 +11,10 @@ import { InfoSection } from "./InfoSection"
 
 interface ProfileInfoCardProps {
   profile: ProfileData
+  editable?: boolean
 }
 
-export const ProfileInfoCard = ({ profile }: ProfileInfoCardProps) => {
+export const ProfileInfoCard = ({ profile, editable = true }: ProfileInfoCardProps) => {
   const initials = getInitials(profile.first_name, profile.last_name ?? "")
   const displayName = getAbbreviatedName(profile.first_name, profile.last_name ?? "")
 
@@ -47,7 +48,7 @@ export const ProfileInfoCard = ({ profile }: ProfileInfoCardProps) => {
               <HeaderText variant="h2" numberOfLines={1} ellipsizeMode="tail">
                 {displayName}
               </HeaderText>
-              <PressableIcon icon="edit" size={22} />
+              {editable && <PressableIcon icon="edit" size={22} />}
             </XStack>
             <BodyText variant="body2" color="$mono500">
               {profile?.role}
