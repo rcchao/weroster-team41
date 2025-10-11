@@ -8,19 +8,21 @@ import { BodyText } from "@/components/BodyText"
 import { Button } from "@/components/Button"
 import { AllocatedShiftDashboardCard } from "@/components/DashboardCards/AllocatedShiftDashboardCard"
 import { OpenShiftDashboardCard } from "@/components/DashboardCards/OpenShiftDashboardCard"
+import { TeamDashboardCard } from "@/components/DashboardCards/TeamDashboardCard"
 import { DashboardHomeHeader } from "@/components/DashboardHomeHeader"
 import { HeaderText } from "@/components/HeaderText"
 import { Icon } from "@/components/Icon"
 import { LozengeType } from "@/components/Lozenge"
 import { Screen } from "@/components/Screen"
+import { Session } from "@/components/ShiftDetailsSubheader"
 import { SubmitButton } from "@/components/SubmitButton"
 import { useAuthenticatedUserId } from "@/context/AuthContext"
-import { Session } from "@/components/ShiftDetailsSubheader"
 import { TxKeyPath } from "@/i18n"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useMyShifts } from "@/services/hooks/useMyShifts"
 import { useOpenShifts } from "@/services/hooks/useOpenShifts"
 import { useProfile } from "@/services/hooks/useProfile"
+// import { useUpcomingCampusEvents } from "@/services/hooks/useUpcomingCampusEvents"
 import { usePostSwapRequest } from "@/services/hooks/useUserRequests"
 import { useAppTheme } from "@/theme/context"
 import { $headerContainer, $styles } from "@/theme/styles"
@@ -61,7 +63,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
 
     const { myShifts } = useMyShifts()
     const { openShifts } = useOpenShifts()
-
+    // const { upcomingCampusEvents } = useUpcomingCampusEvents()
     return (
       <View style={$container}>
         <SafeAreaView style={$headerContainer} edges={["top"]}>
@@ -96,6 +98,12 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
                 openShiftStatus={openShifts[0].status as LozengeType}
               />
             )}
+            <TeamDashboardCard
+              campusName="TSC Campus"
+              startDate={new Date()}
+              locationName="Theatre 1"
+              numStaff={3}
+            />
           </YStack>
           <SubmitButton text="apply to swap shift" onPress={postSwapShiftRequest} />
         </Screen>
