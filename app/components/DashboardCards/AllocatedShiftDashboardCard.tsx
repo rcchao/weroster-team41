@@ -40,7 +40,8 @@ export const AllocatedShiftDashboardCard = ({
       backgroundColor="$white200"
       padding={18}
       paddingBlockStart={12}
-      width={245}
+      minWidth={245}
+      alignSelf="flex-start"
       elevation={4}
       shadowColor="$mono900"
       shadowOffset={{ width: 0, height: 4 }}
@@ -48,7 +49,7 @@ export const AllocatedShiftDashboardCard = ({
       shadowRadius={4}
     >
       <XStack justifyContent="space-between">
-        <YStack width="60%">
+        <YStack alignSelf="flex-start">
           <HeaderText variant="h2" numberOfLines={1} ellipsizeMode="tail">
             {displayDate}
           </HeaderText>

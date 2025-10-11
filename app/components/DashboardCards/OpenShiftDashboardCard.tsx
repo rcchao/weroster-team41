@@ -31,7 +31,8 @@ export const OpenShiftDashboardCard = ({
       backgroundColor="$white200"
       padding={18}
       paddingBlockStart={12}
-      width={260}
+      minWidth={260}
+      alignSelf="flex-start"
       elevation={4}
       shadowColor="$mono900"
       shadowOffset={{ width: 0, height: 4 }}
@@ -39,7 +40,7 @@ export const OpenShiftDashboardCard = ({
       shadowRadius={4}
     >
       <XStack justifyContent="space-between">
-        <YStack width="60%">
+        <YStack alignSelf="flex-start">
           <HeaderText variant="h2" numberOfLines={1} ellipsizeMode="tail">
             {displayDate}
           </HeaderText>
