@@ -13,7 +13,7 @@ export const campusApi = {
     return {
       success: false,
       error: (response.data as any)?.error || "Failed to retrieve upcoming campus events",
-    } as ApiResponse<UpcomingCampusEvent>
+    } as ApiResponse<UpcomingCampusEvent[]>
   },
 
   getCampusByLocationId: async (locationId: number) => {
