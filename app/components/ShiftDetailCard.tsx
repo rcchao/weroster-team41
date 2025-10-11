@@ -10,6 +10,7 @@ import { Icon } from "./Icon"
 
 interface ShiftDetailCardProps {
   shift: ShiftWithNumUsers
+  onRequestSwap?: (shift: ShiftWithNumUsers) => void
 }
 
 const ShiftHeader = ({ location, address }: { location: string; address?: string | null }) => (
@@ -90,7 +91,7 @@ const PaySection = ({ amount }: { amount: number }) => (
   </YStack>
 )
 
-const RequestButton = ({ isOpenShift }: { isOpenShift: boolean }) => (
+const RequestButton = ({ isOpenShift, onPress }: { isOpenShift: boolean; onPress: () => void }) => (
   <Button
     height={36}
     backgroundColor="$secondary500"
@@ -99,6 +100,7 @@ const RequestButton = ({ isOpenShift }: { isOpenShift: boolean }) => (
     alignItems="center"
     alignSelf="flex-end"
     marginTop="$2"
+    onPress={onPress}
   >
     <BodyText variant="body2" color="$white100">
       {isOpenShift ? "Request Shift" : "Request Swap"}
@@ -106,9 +108,11 @@ const RequestButton = ({ isOpenShift }: { isOpenShift: boolean }) => (
   </Button>
 )
 
-const ShiftDetailCard = ({ shift }: ShiftDetailCardProps) => {
+const ShiftDetailCard = ({ shift, onRequestSwap }: ShiftDetailCardProps) => {
   const { campus } = useCampusByLocationId(shift.location_id)
   const isOpenShift = shift?.numUsers === 0
+
+  const onPress = () => onRequestSwap?.(shift)
 
   return (
     <Card
@@ -121,6 +125,7 @@ const ShiftDetailCard = ({ shift }: ShiftDetailCardProps) => {
       shadowRadius={8}
       borderRadius="$radius.4"
       padding="$5"
+      alignItems="center"
     >
       <YStack gap="$4">
         <ShiftHeader location={shift.location} address={campus?.address} />
@@ -138,7 +143,7 @@ const ShiftDetailCard = ({ shift }: ShiftDetailCardProps) => {
 
         {isOpenShift && <PaySection amount={500} />}
 
-        <RequestButton isOpenShift={isOpenShift} />
+        <RequestButton isOpenShift={isOpenShift} onPress={onPress} />
       </YStack>
     </Card>
   )

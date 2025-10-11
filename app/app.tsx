@@ -21,6 +21,7 @@ import "./utils/gestureHandler"
 import { useEffect, useState } from "react"
 import { useFonts } from "expo-font"
 import * as Linking from "expo-linking"
+import { PortalProvider } from "@tamagui/portal"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { KeyboardProvider } from "react-native-keyboard-controller"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
@@ -106,11 +107,13 @@ export function App() {
           <KeyboardProvider>
             <AuthProvider>
               <ThemeProvider>
-                <AppNavigator
-                  linking={linking}
-                  initialState={initialNavigationState}
-                  onStateChange={onNavigationStateChange}
-                />
+                <PortalProvider shouldAddRootHost>
+                  <AppNavigator
+                    linking={linking}
+                    initialState={initialNavigationState}
+                    onStateChange={onNavigationStateChange}
+                  />
+                </PortalProvider>
               </ThemeProvider>
             </AuthProvider>
           </KeyboardProvider>
