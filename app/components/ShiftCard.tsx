@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, memo } from "react"
 import { Pressable } from "react-native"
 import { format } from "date-fns"
 import { Card, Dialog, ScrollView, useTheme, XStack, YStack } from "tamagui"
@@ -29,7 +29,7 @@ interface ShiftCardProps {
   clashes?: boolean
 }
 
-const ShiftCard = ({ shift, clashes }: ShiftCardProps) => {
+const ShiftCard = memo(({ shift, clashes }: ShiftCardProps) => {
   const theme = useTheme()
 
   const isOpenShift = "status" in shift
@@ -85,7 +85,6 @@ const ShiftCard = ({ shift, clashes }: ShiftCardProps) => {
           width={"100%"}
           elevation={4}
           shadowColor="$mono900"
-          shadowOffset={{ width: 0, height: 4 }}
           shadowOpacity={0.25}
           shadowRadius={4}
           borderRadius="$radius.4"
@@ -144,50 +143,55 @@ const ShiftCard = ({ shift, clashes }: ShiftCardProps) => {
             shadowOpacity={0}
             shadowRadius={0}
           >
-            <XStack
-              alignItems="center"
-              justifyContent="center"
-              height={56}
-              padding={16}
-              backgroundColor="$white100"
-              borderTopLeftRadius="$4"
-              borderTopRightRadius="$4"
-            >
-              <BodyText variant="body2" fontWeight={900} color="$mono900">
-                Shift Details
-              </BodyText>
-              <Dialog.Close asChild>
-                <Pressable hitSlop={10} style={$closeButtonStyles}>
-                  <Icon icon="lucideX" />
-                </Pressable>
-              </Dialog.Close>
-            </XStack>
-            <ScrollView margin={0}>
-              <YStack width="100%" alignItems="center">
-                <ShiftDetailsSubheader
-                  startDate={shift.start_time}
-                  endDate={shift.end_time}
-                  session={shift.eventSessions[0] as Session}
-                />
-                <YStack width="90%">
-                  <ShiftDetailCard
-                    shift={shift}
-                    onRequestSwap={(shift) => {
-                      setDialogOpen?.(false)
-                      requestAnimationFrame(() => {
-                        navigationRef.navigate("SwapShift", { shiftId: shift.id })
-                      })
-                    }}
+            <YStack height="100%">
+              <XStack
+                alignItems="center"
+                justifyContent="center"
+                height={56}
+                padding={16}
+                backgroundColor="$white100"
+                borderTopLeftRadius="$4"
+                borderTopRightRadius="$4"
+              >
+                <BodyText variant="body2" fontWeight={900} color="$mono900">
+                  Shift Details
+                </BodyText>
+                <Dialog.Close asChild>
+                  <Pressable hitSlop={10} style={$closeButtonStyles}>
+                    <Icon icon="lucideX" />
+                  </Pressable>
+                </Dialog.Close>
+              </XStack>
+              <ScrollView margin={0} flex={1}>
+                <YStack width="100%" alignItems="center">
+                  <ShiftDetailsSubheader
+                    startDate={shift.start_time}
+                    endDate={shift.end_time}
+                    session={shift.eventSessions[0] as Session}
                   />
+                  <YStack width="90%" paddingBlockEnd={20}>
+                    <ShiftDetailCard
+                      shift={shift}
+                      onRequestSwap={(shift) => {
+                        setDialogOpen?.(false)
+                        requestAnimationFrame(() => {
+                          navigationRef.navigate("SwapShift", { shiftId: shift.id })
+                        })
+                      }}
+                    />
+                  </YStack>
                 </YStack>
-              </YStack>
-            </ScrollView>
+              </ScrollView>
+            </YStack>
           </Dialog.Content>
         </ThemeProvider>
       </Dialog.Portal>
     </Dialog>
   )
-}
+})
+
+// Set display name for easier debugging (linting).
+ShiftCard.displayName = "ShiftCard"
 
 export { ShiftCard }
 

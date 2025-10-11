@@ -120,6 +120,7 @@ const AppStack = () => {
         options={{
           presentation: "fullScreenModal",
           headerShown: false,
+          animation: "slide_from_bottom",
         }}
       />
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}

@@ -116,8 +116,6 @@ const ShiftDetailCard = ({ shift, onRequestSwap }: ShiftDetailCardProps) => {
   const { campus } = useCampusByLocationId(shift.location_id)
   const isOpenShift = shift?.numUsers === 0
 
-  const onPress = () => onRequestSwap?.(shift)
-
   return (
     <Card
       backgroundColor="$white100"
@@ -147,7 +145,7 @@ const ShiftDetailCard = ({ shift, onRequestSwap }: ShiftDetailCardProps) => {
 
         {isOpenShift && <PaySection amount={500} />}
 
-        <RequestButton isOpenShift={isOpenShift} onPress={onPress} />
+        <RequestButton isOpenShift={isOpenShift} onPress={() => onRequestSwap?.(shift)} />
       </YStack>
     </Card>
   )
