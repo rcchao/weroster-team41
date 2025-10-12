@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import { XStack, YStack } from "tamagui"
+import { XStack, YStack, Spinner } from "tamagui"
 
 import { BodyText } from "@/components/BodyText"
 import { DateSelectorBar } from "@/components/DateSelectorBar"
@@ -24,7 +24,10 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
       <DateSelectorBar mode="month" selectedDate={date} setSelectedDate={setDate} />
       <YStack gap="$4" paddingVertical="$4">
         {isPending ? (
-          <BodyText variant="body4">Loading...</BodyText>
+          <YStack paddingTop="60%" gap="$3" alignItems="center">
+            <Spinner size="large" color="$primary500" />
+            <BodyText variant="body2">Loading...</BodyText>
+          </YStack>
         ) : userRequests && userRequests.length > 0 ? (
           userRequests.map((request, idx) => (
             <XStack key={idx} justifyContent="center">

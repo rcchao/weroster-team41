@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { XStack, YStack } from "tamagui"
+import { XStack, YStack, Spinner } from "tamagui"
 
 import { BodyText } from "@/components/BodyText"
 import { Header } from "@/components/Header"
@@ -31,7 +31,10 @@ export const DashboardTeamsScreen: FC<DashboardTabScreenProps<"DashboardTeams">>
               </XStack>
             ))
           ) : (
-            <BodyText variant="body4">Loading...</BodyText>
+            <YStack paddingTop="60%" gap="$3" alignItems="center">
+              <Spinner size="large" color="$primary500" />
+              <BodyText variant="body2">Loading...</BodyText>
+            </YStack>
           )}
         </YStack>
       </Screen>
