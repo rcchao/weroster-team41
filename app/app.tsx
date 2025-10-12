@@ -25,6 +25,7 @@ import { PortalProvider } from "@tamagui/portal"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { KeyboardProvider } from "react-native-keyboard-controller"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
+import Toast from "react-native-toast-message"
 import { TamaguiProvider } from "tamagui"
 
 import { AuthProvider } from "./context/AuthContext"
@@ -113,6 +114,7 @@ export function App() {
                     initialState={initialNavigationState}
                     onStateChange={onNavigationStateChange}
                   />
+                  <Toast />
                 </PortalProvider>
               </ThemeProvider>
             </AuthProvider>
