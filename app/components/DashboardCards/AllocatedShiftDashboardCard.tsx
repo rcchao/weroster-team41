@@ -76,7 +76,9 @@ export const AllocatedShiftDashboardCard = ({
             </XStack>
           </YStack>
         </YStack>
-        <IconBadge type={icon} />
+        <YStack marginTop={5}>
+          <IconBadge type={icon} />
+        </YStack>
       </XStack>
     </Card>
   )

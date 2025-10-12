@@ -69,7 +69,9 @@ export const LeaveRequestDashboardCard = ({
             <Lozenge type={leaveStatus} />
           </YStack>
         </YStack>
-        <IconBadge type={icon} />
+        <YStack marginTop={5}>
+          <IconBadge type={icon} />
+        </YStack>
       </XStack>
     </Card>
   )

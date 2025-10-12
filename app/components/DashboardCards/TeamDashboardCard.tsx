@@ -9,14 +9,14 @@ interface TeamDashboardCardProps {
   campusName: string
   startDate: Date
   locationName: string
-  numStaff: number
+  numAssignments: number
 }
 
 export const TeamDashboardCard = ({
   campusName,
   startDate,
   locationName,
-  numStaff,
+  numAssignments,
 }: TeamDashboardCardProps) => {
   const displayDate = format(startDate, "EEE, d MMM")
   return (
@@ -40,7 +40,7 @@ export const TeamDashboardCard = ({
             <BodyText variant="body3">{displayDate}</BodyText>
           </XStack>
           <BodyText variant="body3" fontWeight="900">
-            {locationName}:<BodyText variant="body3"> {numStaff} staff</BodyText>
+            {locationName}:<BodyText variant="body3"> {numAssignments} staff</BodyText>
           </BodyText>
         </YStack>
       </YStack>

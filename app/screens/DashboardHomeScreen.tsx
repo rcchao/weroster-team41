@@ -23,7 +23,7 @@ import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useMyShifts } from "@/services/hooks/useMyShifts"
 import { useOpenShifts } from "@/services/hooks/useOpenShifts"
 import { useProfile } from "@/services/hooks/useProfile"
-// import { useUpcomingCampusEvents } from "@/services/hooks/useUpcomingCampusEvents"
+import { useUpcomingCampusEvents } from "@/services/hooks/useUpcomingCampusEvents"
 import { useLeaveRequests, usePostSwapRequest } from "@/services/hooks/useUserRequests"
 import { useAppTheme } from "@/theme/context"
 import { $headerContainer, $styles } from "@/theme/styles"
@@ -64,7 +64,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
 
     const { myShifts } = useMyShifts()
     const { openShifts } = useOpenShifts()
-    // const { upcomingCampusEvents } = useUpcomingCampusEvents()
+    const { upcomingCampusEvents } = useUpcomingCampusEvents()
     const { leaveRequests } = useLeaveRequests()
 
     return (
@@ -101,12 +101,14 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
                 openShiftStatus={openShifts[0].status as LozengeType}
               />
             )}
-            <TeamDashboardCard
-              campusName="TSC Campus"
-              startDate={new Date()}
-              locationName="Theatre 1"
-              numStaff={3}
-            />
+            {upcomingCampusEvents && (
+              <TeamDashboardCard
+                campusName={upcomingCampusEvents[0].campus_name}
+                startDate={upcomingCampusEvents[0].start_date}
+                locationName={upcomingCampusEvents[0].location_name}
+                numAssignments={upcomingCampusEvents[0].num_assignments}
+              />
+            )}
             {leaveRequests && (
               <LeaveRequestDashboardCard
                 startDate={leaveRequests[0].start_date}

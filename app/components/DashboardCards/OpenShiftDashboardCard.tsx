@@ -69,7 +69,9 @@ export const OpenShiftDashboardCard = ({
             </XStack>
           </YStack>
         </YStack>
-        <Lozenge type={openShiftStatus} />
+        <YStack marginTop={5}>
+          <Lozenge type={openShiftStatus} />
+        </YStack>
       </XStack>
     </Card>
   )
