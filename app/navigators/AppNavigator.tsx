@@ -15,6 +15,7 @@ import { ErrorBoundary } from "@/screens/ErrorScreen/ErrorBoundary"
 import { LoginScreen } from "@/screens/LoginScreen"
 import { NotificationsScreen } from "@/screens/NotificationsScreen"
 import { ProfileScreen } from "@/screens/ProfileScreen"
+import { SwapShiftScreen } from "@/screens/SwapShiftScreen"
 import { TeamDetailsScreen } from "@/screens/TeamDetailsScreen"
 import { useAppTheme } from "@/theme/context"
 
@@ -37,6 +38,7 @@ export type AppStackParamList = {
   EditDashboard: undefined
   ProfileScreen: undefined
   TeamDetails: { userId: number }
+  SwapShift: { shiftId: number }
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
@@ -109,6 +111,16 @@ const AppStack = () => {
         options={{
           headerShown: false,
           presentation: "card",
+        }}
+      />
+
+      <Stack.Screen
+        name="SwapShift"
+        component={SwapShiftScreen}
+        options={{
+          presentation: "fullScreenModal",
+          headerShown: false,
+          animation: "slide_from_bottom",
         }}
       />
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
