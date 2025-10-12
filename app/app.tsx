@@ -25,9 +25,11 @@ import { PortalProvider } from "@tamagui/portal"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { KeyboardProvider } from "react-native-keyboard-controller"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
-import Toast from "react-native-toast-message"
-import { TamaguiProvider } from "tamagui"
+import Toast, { ToastConfig } from "react-native-toast-message"
+import { TamaguiProvider, XStack } from "tamagui"
 
+import { BodyText } from "./components/BodyText"
+import { StyledIcon } from "./components/common/StyledIcon"
 import { AuthProvider } from "./context/AuthContext"
 import { initI18n } from "./i18n"
 import { AppNavigator } from "./navigators/AppNavigator"
@@ -61,6 +63,46 @@ const config = {
     Notifications: {
       path: "notifications",
     },
+  },
+}
+
+const toastConfig: ToastConfig = {
+  success: ({ text1 }) => {
+    const displayText = text1 ? text1 : "Action was successful"
+
+    return (
+      <XStack
+        height={44}
+        backgroundColor="$white100"
+        alignItems="center"
+        justifyContent="center"
+        borderRadius="$radius.7"
+        gap="$3"
+        paddingInline="$5"
+      >
+        <StyledIcon icon="check" />
+        <BodyText>{displayText}</BodyText>
+      </XStack>
+    )
+  },
+
+  failure: ({ text1 }) => {
+    const displayText = text1 ? text1 : "Action was unsuccessful"
+
+    return (
+      <XStack
+        height={44}
+        backgroundColor="$white100"
+        alignItems="center"
+        justifyContent="center"
+        borderRadius="$radius.7"
+        gap="$3"
+        paddingInline="$5"
+      >
+        <StyledIcon icon="lucideX" />
+        <BodyText>{displayText}</BodyText>
+      </XStack>
+    )
   },
 }
 
@@ -114,7 +156,7 @@ export function App() {
                     initialState={initialNavigationState}
                     onStateChange={onNavigationStateChange}
                   />
-                  <Toast />
+                  <Toast topOffset={60} visibilityTime={1500} config={toastConfig} />
                 </PortalProvider>
               </ThemeProvider>
             </AuthProvider>
