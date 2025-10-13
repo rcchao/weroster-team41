@@ -10,9 +10,9 @@ import { AllocatedShiftDashboardCard } from "@/components/DashboardCards/Allocat
 import { LeaveRequestDashboardCard } from "@/components/DashboardCards/LeaveRequestDashboardCard"
 import { OpenShiftDashboardCard } from "@/components/DashboardCards/OpenShiftDashboardCard"
 import { TeamDashboardCard } from "@/components/DashboardCards/TeamDashboardCard"
+import { TeamMemberDashboardCard } from "@/components/DashboardCards/TeamMemberDashboardCard"
 import { DashboardHomeHeader } from "@/components/DashboardHomeHeader"
 import { DashboardRow } from "@/components/DashboardRow"
-import { DashboardTeamMemberCard } from "@/components/DashboardTeamMemberCard"
 import { HeaderText } from "@/components/HeaderText"
 import { Icon } from "@/components/Icon"
 import { LozengeType } from "@/components/Lozenge"
@@ -80,7 +80,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
               title="Who's on duty"
               onPressViewAll={() => navigation.navigate("DashboardTeams")}
               cards={[
-                <DashboardTeamMemberCard
+                <TeamMemberDashboardCard
                   key="1"
                   firstName="John"
                   lastName="Doe"
@@ -89,7 +89,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
                   shiftStartTime={new Date()}
                   shiftEndTime={new Date()}
                 />,
-                <DashboardTeamMemberCard
+                <TeamMemberDashboardCard
                   key="2"
                   firstName="Jane"
                   lastName="Smith"
