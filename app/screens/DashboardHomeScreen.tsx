@@ -2,6 +2,7 @@
 import { FC, ReactElement } from "react"
 import { View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
+import Toast from "react-native-toast-message"
 import { YStack } from "tamagui"
 
 import { BodyText } from "@/components/BodyText"
@@ -56,8 +57,15 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
         const data = await mutation.mutateAsync(swapRequest)
         if (data.success) {
           console.log("Posted successfully", data)
+          Toast.show({
+            type: "success",
+            text1: "Successfully requested a shift swap",
+          })
         } else {
           console.log("Post failed", data.error)
+          Toast.show({
+            type: "failure",
+          })
         }
       } catch (error) {
         console.error("Error posting:", error)

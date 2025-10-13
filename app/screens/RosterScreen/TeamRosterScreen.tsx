@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
+import Toast from "react-native-toast-message"
 
 import { DateSelectorBar } from "@/components/DateSelectorBar"
 import type { Session } from "@/components/ShiftDetailsSubheader"
@@ -21,17 +22,24 @@ export function TeamRosterScreen(_props: Props) {
   const mutation = usePostAssignmentRequest()
 
   const postOpenShiftRequest = async () => {
-    const assignmentRequest = { event_id: 4 }
+    const assignmentRequest = { event_id: 57 }
     try {
       const data = await mutation.mutateAsync(assignmentRequest)
       if (data.success) {
         console.log("Posted successfully", data)
+        Toast.show({
+          type: "success",
+          text1: "Successfully applied to an open shift",
+        })
       } else {
         // Error messages here are "Not an open shift, cannot make assignment request"
         // and "Event not found". If either of these are the case, the frontend
         // shouldn't even allow a user to apply to the open shift so don't
         // worry about bubbling these errors up to the frontend
         console.log("Post failed", data.error)
+        Toast.show({
+          type: "failure",
+        })
       }
     } catch (error) {
       console.error("Error posting:", error)
