@@ -3,19 +3,17 @@ import { XStack, YStack, Spinner } from "tamagui"
 
 import { BodyText } from "@/components/BodyText"
 import { Header } from "@/components/Header"
-import { Screen } from "@/components/Screen"
 import { SearchHeader } from "@/components/SearchHeader"
 import { TeamMemberCard } from "@/components/TeamMemberCard"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useTeamMemberData } from "@/services/hooks/useTeamMemberData"
-import { $styles } from "@/theme/styles"
 
 export const DashboardTeamsScreen: FC<DashboardTabScreenProps<"DashboardTeams">> =
   function DashboardTeamsScreen(_props) {
     const { teamMemberData } = useTeamMemberData()
 
     return (
-      <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
+      <YStack flex={1}>
         <Header title="My Team" />
         <SearchHeader onSearch={(query) => console.log("Search query:", query)} />
         <YStack gap="$4" paddingVertical="$4" width="85%" alignSelf="center">
@@ -39,6 +37,6 @@ export const DashboardTeamsScreen: FC<DashboardTabScreenProps<"DashboardTeams">>
             </YStack>
           )}
         </YStack>
-      </Screen>
+      </YStack>
     )
   }

@@ -8,7 +8,6 @@ import { Screen } from "@/components/Screen"
 import { useAuth, useAuthenticatedUserId } from "@/context/AuthContext"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useProfile } from "@/services/hooks/useProfile"
-import { $styles } from "@/theme/styles"
 
 interface ProfileScreenProps extends AppStackScreenProps<"ProfileScreen"> {}
 
@@ -42,7 +41,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
   }
 
   return (
-    <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
+    <Screen preset="scroll">
       <BackHeader navigation={navigation} title="Profile" onSavePress={handleSavePress} />
       {isLoading && (
         <YStack alignItems="center" justifyContent="center" py="$6" gap="$3">

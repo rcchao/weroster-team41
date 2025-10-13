@@ -1,7 +1,6 @@
 import { memo, useMemo } from "react"
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { View } from "tamagui"
 
 import { SubTabs } from "@/components/SubTabs"
@@ -16,20 +15,15 @@ const TABS: ReadonlyArray<{ key: TabKey; label: string; route: RosterRouteName }
   { key: "openShifts", label: "Open Shifts", route: "OpenShifts" },
 ] as const
 
-const HEADER_CONTENT_HEIGHT = 65
+const HEADER_CONTENT_HEIGHT = 110
 
-const $header = (top: number) => ({
-  height: top + HEADER_CONTENT_HEIGHT,
-  paddingTop: top,
-  justifyContent: "top" as const,
-})
+const $header: React.CSSProperties = {
+  height: HEADER_CONTENT_HEIGHT,
+}
 
 function RosterHeaderInner() {
   const navigation = useNavigation<NativeStackNavigationProp<RosterStackParamList>>()
   const route = useRoute<RouteProp<Record<string, object | undefined>, string>>()
-
-  // Fetch the size of the top margin to manually fix the margins when rendering (fixes the glitching effect)
-  const { top } = useSafeAreaInsets()
 
   const tabs = useMemo(() => TABS, [])
 
@@ -42,7 +36,7 @@ function RosterHeaderInner() {
   }
 
   return (
-    <View style={$header(top)}>
+    <View style={$header}>
       <SubTabs tabs={tabs as any} activeTab={activeTab} onTabChange={handleTabChange} />
     </View>
   )

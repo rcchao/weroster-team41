@@ -32,9 +32,9 @@ const DateSelectorBar = ({
 
   return (
     <XStack
-      height={56}
+      height={50}
+      paddingTop={10}
       width="100%"
-      zIndex={1}
       alignItems="center"
       justifyContent="space-between"
       boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.4)"}

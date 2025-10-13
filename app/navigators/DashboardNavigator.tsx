@@ -1,6 +1,9 @@
+import { useCallback } from "react"
 import { TextStyle, ViewStyle } from "react-native"
+import { StatusBar } from "react-native"
 import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
+import { useFocusEffect } from "@react-navigation/native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTheme } from "tamagui"
 
@@ -51,6 +54,14 @@ export function DashboardNavigator() {
   } = useAppTheme()
 
   const theme = useTheme()
+
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle("light-content", true)
+      StatusBar.setBackgroundColor("$primary500", true)
+      StatusBar.setTranslucent(true)
+    }, []),
+  )
 
   return (
     <EpisodeProvider>

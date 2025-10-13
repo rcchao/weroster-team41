@@ -9,7 +9,6 @@ import { RequestFilterBottomSheet } from "@/components/RequestFilterBottomSheet"
 import { Screen } from "@/components/Screen"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useUserRequests } from "@/services/hooks/useUserRequests"
-import { $styles } from "@/theme/styles"
 
 export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardRequests">> = (
   _props,
@@ -25,7 +24,7 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
   const { userRequests, isPending } = useUserRequests(month, year, selectedTypes, selectedStatuses)
 
   return (
-    <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
+    <YStack flex={1}>
       <Header title="My Requests" />
       <DateSelectorBar
         mode="month"
