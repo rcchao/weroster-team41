@@ -5,10 +5,8 @@ import { BodyText } from "@/components/BodyText"
 import { DateSelectorBar } from "@/components/DateSelectorBar"
 import { Header } from "@/components/Header"
 import { RequestCard, RequestType } from "@/components/RequestCard"
-import { Screen } from "@/components/Screen"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useUserRequests } from "@/services/hooks/useUserRequests"
-import { $styles } from "@/theme/styles"
 
 export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardRequests">> = (
   _props,
@@ -19,7 +17,7 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
   const { userRequests, isPending } = useUserRequests(month, year)
 
   return (
-    <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
+    <YStack flex={1}>
       <Header title="My Requests" />
       <DateSelectorBar mode="month" selectedDate={date} setSelectedDate={setDate} />
       <YStack gap="$4" paddingVertical="$4">
@@ -44,6 +42,6 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
           <BodyText variant="body4">No requests found</BodyText>
         )}
       </YStack>
-    </Screen>
+    </YStack>
   )
 }

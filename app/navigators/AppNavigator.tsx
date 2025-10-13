@@ -4,8 +4,13 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import { ComponentProps } from "react"
-import { NavigationContainer, NavigatorScreenParams } from "@react-navigation/native"
+import { ComponentProps, useCallback } from "react"
+import { StatusBar } from "react-native"
+import {
+  NavigationContainer,
+  NavigatorScreenParams,
+  useFocusEffect,
+} from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
 
 import Config from "@/config"
@@ -63,6 +68,14 @@ const AppStack = () => {
   const {
     theme: { colors },
   } = useAppTheme()
+
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle("light-content", true)
+      StatusBar.setBackgroundColor("$primary500", true)
+      StatusBar.setTranslucent(true)
+    }, []),
+  )
 
   return (
     <Stack.Navigator

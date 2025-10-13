@@ -1,3 +1,6 @@
+import { useCallback } from "react"
+import { StatusBar } from "react-native"
+import { useFocusEffect } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
 import { RosterHeader } from "@/components/RosterHeader"
@@ -18,6 +21,14 @@ export function DashboardRosterScreen() {
   const {
     theme: { colors },
   } = useAppTheme()
+
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle("light-content", true)
+      StatusBar.setBackgroundColor("$primary500", true)
+      StatusBar.setTranslucent(true)
+    }, []),
+  )
 
   return (
     <RosterStack.Navigator

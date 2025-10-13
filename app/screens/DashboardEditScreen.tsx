@@ -13,7 +13,6 @@ import { useDashboardPreferences } from "@/services/hooks/useDashboardPreference
 import { usePostDashboardPreferences } from "@/services/hooks/useDashboardPreferences"
 import { tamaguiConfig } from "@/tamagui.config"
 import { spacing } from "@/theme/spacing"
-import { $styles } from "@/theme/styles"
 
 import { DashboardPreferences } from "../../backend/src/types/settings.types"
 
@@ -109,7 +108,7 @@ export const DashboardEditScreen: FC<AppStackScreenProps<"EditDashboard">> =
     }
 
     return (
-      <Screen preset="fixed" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
+      <Screen preset="fixed">
         <BackHeader navigation={navigation} title="Edit Dashboard" onSavePress={handleSavePress} />
         <YStack marginTop="$4">
           <BodyText variant="body" marginLeft={16}>
