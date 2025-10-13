@@ -359,7 +359,7 @@ model Swap {
   fromUser         User               @relation("SwapFromUser", fields: [from_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_1")
   toUser           User               @relation("SwapToUser", fields: [to_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_2")
   event            Event              @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Swap_ibfk_3")
-  SwapNotification SwapNotification[] @relation("Swap")
+  SwapNotification SwapNotification[]
 
   @@unique([from_user, to_user, event_id])
   // Indexes
@@ -373,16 +373,18 @@ model SwapNotification {
   id Int @id @default(autoincrement())
 
   // Scalar fields
-  is_read         Boolean @default(false)
-  required_action Boolean @default(false)
-  user_id         Int
+  created_at      DateTime @default(now())
+  is_read         Boolean  @default(false)
+  requires_action Boolean  @default(false)
+  to_user         Int
+  from_user       Int
   swap_request    Int
 
   // Relations
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  swap Swap @relation("Swap", fields: [swap_request], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  fromUser User @relation(fields: [from_user], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  swap     Swap @relation(fields: [swap_request], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   // Indexes
-  @@index([user_id], map: "user_id")
+  @@index([from_user], map: "from_user")
   @@index([swap_request], map: "swap_request")
 }
