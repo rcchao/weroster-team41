@@ -1,3 +1,4 @@
+import { Pressable } from "react-native"
 import { format } from "date-fns"
 import { Circle, useTheme, XStack, YStack } from "tamagui"
 
@@ -12,13 +13,14 @@ type MessageContext = {
 }
 
 type NotificationType =
-  | "swapOffer"
-  | "swapAccepted"
-  | "swapDeclined"
   | "leaveApproved"
   | "leaveDeclined"
   | "openShiftAccepted"
   | "openShiftDeclined"
+
+type SwapNotificationType = "swapOffer" | "swapAccepted" | "swapDeclined"
+
+type AnyNotificationType = NotificationType | SwapNotificationType
 
 type NotificationConfig = {
   requestType: LozengeType
@@ -27,7 +29,7 @@ type NotificationConfig = {
   message: (context: MessageContext) => string | null
 }
 
-const NOTIFICATION_CONFIG: Record<NotificationType, NotificationConfig> = {
+const NOTIFICATION_CONFIG: Record<AnyNotificationType, NotificationConfig> = {
   swapOffer: {
     requestType: "swap",
     backgroundColor: "$secondary100",
@@ -49,14 +51,14 @@ const NOTIFICATION_CONFIG: Record<NotificationType, NotificationConfig> = {
   leaveApproved: {
     requestType: "leave",
     statusType: "APPROVED",
-    message: ({ initials, targetDateStr }) =>
-      `Your leave${targetDateStr ? ` on ${targetDateStr}` : ""} has been approved by ${initials}.`,
+    message: ({ targetDateStr }) =>
+      `Your leave${targetDateStr ? ` on ${targetDateStr}` : ""} has been approved.`,
   },
   leaveDeclined: {
     requestType: "leave",
     statusType: "DECLINED",
-    message: ({ initials, targetDateStr }) =>
-      `Your leave${targetDateStr ? ` on ${targetDateStr}` : ""} has been declined by ${initials}.`,
+    message: ({ targetDateStr }) =>
+      `Your leave${targetDateStr ? ` on ${targetDateStr}` : ""} has been declined.`,
   },
   openShiftAccepted: {
     requestType: "openShift",
@@ -72,37 +74,33 @@ const NOTIFICATION_CONFIG: Record<NotificationType, NotificationConfig> = {
   },
 }
 
-interface NotificationProps {
-  type: NotificationType
+// Generic used so the notification type can be specified depending on base or interactive
+interface NotificationBaseProps<TType extends AnyNotificationType> {
+  type: TType
   notificationDate: Date
-  targetUserFirstName: string
-  targetUserLastName: string
-  targetDate?: Date // Leave or shift date.
+  fromUserFirstName?: string
+  fromUserLastName?: string
+  targetDate?: Date
 }
 
-export const Notification = ({
+const NotificationBody = ({
   type,
   notificationDate,
-  targetUserFirstName,
-  targetUserLastName,
+  fromUserFirstName,
+  fromUserLastName,
   targetDate,
-}: NotificationProps) => {
+}: NotificationBaseProps<AnyNotificationType>) => {
   const theme = useTheme()
-
   const { requestType, statusType, backgroundColor, message } = NOTIFICATION_CONFIG[type]
 
-  const bgColorString = backgroundColor ?? "$white200"
-  const bgColor = theme[bgColorString]?.val
+  const bgColorToken = backgroundColor ?? "$white200"
+  const bgColor = theme[bgColorToken]?.val
 
   const displayNotificationDate = format(notificationDate, "dd/MM/yy - HH:mm")
   const displayTargetDate = targetDate ? format(targetDate, "EEE, d MMM yyyy") : null
-  const targetUserInitials = getInitials(targetUserFirstName, targetUserLastName)
+  const initials = getInitials(fromUserFirstName, fromUserLastName)
 
-  const text =
-    message?.({
-      initials: targetUserInitials,
-      targetDateStr: displayTargetDate,
-    }) ?? null
+  const text = message({ initials, targetDateStr: displayTargetDate })
 
   const hasBlueDot = true
 
@@ -116,6 +114,7 @@ export const Notification = ({
     >
       <YStack width="90%" gap="$3">
         <BodyText variant="body2">{text}</BodyText>
+
         <XStack gap="$3" flex={1} alignItems="center">
           <Lozenge type={requestType} />
           {statusType && <Lozenge type={statusType} />}
@@ -126,9 +125,28 @@ export const Notification = ({
           </YStack>
         </XStack>
       </YStack>
+
       {hasBlueDot && (
         <Circle width={10} height={10} backgroundColor="$accent600" borderRadius="$full" />
       )}
     </XStack>
+  )
+}
+
+export const Notification = (props: NotificationBaseProps<NotificationType>) => {
+  return <NotificationBody {...props} />
+}
+
+// Will pass shift in here to display the details in the modal
+interface InteractiveNotificationProps extends NotificationBaseProps<SwapNotificationType> {
+  disabled?: boolean
+}
+
+// Will turn this into a tamagui Dialog component
+export const InteractiveNotification = ({ disabled, ...props }: InteractiveNotificationProps) => {
+  return (
+    <Pressable onPress={() => console.log("Notification pressed!")} disabled={disabled}>
+      <NotificationBody {...props} />
+    </Pressable>
   )
 }

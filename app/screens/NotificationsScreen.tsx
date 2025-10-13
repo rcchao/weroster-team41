@@ -1,13 +1,13 @@
 import { FC } from "react"
 import { format } from "date-fns"
-import { YStack } from "tamagui"
+import { YStack, Text } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
-import { Notification } from "@/components/Notification"
+import { InteractiveNotification, Notification } from "@/components/Notification"
 import { Screen } from "@/components/Screen"
-import { Text } from "@/components/Text"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useSwapNotifications } from "@/services/hooks/useSwapNotifications"
+import { $styles } from "@/theme/styles"
 import { getInitials } from "@/utils/nameFormatting"
 
 interface NotificationsScreenProps extends AppStackScreenProps<"Notifications"> {}
@@ -20,7 +20,7 @@ export const NotificationsScreen: FC<NotificationsScreenProps> = function Notifi
   const firstSwapNotif = swapNotification?.[0]
 
   return (
-    <Screen preset="scroll" safeAreaEdges={["top"]}>
+    <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
       <BackHeader title="Notifications" navigation={navigation} />
       <YStack gap="$4" paddingVertical="$10">
         {firstSwapNotif && (
@@ -40,50 +40,50 @@ export const NotificationsScreen: FC<NotificationsScreenProps> = function Notifi
       <Notification
         type="leaveApproved"
         notificationDate={new Date()}
-        targetUserFirstName="Jane"
-        targetUserLastName="Doe"
+        fromUserFirstName="Jane"
+        fromUserLastName="Doe"
         targetDate={new Date()}
       />
       <Notification
         type="leaveDeclined"
         notificationDate={new Date()}
-        targetUserFirstName="Jane"
-        targetUserLastName="Doe"
+        fromUserFirstName="Jane"
+        fromUserLastName="Doe"
         targetDate={new Date()}
       />
-      <Notification
+      <InteractiveNotification
         type="swapOffer"
         notificationDate={new Date()}
-        targetUserFirstName="Jane"
-        targetUserLastName="Doe"
+        fromUserFirstName="Jane"
+        fromUserLastName="Doe"
         targetDate={new Date()}
       />
-      <Notification
+      <InteractiveNotification
         type="swapAccepted"
         notificationDate={new Date()}
-        targetUserFirstName="Jane"
-        targetUserLastName="Doe"
+        fromUserFirstName="Jane"
+        fromUserLastName="Doe"
         targetDate={new Date()}
       />
-      <Notification
+      <InteractiveNotification
         type="swapDeclined"
         notificationDate={new Date()}
-        targetUserFirstName="Jane"
-        targetUserLastName="Doe"
+        fromUserFirstName="Jane"
+        fromUserLastName="Doe"
         targetDate={new Date()}
       />
       <Notification
         type="openShiftAccepted"
         notificationDate={new Date()}
-        targetUserFirstName="Jane"
-        targetUserLastName="Doe"
+        fromUserFirstName="Jane"
+        fromUserLastName="Doe"
         targetDate={new Date()}
       />
       <Notification
         type="openShiftDeclined"
         notificationDate={new Date()}
-        targetUserFirstName="Jane"
-        targetUserLastName="Doe"
+        fromUserFirstName="Jane"
+        fromUserLastName="Doe"
         targetDate={new Date()}
       />
     </Screen>
