@@ -3,6 +3,7 @@ import { format } from "date-fns"
 import { YStack } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
+import { Notification } from "@/components/Notification"
 import { Screen } from "@/components/Screen"
 import { Text } from "@/components/Text"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
@@ -36,6 +37,55 @@ export const NotificationsScreen: FC<NotificationsScreenProps> = function Notifi
           </Text>
         )}
       </YStack>
+      <Notification
+        type="leaveApproved"
+        notificationDate={new Date()}
+        targetUserFirstName="Jane"
+        targetUserLastName="Doe"
+        targetDate={new Date()}
+      />
+      <Notification
+        type="leaveDeclined"
+        notificationDate={new Date()}
+        targetUserFirstName="Jane"
+        targetUserLastName="Doe"
+        targetDate={new Date()}
+      />
+      <Notification
+        type="swapOffer"
+        notificationDate={new Date()}
+        targetUserFirstName="Jane"
+        targetUserLastName="Doe"
+        targetDate={new Date()}
+      />
+      <Notification
+        type="swapAccepted"
+        notificationDate={new Date()}
+        targetUserFirstName="Jane"
+        targetUserLastName="Doe"
+        targetDate={new Date()}
+      />
+      <Notification
+        type="swapDeclined"
+        notificationDate={new Date()}
+        targetUserFirstName="Jane"
+        targetUserLastName="Doe"
+        targetDate={new Date()}
+      />
+      <Notification
+        type="openShiftAccepted"
+        notificationDate={new Date()}
+        targetUserFirstName="Jane"
+        targetUserLastName="Doe"
+        targetDate={new Date()}
+      />
+      <Notification
+        type="openShiftDeclined"
+        notificationDate={new Date()}
+        targetUserFirstName="Jane"
+        targetUserLastName="Doe"
+        targetDate={new Date()}
+      />
     </Screen>
   )
 }
