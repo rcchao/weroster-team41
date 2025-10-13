@@ -11,6 +11,8 @@ import { LeaveRequestDashboardCard } from "@/components/DashboardCards/LeaveRequ
 import { OpenShiftDashboardCard } from "@/components/DashboardCards/OpenShiftDashboardCard"
 import { TeamDashboardCard } from "@/components/DashboardCards/TeamDashboardCard"
 import { DashboardHomeHeader } from "@/components/DashboardHomeHeader"
+import { DashboardRow } from "@/components/DashboardRow"
+import { DashboardTeamMemberCard } from "@/components/DashboardTeamMemberCard"
 import { HeaderText } from "@/components/HeaderText"
 import { Icon } from "@/components/Icon"
 import { LozengeType } from "@/components/Lozenge"
@@ -26,7 +28,7 @@ import { useProfile } from "@/services/hooks/useProfile"
 import { useUpcomingCampusEvents } from "@/services/hooks/useUpcomingCampusEvents"
 import { useLeaveRequests, usePostSwapRequest } from "@/services/hooks/useUserRequests"
 import { useAppTheme } from "@/theme/context"
-import { $headerContainer, $styles } from "@/theme/styles"
+import { $headerContainer } from "@/theme/styles"
 import { $container, $fabButton } from "@/theme/styles"
 import type { Theme } from "@/theme/types"
 
@@ -72,7 +74,33 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
         <SafeAreaView style={$headerContainer} edges={["top"]}>
           <DashboardHomeHeader userName={profile?.first_name ?? "User"} navigation={navigation} />
         </SafeAreaView>
-        <Screen preset="scroll" contentContainerStyle={$styles.container}>
+        <Screen preset="scroll">
+          <YStack gap={20} marginBlockStart={30}>
+            <DashboardRow
+              title="Who's on duty"
+              onPressViewAll={() => navigation.navigate("DashboardTeams")}
+              cards={[
+                <DashboardTeamMemberCard
+                  key="1"
+                  firstName="John"
+                  lastName="Doe"
+                  location="Theatre 1"
+                  campus="General Campus"
+                  shiftStartTime={new Date()}
+                  shiftEndTime={new Date()}
+                />,
+                <DashboardTeamMemberCard
+                  key="2"
+                  firstName="Jane"
+                  lastName="Smith"
+                  location="Theatre 2"
+                  campus="General Campus"
+                  shiftStartTime={new Date()}
+                  shiftEndTime={new Date()}
+                />,
+              ]}
+            />
+          </YStack>
           <HeaderText variant="h1">Home H1 Text</HeaderText>
           <HeaderText variant="h2">H2 Text</HeaderText>
           <HeaderText variant="h3">H3 Text</HeaderText>
