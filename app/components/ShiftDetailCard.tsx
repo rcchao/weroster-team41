@@ -1,6 +1,6 @@
 import { Button, Card, Separator, XStack, YStack } from "tamagui"
 
-import { ShiftWithNumUsers } from "backend/src/types/event.types"
+import { OpenShift, ShiftWithNumUsers } from "backend/src/types/event.types"
 
 import { useCampusByLocationId } from "@/services/hooks/useCampus"
 
@@ -10,7 +10,7 @@ import { Icon } from "./Icon"
 
 interface ShiftDetailCardProps {
   shift: ShiftWithNumUsers
-  onRequestSwap?: (shift: ShiftWithNumUsers) => void
+  onPress: (shift: ShiftWithNumUsers | OpenShift) => void
 }
 
 const ShiftHeader = ({ location, address }: { location: string; address?: string | null }) => {
@@ -96,9 +96,9 @@ const RequestButton = ({ isOpenShift, onPress }: { isOpenShift: boolean; onPress
   </Button>
 )
 
-const ShiftDetailCard = ({ shift, onRequestSwap }: ShiftDetailCardProps) => {
+const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
   const { campus } = useCampusByLocationId(shift.location_id)
-  const isOpenShift = shift?.numUsers === 0
+  const isOpenShift = "status" in shift
 
   return (
     <Card
@@ -127,7 +127,7 @@ const ShiftDetailCard = ({ shift, onRequestSwap }: ShiftDetailCardProps) => {
 
         {isOpenShift && <PaySection amount={500} />}
 
-        <RequestButton isOpenShift={isOpenShift} onPress={() => onRequestSwap?.(shift)} />
+        <RequestButton isOpenShift={isOpenShift} onPress={() => onPress?.(shift)} />
       </YStack>
     </Card>
   )

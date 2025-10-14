@@ -1,11 +1,13 @@
 import { useState, memo } from "react"
 import { Pressable } from "react-native"
 import { format } from "date-fns"
+import Toast from "react-native-toast-message"
 import { Card, Dialog, ScrollView, useTheme, XStack, YStack } from "tamagui"
 
 import { ShiftWithNumUsers, OpenShift } from "backend/src/types/event.types"
 
 import { navigationRef } from "@/navigators/navigationUtilities"
+import { usePostAssignmentRequest } from "@/services/hooks/useUserRequests"
 import { ThemeProvider } from "@/theme/context"
 
 import { BodyText } from "./BodyText"
@@ -34,6 +36,49 @@ const ShiftCard = memo(({ shift, clashes }: ShiftCardProps) => {
 
   const isOpenShift = "status" in shift
   const firstSession = shift.eventSessions[0] as Session
+
+  const mutation = usePostAssignmentRequest()
+
+  const postOpenShiftRequest = async (shift: OpenShift) => {
+    try {
+      const data = await mutation.mutateAsync({ event_id: shift.id })
+      if (data.success) {
+        console.log("Posted successfully", data)
+        Toast.show({
+          type: "success",
+          text1: "Successfully applied to an open shift",
+        })
+      } else {
+        // Error messages here are "Not an open shift, cannot make assignment request"
+        // and "Event not found". If either of these are the case, the frontend
+        // shouldn't even allow a user to apply to the open shift so don't
+        // worry about bubbling these errors up to the frontend
+        console.log("Post failed", data.error)
+        Toast.show({
+          type: "failure",
+          text1: "Error! Could not apply for this shift",
+        })
+      }
+    } catch (error) {
+      console.error("Error posting:", error)
+      Toast.show({
+        type: "failure",
+        text1: "Error! Something went wrong",
+      })
+    }
+  }
+
+  const requestSwap = (shift: ShiftWithNumUsers) => {
+    setDialogOpen?.(false)
+    requestAnimationFrame(() => {
+      navigationRef.navigate("SwapShift", { shiftId: shift.id })
+    })
+  }
+
+  const onPress = async (shift: ShiftWithNumUsers | OpenShift) => {
+    if ("status" in shift) await postOpenShiftRequest(shift)
+    else requestSwap(shift)
+  }
 
   // Configuration map for different shift states
   const getShiftConfig = () => {
@@ -170,15 +215,7 @@ const ShiftCard = memo(({ shift, clashes }: ShiftCardProps) => {
                     session={shift.eventSessions[0] as Session}
                   />
                   <YStack width="90%" paddingBlockEnd={20}>
-                    <ShiftDetailCard
-                      shift={shift}
-                      onRequestSwap={(shift) => {
-                        setDialogOpen?.(false)
-                        requestAnimationFrame(() => {
-                          navigationRef.navigate("SwapShift", { shiftId: shift.id })
-                        })
-                      }}
-                    />
+                    <ShiftDetailCard shift={shift} onPress={onPress} />
                   </YStack>
                 </YStack>
               </ScrollView>
