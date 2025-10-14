@@ -1,4 +1,4 @@
-import { Button, Card, Separator, XStack, YStack } from "tamagui"
+import { Button, Card, Dialog, Separator, XStack, YStack } from "tamagui"
 
 import { OpenShift, ShiftWithNumUsers } from "backend/src/types/event.types"
 
@@ -126,8 +126,10 @@ const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
 
         {isOpenShift && <PaySection amount={500} />}
 
-        {(!isOpenShift || (shift.status !== "REQUESTED" && isAfter(shift.start_time, now))) && (
-          <RequestButton isOpenShift={isOpenShift} onPress={() => onPress?.(shift)} />
+        {(!isOpenShift || shift.status !== "REQUESTED" && isAfter(shift.start_time, now)) && (
+          <Dialog.Close displayWhenAdapted asChild>
+            <RequestButton isOpenShift={isOpenShift} onPress={() => onPress?.(shift)} />
+          </Dialog.Close>
         )}
       </YStack>
     </Card>

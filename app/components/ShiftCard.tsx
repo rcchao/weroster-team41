@@ -1,4 +1,4 @@
-import { useState, memo } from "react"
+import { memo } from "react"
 import { Pressable } from "react-native"
 import { format } from "date-fns"
 import Toast from "react-native-toast-message"
@@ -69,7 +69,6 @@ const ShiftCard = memo(({ shift, clashes }: ShiftCardProps) => {
   }
 
   const requestSwap = (shift: ShiftWithNumUsers) => {
-    setDialogOpen?.(false)
     requestAnimationFrame(() => {
       navigationRef.navigate("SwapShift", { shiftId: shift.id })
     })
@@ -119,10 +118,8 @@ const ShiftCard = memo(({ shift, clashes }: ShiftCardProps) => {
 
   const config = getShiftConfig()
 
-  const [dialogOpen, setDialogOpen] = useState(false)
-
   return (
-    <Dialog modal open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog modal>
       <Dialog.Trigger asChild>
         <Card
           backgroundColor={config.cardBgColor}
