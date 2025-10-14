@@ -7,6 +7,7 @@ import { useCampusByLocationId } from "@/services/hooks/useCampus"
 import { BodyText } from "./BodyText"
 import { StyledIcon } from "./common/StyledIcon"
 import { Icon } from "./Icon"
+import { isAfter } from "date-fns"
 
 interface ShiftDetailCardProps {
   shift: ShiftWithNumUsers
@@ -98,6 +99,7 @@ const RequestButton = ({ isOpenShift, onPress }: { isOpenShift: boolean; onPress
 
 const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
   const { campus } = useCampusByLocationId(shift.location_id)
+  const now = new Date()
   const isOpenShift = "status" in shift
 
   return (
@@ -127,7 +129,9 @@ const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
 
         {isOpenShift && <PaySection amount={500} />}
 
-        <RequestButton isOpenShift={isOpenShift} onPress={() => onPress?.(shift)} />
+        {(!isOpenShift || (shift.status !== "REQUESTED" && isAfter(shift.start_time, now))) && (
+          <RequestButton isOpenShift={isOpenShift} onPress={() => onPress?.(shift)} />
+        )}
       </YStack>
     </Card>
   )
