@@ -2,8 +2,6 @@ import { Button, Card, Separator, XStack, YStack } from "tamagui"
 
 import { OpenShift, ShiftWithNumUsers } from "backend/src/types/event.types"
 
-import { useCampusByLocationId } from "@/services/hooks/useCampus"
-
 import { BodyText } from "./BodyText"
 import { StyledIcon } from "./common/StyledIcon"
 import { Icon } from "./Icon"
@@ -98,7 +96,6 @@ const RequestButton = ({ isOpenShift, onPress }: { isOpenShift: boolean; onPress
 )
 
 const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
-  const { campus } = useCampusByLocationId(shift.location_id)
   const now = new Date()
   const isOpenShift = "status" in shift
 
@@ -116,7 +113,7 @@ const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
       alignItems="center"
     >
       <YStack gap="$4" minWidth="100%">
-        <ShiftHeader location={shift.location} address={campus?.address} />
+        <ShiftHeader location={shift.location} address={shift.campus_address} />
 
         <Separator borderColor="$mono300" />
 
