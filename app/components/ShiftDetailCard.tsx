@@ -1,4 +1,4 @@
-import { Button, Card, Separator, TextArea, XStack, YStack } from "tamagui"
+import { Button, Card, Separator, XStack, YStack } from "tamagui"
 
 import { ShiftWithNumUsers } from "backend/src/types/event.types"
 
@@ -63,22 +63,6 @@ const TeamMemberButton = ({ name }: { name: string }) => (
   </Button>
 )
 
-const NotesSection = () => (
-  <YStack gap="$3">
-    <BodyText variant="body2">Notes</BodyText>
-    <TextArea
-      placeholder="Text"
-      size="$2"
-      padding="$3"
-      borderWidth={1}
-      borderColor="$mono400"
-      borderRadius="$radius.3"
-      height={100}
-      backgroundColor="$white100"
-    />
-  </YStack>
-)
-
 const PaySection = ({ amount }: { amount: number }) => (
   <YStack
     gap="$2"
@@ -140,8 +124,6 @@ const ShiftDetailCard = ({ shift, onRequestSwap }: ShiftDetailCardProps) => {
             <Separator borderColor="$mono300" />
           </>
         )}
-
-        {!isOpenShift && <NotesSection />}
 
         {isOpenShift && <PaySection amount={500} />}
 
