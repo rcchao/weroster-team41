@@ -1,3 +1,4 @@
+import { isAfter } from "date-fns"
 import { Button, Card, Dialog, Separator, XStack, YStack } from "tamagui"
 
 import { OpenShift, ShiftWithNumUsers } from "backend/src/types/event.types"
@@ -5,7 +6,6 @@ import { OpenShift, ShiftWithNumUsers } from "backend/src/types/event.types"
 import { BodyText } from "./BodyText"
 import { StyledIcon } from "./common/StyledIcon"
 import { Icon } from "./Icon"
-import { isAfter } from "date-fns"
 
 interface ShiftDetailCardProps {
   shift: ShiftWithNumUsers
@@ -126,7 +126,7 @@ const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
 
         {isOpenShift && <PaySection amount={500} />}
 
-        {(!isOpenShift || shift.status !== "REQUESTED" && isAfter(shift.start_time, now)) && (
+        {(!isOpenShift || shift.status !== "REQUESTED") && isAfter(shift.start_time, now) && (
           <Dialog.Close displayWhenAdapted asChild>
             <RequestButton isOpenShift={isOpenShift} onPress={() => onPress?.(shift)} />
           </Dialog.Close>
