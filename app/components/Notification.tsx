@@ -2,112 +2,135 @@ import { Pressable } from "react-native"
 import { format } from "date-fns"
 import { Circle, useTheme, XStack, YStack, Card, Dialog, ScrollView } from "tamagui"
 
+import { ShiftWithNumUsers } from "backend/src/types/event.types"
+
 import { ThemeProvider } from "@/theme/context"
 import { getInitials } from "@/utils/nameFormatting"
 
 import { BodyText } from "./BodyText"
+import { HeaderText } from "./HeaderText"
 import { Icon } from "./Icon"
 import { Lozenge, LozengeType } from "./Lozenge"
 import { $closeButtonStyles } from "./ShiftCard"
+import { ShiftDetailCard, TeamMemberButton } from "./ShiftDetailCard"
 import { ShiftDetailsSubheader } from "./ShiftDetailsSubheader"
-// import { ShiftDetailCard } from "./ShiftDetailCard"
 
 type MessageContext = {
   initials: string
-  targetDateStr?: string | null
+  eventDateStr?: string | null
+  eventLocation?: string | null
 }
 
-type NotificationType =
-  | "leaveApproved"
-  | "leaveDeclined"
-  | "openShiftAccepted"
-  | "openShiftDeclined"
+type NotificationRequestType = "LEAVE" | "SWAP" | "ASSIGNMENT"
 
-type SwapNotificationType = "swapOffer" | "swapAccepted" | "swapDeclined"
-
-type AnyNotificationType = NotificationType | SwapNotificationType
+type StatusByRequest = {
+  LEAVE: "APPROVED" | "DECLINED"
+  ASSIGNMENT: "APPROVED" | "DECLINED"
+  SWAP: "APPROVED" | "DECLINED" | "AWAITING"
+}
 
 type NotificationConfig = {
-  requestType: LozengeType
-  statusType?: LozengeType
+  request: LozengeType
+  status?: LozengeType
   backgroundColor?: string
   message: (context: MessageContext) => string | null
 }
 
-const NOTIFICATION_CONFIG: Record<AnyNotificationType, NotificationConfig> = {
-  swapOffer: {
-    requestType: "swap",
-    backgroundColor: "$secondary100",
-    message: ({ initials, targetDateStr }) =>
-      `You have a new shift swap offer from ${initials}${
-        targetDateStr ? ` for ${targetDateStr}` : ""
-      }.`,
+type NotificationConfigMap = {
+  [R in NotificationRequestType]: { [S in StatusByRequest[R]]: NotificationConfig }
+}
+
+// Nested config
+const NOTIFICATION_CONFIG: NotificationConfigMap = {
+  SWAP: {
+    AWAITING: {
+      request: "SWAP",
+      backgroundColor: "$secondary100",
+      message: ({ initials, eventDateStr }) =>
+        `You have been offered a shift swap by ${initials} for ${eventDateStr}.`,
+    },
+    APPROVED: {
+      request: "SWAP",
+      status: "APPROVED",
+      message: ({ initials }) => `Your request to swap a shift with ${initials} has been accepted.`,
+    },
+    DECLINED: {
+      request: "SWAP",
+      status: "DECLINED",
+      message: ({ initials }) => `Your request to swap a shift with ${initials} has been declined.`,
+    },
   },
-  swapAccepted: {
-    requestType: "swap",
-    statusType: "APPROVED",
-    message: ({ initials }) => `Your request to swap a shift with ${initials} has been accepted.`,
+
+  LEAVE: {
+    APPROVED: {
+      request: "LEAVE",
+      status: "APPROVED",
+      message: ({ eventDateStr }) => `Your leave on ${eventDateStr} has been approved.`,
+    },
+    DECLINED: {
+      request: "LEAVE",
+      status: "DECLINED",
+      message: ({ eventDateStr }) => `Your leave on ${eventDateStr} has been declined.`,
+    },
   },
-  swapDeclined: {
-    requestType: "swap",
-    statusType: "DECLINED",
-    message: ({ initials }) => `Your request to swap a shift with ${initials} has been declined.`,
-  },
-  leaveApproved: {
-    requestType: "leave",
-    statusType: "APPROVED",
-    message: ({ targetDateStr }) =>
-      `Your leave${targetDateStr ? ` on ${targetDateStr}` : ""} has been approved.`,
-  },
-  leaveDeclined: {
-    requestType: "leave",
-    statusType: "DECLINED",
-    message: ({ targetDateStr }) =>
-      `Your leave${targetDateStr ? ` on ${targetDateStr}` : ""} has been declined.`,
-  },
-  openShiftAccepted: {
-    requestType: "openShift",
-    statusType: "APPROVED",
-    message: ({ targetDateStr }) =>
-      `Your request for shift${targetDateStr ? ` ${targetDateStr}` : ""} has been accepted.`,
-  },
-  openShiftDeclined: {
-    requestType: "openShift",
-    statusType: "DECLINED",
-    message: ({ targetDateStr }) =>
-      `Your request for shift${targetDateStr ? ` ${targetDateStr}` : ""} has been declined.`,
+
+  ASSIGNMENT: {
+    APPROVED: {
+      request: "ASSIGNMENT",
+      status: "APPROVED",
+      message: ({ eventDateStr, eventLocation }) =>
+        `Your request for the open shift at ${eventLocation} on ${eventDateStr} has been accepted.`,
+    },
+    DECLINED: {
+      request: "ASSIGNMENT",
+      status: "DECLINED",
+      message: ({ eventDateStr, eventLocation }) =>
+        `Your request for the open shift at ${eventLocation} on ${eventDateStr} has been declined.`,
+    },
   },
 }
 
-// Generic used so the notification type can be specified depending on base or interactive
-interface NotificationBaseProps<TType extends AnyNotificationType> {
-  type: TType
+type BaseFields = {
   notificationDate: Date
   fromUserFirstName?: string
   fromUserLastName?: string
-  targetDate?: Date
+  eventDate?: Date
+  eventLocation?: string
+  isRead: boolean
+  requiresAction: boolean
 }
 
-const NotificationBody = ({
-  type,
+// Generic props bind request/status to the valid pair
+type NotificationProps<R extends NotificationRequestType> = BaseFields & {
+  requestType: R
+  statusType: StatusByRequest[R]
+}
+
+const NotificationBody = <R extends NotificationRequestType>({
+  requestType,
+  statusType,
   notificationDate,
   fromUserFirstName,
   fromUserLastName,
-  targetDate,
-}: NotificationBaseProps<AnyNotificationType>) => {
+  eventDate,
+  eventLocation,
+  isRead,
+}: NotificationProps<R>) => {
   const theme = useTheme()
-  const { requestType, statusType, backgroundColor, message } = NOTIFICATION_CONFIG[type]
+  const { request, status, backgroundColor, message } = NOTIFICATION_CONFIG[requestType][statusType]
 
   const bgColorToken = backgroundColor ?? "$white200"
   const bgColor = theme[bgColorToken]?.val
 
   const displayNotificationDate = format(notificationDate, "dd/MM/yy - HH:mm")
-  const displayTargetDate = targetDate ? format(targetDate, "EEE, d MMM yyyy") : null
+  const displayTargetDate = eventDate ? format(eventDate, "EEE, d MMM yyyy") : null
   const initials = getInitials(fromUserFirstName, fromUserLastName)
 
-  const text = message({ initials, targetDateStr: displayTargetDate })
-
-  const hasBlueDot = true
+  const text = message({
+    initials,
+    eventDateStr: displayTargetDate,
+    eventLocation: eventLocation,
+  })
 
   return (
     <XStack
@@ -121,8 +144,8 @@ const NotificationBody = ({
         <BodyText variant="body2">{text}</BodyText>
 
         <XStack gap="$3" flex={1} alignItems="center">
-          <Lozenge type={requestType} />
-          {statusType && <Lozenge type={statusType} />}
+          <Lozenge type={request} />
+          {status && <Lozenge type={status} />}
           <YStack marginLeft="auto">
             <BodyText variant="body3" color="$mono400">
               {displayNotificationDate}
@@ -131,24 +154,24 @@ const NotificationBody = ({
         </XStack>
       </YStack>
 
-      {hasBlueDot && (
+      {isRead === false && (
         <Circle width={10} height={10} backgroundColor="$accent600" borderRadius="$full" />
       )}
     </XStack>
   )
 }
 
-export const Notification = (props: NotificationBaseProps<NotificationType>) => {
+export const Notification = <R extends NotificationRequestType>(props: NotificationProps<R>) => {
   return <NotificationBody {...props} />
 }
 
-// Will pass shift in here to display the details in the modal
-interface InteractiveNotificationProps extends NotificationBaseProps<SwapNotificationType> {
-  disabled?: boolean
+type InteractiveNotificationProps = BaseFields & {
+  requestType: "SWAP"
+  statusType: StatusByRequest["SWAP"] // "APPROVED" | "DECLINED" | "AWAITING"
+  shift: ShiftWithNumUsers
 }
 
-// Will turn this into a tamagui Dialog component
-export const InteractiveNotification = ({ ...props }: InteractiveNotificationProps) => {
+export const InteractiveNotification = ({ shift, ...props }: InteractiveNotificationProps) => {
   return (
     <Dialog modal>
       <Dialog.Trigger asChild>
@@ -196,10 +219,22 @@ export const InteractiveNotification = ({ ...props }: InteractiveNotificationPro
                 </Dialog.Close>
               </XStack>
               <ScrollView margin={0} flex={1}>
-                <YStack width="100%" alignItems="center">
-                  <ShiftDetailsSubheader startDate={new Date()} endDate={new Date()} session="AM" />
-                  <YStack width="90%" paddingBlockEnd={20}>
-                    {/* <ShiftDetailCard shift={shift} onPress={onPress} /> */}
+                <YStack width="100%">
+                  <XStack alignItems="center" padding={15} justifyContent="flex-start">
+                    <HeaderText variant="h3">From</HeaderText>
+                    <TeamMemberButton
+                      name={props.fromUserFirstName + " " + props.fromUserLastName}
+                    />
+                  </XStack>
+                  <YStack alignItems="center">
+                    <ShiftDetailsSubheader
+                      startDate={shift.start_time}
+                      endDate={shift.end_time}
+                      session="AM"
+                    />
+                    <YStack width="90%" paddingBlockEnd={20}>
+                      <ShiftDetailCard shift={shift} onPress={() => {}} />
+                    </YStack>
                   </YStack>
                 </YStack>
               </ScrollView>
