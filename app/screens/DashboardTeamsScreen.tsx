@@ -18,10 +18,10 @@ export const DashboardTeamsScreen: FC<DashboardTabScreenProps<"DashboardTeams">>
       <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
         <Header title="My Team" />
         <SearchHeader onSearch={(query) => console.log("Search query:", query)} />
-        <YStack gap="$4" paddingVertical="$4">
+        <YStack gap="$4" paddingVertical="$4" width="85%" alignSelf="center">
           {teamMemberData && teamMemberData.length > 0 ? (
             teamMemberData.map((request) => (
-              <XStack key={request.id} justifyContent="center">
+              <XStack key={request.id}>
                 <TeamMemberCard
                   name={`${request.first_name} ${request.last_name}`}
                   userId={request.user_id}
