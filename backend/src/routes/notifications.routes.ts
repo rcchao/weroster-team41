@@ -30,6 +30,40 @@ router.get("/swap", authenticate, async (req, res) => {
   return
 })
 
+router.post("/swap", authenticate, async (req, res) => {
+  try {
+    const service = new NotificationsService(req.app.locals.prisma)
+
+    if (!req.userId) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        error: "User not authenticated",
+      })
+    }
+
+    const to_user = req.body.to_user
+    const swap_id = req.body.swap_id
+    if (!swap_id || !to_user) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        error: "Invalid swap request payload",
+      })
+    }
+
+    const swapRequest = await service.setSwapNotifications(req.userId, req.body)
+    res.json({
+      success: true,
+      data: swapRequest,
+    })
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: error.message,
+    })
+  }
+  return
+})
+
 router.get("/leave", authenticate, async (req, res) => {
   try {
     const service = new NotificationsService(req.app.locals.prisma)

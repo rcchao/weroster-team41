@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client"
 import {
   SwapNotification,
+  SwapNotificationPayload,
+  SwapNotificationPostResponse,
   LeaveNotification,
   AssignmentRequestNotification,
 } from "../../../backend/src/types/notifications.types"
@@ -51,6 +53,24 @@ export class NotificationsService {
     }))
 
     return annotated
+  }
+
+  async setSwapNotifications(
+    userId: number,
+    swapNotification: SwapNotificationPayload,
+  ): Promise<SwapNotificationPostResponse> {
+    const toUser = swapNotification.to_user
+    const swapRequest = swapNotification.swap_id
+    const requiresAction = swapNotification.requires_action
+    const notification = await this.prisma.swapNotification.create({
+      data: {
+        from_user: userId,
+        to_user: toUser,
+        swap_request: swapRequest,
+        requires_action: requiresAction,
+      },
+    })
+    return notification
   }
 
   async getLeaveNotifications(userId: number): Promise<LeaveNotification[]> {

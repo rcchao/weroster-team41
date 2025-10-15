@@ -69,3 +69,21 @@ export type AssignmentRequestNotification = Prisma.AssignmentRequestNotification
     }
   }
 }>
+
+export type SwapNotificationPayload = {
+  to_user: number
+  swap_id: number
+  requires_action?: boolean
+}
+
+export type SwapNotificationPostResponse = Prisma.SwapNotificationGetPayload<{
+  select: {
+    id: true
+    created_at: true
+    is_read: true
+    requires_action: true
+    to_user: true
+    from_user: true
+    swap_request: true
+  }
+}>
