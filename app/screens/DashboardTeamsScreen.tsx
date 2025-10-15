@@ -4,6 +4,7 @@ import { XStack, YStack, Spinner } from "tamagui"
 import { BodyText } from "@/components/BodyText"
 import { Header } from "@/components/Header"
 import { Screen } from "@/components/Screen"
+import { SearchHeader } from "@/components/SearchHeader"
 import { TeamMemberCard } from "@/components/TeamMemberCard"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useTeamMemberData } from "@/services/hooks/useTeamMemberData"
@@ -17,6 +18,7 @@ export const DashboardTeamsScreen: FC<DashboardTabScreenProps<"DashboardTeams">>
       <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
         <Header title="My Team" />
         <YStack gap="$4" paddingVertical="$4">
+          <SearchHeader onSearch={(query) => console.log("Search query:", query)} />
           {teamMemberData && teamMemberData.length > 0 ? (
             teamMemberData.map((request) => (
               <XStack key={request.id} justifyContent="center">
