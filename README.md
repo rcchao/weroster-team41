@@ -1,123 +1,344 @@
-Prerequisites:
+<img width="434" height="79" alt="app-full-logo" src="https://github.com/user-attachments/assets/ab19f66a-37e1-4298-b0b8-7f089140cd41" />
 
-- Homebrew
-- npm & node
+# WeRoster - Rostering App for Clinicians
 
-# Setting up
+> A mobile rostering application for healthcare clinicians
 
-1. Clone this repo
+---
 
-<ins> To launch iOS emulator: </ins>
+## Table of Contents
 
-2. Download and open xcode on your computer (this should be in app store on Mac)
-3. Run `sudo xcodebuild -license accept` to accept the Xcode license
-4. Navigate to Xcode (top left hand corner) > settings > components > macOS > download iOS 18.4 simulator
-5. Confirm that you have installed iOS emulators with `xcrun simctl list devices` and boot any of the simulators manually with `xcrun simctl boot "iPhone 16 Pro"` and open it with `open -a Simulator` (you can also do this step with the GUI)
-6. Run `npx expo run:ios` in VSCode terminal
+- [About](#about)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [iOS Setup](#ios-setup-macos-only)
+- [Android Setup](#android-setup)
+- [Common Issues & Solutions](#common-issues--solutions)
+- [Running the Application](#running-the-application)
+- [Next Steps](#next-steps)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
+- [Testing](#testing)
+- [Acknowledgements](#acknowledgements)
 
-<ins> To launch Android emulator: </ins>
+---
 
-2. Download [android studio](https://developer.android.com/studio) and go through setup, making sure to accept licenses
-3. Add the following to your `.zshrc` file:
+## About
 
+WeRoster is a modern mobile rostering application designed specifically for healthcare clinicians to manage their shifts seamlessly. Built with React Native and Expo, WeRoster provides an intuitive interface for viewing personal schedules, monitoring team availability, and managing shift changes—all from your iOS or Android device. With real-time calendar views and comprehensive request tracking, WeRoster simplifies workforce management and gives clinicians greater control over their work schedules.
+
+---
+
+## Features
+
+- 📅 **Personal Calendar View** - View all your assigned shifts in an intuitive calendar interface
+- 👥 **Team Schedule** - See your team members' shifts and availability
+- 🔓 **Open Shifts** - Browse and apply for available open shifts in the same intuitive calendar interface
+- 🔄 **Shift Swapping** - Request to swap shifts with team members
+- 📝 **Request Management** - Track all your leave requests, shift applications, and swap requests
+- 🔐 **Secure Authentication** - Login securely to access your personalized schedule
+- 📱 **Cross-Platform** - Available on both iOS and Android
+
+---
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+### Required
+- **Node.js** (v20.0.0 or higher) - [Download](https://nodejs.org/)
+- **npm** (v8.0.0 or higher) or **yarn** (v1.22.0 or higher)
+- **MySQL** (v8.0 or higher) - [Download](https://dev.mysql.com/downloads/mysql/)
+- **Expo CLI** - Install globally: `npm install -g expo-cli`
+
+### For Mobile Development
+- **iOS Development (macOS only)**:
+  - Xcode (v14.0 or higher) - [Download from Mac App Store](https://apps.apple.com/us/app/xcode/id497799835)
+  - iOS Simulator (included with Xcode)
+  - CocoaPods - Install: `sudo gem install cocoapods`
+  - Xcode Command Line Tools: `xcode-select --install`
+
+- **Android Development**:
+  - [Android Studio](https://developer.android.com/studio) (latest version)
+  - Android SDK (API level 33 or higher)
+  - Android Emulator or physical Android device
+  - Java Development Kit (JDK) 17 or higher
+  - Configure Android environment variables (`ANDROID_HOME`, etc.)
+
+### Optional but Recommended
+- **EAS CLI** (for building production apps) - Install: `npm install -g eas-cli`
+- **Maestro** (for E2E testing) - [Installation Guide](https://maestro.mobile.dev/getting-started/installing-maestro)
+  - Or run: `npm run maestro:setup`
+
+### Environment Setup
+- For Android development, ensure `adb` (Android Debug Bridge) is accessible from your terminal
+- For iOS development on physical devices, you'll need an Apple Developer account
+
+---
+
+## Getting Started
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/weroster-team41.git
+cd weroster-team41
 ```
+
+### 2. Install Dependencies
+```bash
+npm run installs
+```
+
+This command installs dependencies for both the frontend and backend.
+
+### 3. Configure Environment Variables
+
+Create a `.env` file in the `backend` directory:
+```bash
+cd backend
+cp .env.example .env
+```
+
+Update the `.env` file with your configuration:
+```env
+DATABASE_URL="mysql://username:password@localhost:3306/weroster"
+JWT_SECRET="your-secret-key"
+PORT=3000
+```
+
+### 4. Set Up the Database
+```bash
+cd backend
+npx prisma generate
+npx prisma db push
+# Optional: Seed the database
+npx prisma db seed
+cd ..
+```
+
+### 5. Platform-Specific Setup
+
+Choose your target platform and follow the appropriate setup instructions:
+
+---
+
+## iOS Setup (macOS only)
+
+### Step 1: Install Xcode
+
+1. Download Xcode from the [Mac App Store](https://apps.apple.com/us/app/xcode/id497799835)
+2. Open Xcode and complete the initial setup
+3. Accept the Xcode license agreement:
+```bash
+sudo xcodebuild -license accept
+```
+
+### Step 2: Install iOS Simulator
+
+1. Open Xcode → **Settings** (or **Preferences**) → **Platforms**
+2. Download **iOS 18.4 Simulator** (or your preferred iOS version)
+3. Wait for the download and installation to complete
+
+### Step 3: Verify Simulator Installation
+
+List available simulators:
+```bash
+xcrun simctl list devices
+```
+
+You should see a list of installed iOS simulators.
+
+### Step 4: Install CocoaPods Dependencies
+```bash
+cd ios
+pod install
+cd ..
+```
+
+### Step 5: Run the App
+```bash
+npm run ios
+```
+
+**Note:** The first build may take 10-15 minutes. Subsequent builds will be faster.
+
+#### Optional: Manually Boot a Simulator
+```bash
+# Boot a specific simulator
+xcrun simctl boot "iPhone 16 Pro"
+
+# Open Simulator app
+open -a Simulator
+```
+
+---
+
+## Android Setup
+
+### Step 1: Install Android Studio
+
+1. Download [Android Studio](https://developer.android.com/studio)
+2. Run the installer and complete the setup wizard
+3. During setup, ensure you install:
+   - Android SDK
+   - Android SDK Platform
+   - Android Virtual Device (AVD)
+4. Accept all license agreements when prompted
+
+### Step 2: Configure Android Environment Variables
+
+Add the following to your shell configuration file (`~/.zshrc` for Zsh or `~/.bash_profile` for Bash):
+```bash
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 ```
 
-This is because Xcode tools auto-install to known macOS locations, while Android needs manual path setup because its SDK can be installed anywhere.
+**Why is this needed?** Unlike Xcode (which auto-installs to standard macOS locations), Android SDK can be installed anywhere, so we need to explicitly define these paths.
 
-4. Create an android virtual device: Open Android studio, click 'More Actions' > 'Virtual Device Manager' > Click on the play button next to a device
-5. Confirm installation with `adb devices`, you should see your emulator listed if its running
-6. Make sure you refresh your .zshrc file (with `source ~/.zshrc`), then run `npx expo run:android` in your VSCode terminal.
+Apply the changes:
+```bash
+source ~/.zshrc  # or source ~/.bash_profile
+```
 
-An issue you may run into:
-`[CXX1101] NDK at /Users/rebecca/Library/Android/sdk/ndk/27.1.12297006 did not have a source.properties file`
-Open Android Studio > Search for SDK Tools > Check 'Show Package Details' in the bottom right, find the version specified (in my case 27.1.12297006) and apply it to install
-Try `npm run: android` again
+### Step 3: Create an Android Virtual Device (AVD)
 
-Note: Running step 6 (building the project) will take a while for both iOS and android, this is normal.
+1. Open Android Studio
+2. Click **More Actions** → **Virtual Device Manager**
+3. Click **Create Device** (or select an existing device)
+4. Choose a device definition (e.g., Pixel 6)
+5. Select a system image (e.g., API 34 - Android 14)
+6. Click **Finish**
+7. Start the emulator by clicking the **▶ Play** button
 
-^^ Let me know if you run into issues following the above instructions, I'll help troubleshoot
+### Step 4: Verify Android Setup
+
+Check that ADB recognizes your emulator:
+```bash
+adb devices
+```
+
+You should see your emulator listed (e.g., `emulator-5554`).
+
+### Step 5: Configure Port Forwarding
+
+If testing on a physical device or encountering connection issues:
+```bash
+npm run adb
+```
+
+This forwards the necessary ports for backend communication.
+
+### Step 6: Run the App
+```bash
+npm run android
+```
+
+**Note:** The first build may take 10-15 minutes. Subsequent builds will be faster.
 
 ---
 
-# Welcome to your new ignited app!
+## Common Issues & Solutions
 
-> The latest and greatest boilerplate for Infinite Red opinions
+### iOS Issues
 
-This is the boilerplate that [Infinite Red](https://infinite.red) uses as a way to test bleeding-edge changes to our React Native stack.
+**Problem:** `xcrun: error: unable to find utility "simctl"`
+- **Solution:** Install Xcode Command Line Tools: `xcode-select --install`
 
-- [Quick start documentation](https://github.com/infinitered/ignite/blob/master/docs/boilerplate/Boilerplate.md)
-- [Full documentation](https://github.com/infinitered/ignite/blob/master/docs/README.md)
+**Problem:** `CocoaPods could not find compatible versions`
+- **Solution:** Update CocoaPods: `cd ios && pod repo update && pod install`
 
-## Getting Started
+### Android Issues
 
+**Problem:** `ANDROID_HOME is not set`
+- **Solution:** Verify environment variables are correctly set and restart your terminal
+
+**Problem:** `[CXX1101] NDK at /path/to/ndk did not have a source.properties file`
+- **Solution:**
+  1. Open Android Studio → **Settings** (⌘,) → **SDK Manager** → **SDK Tools** tab
+  2. Check **Show Package Details** (bottom right)
+  3. Find the NDK version mentioned in the error (e.g., 27.1.12297006)
+  4. Install that specific NDK version
+  5. Click **Apply** and wait for installation
+  6. Retry: `npm run android`
+
+**Problem:** `No connected devices` when running `adb devices`
+- **Solution:** Ensure your emulator is running. Start it from Android Studio's Device Manager
+
+**Problem:** `Metro bundler connection issues`
+- **Solution:** Run `npm run adb` to configure port forwarding
+
+---
+
+## Running the Application
+
+After completing platform-specific setup, you can use these commands:
 ```bash
-npm install
+# Run on iOS
+npm run ios
+
+# Run on Android  
+npm run android
+
+# Run backend only
+cd backend && npm run dev
+
+# Run everything concurrently (backend + iOS + Android)
 npm run start
 ```
 
-To make things work on your local simulator, or on your phone, you need first to [run `eas build`](https://github.com/infinitered/ignite/blob/master/docs/expo/EAS.md). We have many shortcuts on `package.json` to make it easier:
-
-```bash
-npm run build:ios:sim # build for ios simulator
-npm run build:ios:dev # build for ios device
-npm run build:ios:prod # build for ios device
-```
-
-### `./assets` directory
-
-This directory is designed to organize and store various assets, making it easy for you to manage and use them in your application. The assets are further categorized into subdirectories, including `icons` and `images`:
-
-```tree
-assets
-├── icons
-└── images
-```
-
-**icons**
-This is where your icon assets will live. These icons can be used for buttons, navigation elements, or any other UI components. The recommended format for icons is PNG, but other formats can be used as well.
-
-Ignite comes with a built-in `Icon` component. You can find detailed usage instructions in the [docs](https://github.com/infinitered/ignite/blob/master/docs/boilerplate/app/components/Icon.md).
-
-**images**
-This is where your images will live, such as background images, logos, or any other graphics. You can use various formats such as PNG, JPEG, or GIF for your images.
-
-Another valuable built-in component within Ignite is the `AutoImage` component. You can find detailed usage instructions in the [docs](https://github.com/infinitered/ignite/blob/master/docs/Components-AutoImage.md).
-
-How to use your `icon` or `image` assets:
-
-```typescript
-import { Image } from 'react-native';
-
-const MyComponent = () => {
-  return (
-    <Image source={require('assets/images/my_image.png')} />
-  );
-};
-```
-
-## Running Maestro end-to-end tests
-
-Follow our [Maestro Setup](https://ignitecookbook.com/docs/recipes/MaestroSetup) recipe.
+---
 
 ## Next Steps
 
-### Ignite Cookbook
+Once the app is running, you can:
+- Login with test credentials (see [Testing](#Testing) section)
+- Explore the calendar and roster features
+- Run E2E tests: `npm run test:e2e`
 
-[Ignite Cookbook](https://ignitecookbook.com/) is an easy way for developers to browse and share code snippets (or “recipes”) that actually work.
+---
 
-### Upgrade Ignite boilerplate
+## Project Structure
+```
+weroster-team41/
+├── app/                          # Main application directory
+│   └── frontend/                 # React Native Expo mobile application
+│       ├── components/           # Reusable UI components (buttons, cards, etc.)
+│       ├── context/              # React Context providers for global state
+│       ├── navigators/           # Navigation configuration and stack navigators
+│       ├── screens/              # Main app screens
+│       └── services/             # API connection layer and custom React hooks
+├── assets/                       # Static files (images, fonts, icons)
+├── backend/                      # Decoupled Node.js backend server
+│   ├── prisma/                   # Database schema, migrations, and Prisma client
+│   └── src/
+│       ├── routes/               # API endpoint definitions and route handlers
+│       ├── services/             # Business logic and data service layer
+│       ├── middleware/           # Express middleware (auth, validation, error handling)
+│       ├── constants/            # Shared constants and configuration values
+│       ├── types/                # TypeScript type definitions and interfaces
+│       └── tests/                # Unit and integration tests for backend
+├── scripts/                      # Miscellaneous helper and automation scripts
+└── .maestro/                     # End-to-end mobile UI tests and Maestro flows
+```
 
-Read our [Upgrade Guide](https://ignitecookbook.com/docs/recipes/UpdatingIgnite) to learn how to upgrade your Ignite project.
+---
 
-## Community
+## API Documentation
 
-⭐️ Help us out by [starring on GitHub](https://github.com/infinitered/ignite), filing bug reports in [issues](https://github.com/infinitered/ignite/issues) or [ask questions](https://github.com/infinitered/ignite/discussions).
+[Link to API documentation]
 
-💬 Join us on [Slack](https://join.slack.com/t/infiniteredcommunity/shared_invite/zt-1f137np4h-zPTq_CbaRFUOR_glUFs2UA) to discuss.
+---
 
-📰 Make our Editor-in-chief happy by [reading the React Native Newsletter](https://reactnativenewsletter.com/).
+## Testing
+```bash
+npm test
+```
+
+---
+
+## Acknowledgements
+
+[Add acknowledgements here]
