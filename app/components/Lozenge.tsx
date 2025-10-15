@@ -5,8 +5,8 @@ import { BodyText } from "./BodyText"
 import { Icon, IconTypes } from "./Icon"
 
 export type LozengeType =
-  | "leave"
-  | "swap"
+  | "LEAVE"
+  | "SWAP"
   | "event"
   | "AVAILABLE"
   | "REQUESTED"
@@ -15,7 +15,7 @@ export type LozengeType =
   | "AWAITING"
   | "DECLINED"
   | "assigned"
-  | "openShift"
+  | "ASSIGNMENT"
 
 interface LozengeProps {
   type: LozengeType
@@ -32,14 +32,14 @@ interface LozengeConfig {
 }
 
 export const LOZENGE_CONFIG: Record<LozengeProps["type"], LozengeConfig> = {
-  leave: {
+  LEAVE: {
     text: "Leave",
     icon: "leave",
     bgColor: "mono100",
     selectedBgColor: "secondary400",
     textColor: "mono900",
   },
-  swap: {
+  SWAP: {
     text: "Swap",
     icon: "swap",
     bgColor: "mono100",
@@ -90,7 +90,7 @@ export const LOZENGE_CONFIG: Record<LozengeProps["type"], LozengeConfig> = {
     bgColor: "secondary300",
     textColor: "accent800",
   },
-  openShift: {
+  ASSIGNMENT: {
     text: "OpenShift",
     icon: "openShift",
     bgColor: "mono100",
