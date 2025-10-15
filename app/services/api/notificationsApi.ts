@@ -2,6 +2,8 @@ import { api } from "./apiClient"
 import { ApiResponse } from "../../../backend/src/types/api.types"
 import {
   SwapNotification,
+  SwapNotificationPayload,
+  SwapNotificationPostResponse,
   LeaveNotification,
   AssignmentRequestNotification,
 } from "../../../backend/src/types/notifications.types"
@@ -50,5 +52,20 @@ export const notificationsApi = {
       success: false,
       error: (response.data as any)?.error || "Failed to retrieve assignment request notifications",
     } as ApiResponse<AssignmentRequestNotification[]>
+  },
+
+  setSwapNotifications: async (assignmentRequest: SwapNotificationPayload) => {
+    const response = await api.post<ApiResponse<SwapNotificationPayload>>(
+      `/notifications/swap`,
+      assignmentRequest,
+    )
+    console.log("\n\n[getSwapNotifications.setSwapNotifications] response:", response.data)
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to post swap notification",
+    } as ApiResponse<SwapNotificationPostResponse>
   },
 }
