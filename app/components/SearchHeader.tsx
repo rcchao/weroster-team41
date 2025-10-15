@@ -28,7 +28,7 @@ export function SearchHeader({ onSearch, style }: SearchHeaderProps) {
       alignItems="center"
       justifyContent="center"
       paddingHorizontal="$4"
-      paddingVertical="$2"
+      paddingVertical="$3"
       backgroundColor={tamaguiConfig.tokens.color.white100}
       position="relative"
       style={style}

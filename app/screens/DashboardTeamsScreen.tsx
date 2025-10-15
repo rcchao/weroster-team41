@@ -17,8 +17,8 @@ export const DashboardTeamsScreen: FC<DashboardTabScreenProps<"DashboardTeams">>
     return (
       <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
         <Header title="My Team" />
+        <SearchHeader onSearch={(query) => console.log("Search query:", query)} />
         <YStack gap="$4" paddingVertical="$4">
-          <SearchHeader onSearch={(query) => console.log("Search query:", query)} />
           {teamMemberData && teamMemberData.length > 0 ? (
             teamMemberData.map((request) => (
               <XStack key={request.id} justifyContent="center">
