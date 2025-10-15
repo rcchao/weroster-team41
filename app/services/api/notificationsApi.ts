@@ -1,6 +1,10 @@
 import { api } from "./apiClient"
 import { ApiResponse } from "../../../backend/src/types/api.types"
-import { SwapNotification } from "../../../backend/src/types/notifications.types"
+import {
+  SwapNotification,
+  LeaveNotification,
+  AssignmentRequestNotification,
+} from "../../../backend/src/types/notifications.types"
 
 export const notificationsApi = {
   getSwapNotifications: async () => {
@@ -14,7 +18,37 @@ export const notificationsApi = {
     }
     return {
       success: false,
-      error: (response.data as any)?.error || "Failed to retrieve team member data",
+      error: (response.data as any)?.error || "Failed to retrieve swap notifications",
     } as ApiResponse<SwapNotification[]>
+  },
+  getLeaveNotifications: async () => {
+    const response = await api.get<ApiResponse<LeaveNotification[]>>("/notifications/leave")
+    console.log(
+      "\n\n[notificationsApi.getLeaveNotifications] response:",
+      JSON.stringify(response.data),
+    )
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to retrieve leave notifications",
+    } as ApiResponse<LeaveNotification[]>
+  },
+  getAssignmentRequestNotifications: async () => {
+    const response = await api.get<ApiResponse<AssignmentRequestNotification[]>>(
+      "/notifications/assignment-request",
+    )
+    console.log(
+      "\n\n[notificationsApi.getAssignmentRequestNotifications] response:",
+      JSON.stringify(response.data),
+    )
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to retrieve assignment request notifications",
+    } as ApiResponse<AssignmentRequestNotification[]>
   },
 }
