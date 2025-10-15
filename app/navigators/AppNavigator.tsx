@@ -100,8 +100,8 @@ const AppStack = () => {
         name="Notifications"
         component={NotificationsScreen}
         options={{
-          presentation: "fullScreenModal",
-          animation: "fade",
+          presentation: "card",
+          animation: "none",
         }}
       />
 

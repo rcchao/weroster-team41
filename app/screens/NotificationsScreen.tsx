@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { format } from "date-fns"
-import { XStack, YStack, Spinner } from "tamagui"
+import { XStack, YStack, Spinner, ScrollView } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
 import { InteractiveNotification, Notification } from "@/components/Notification"
@@ -19,9 +19,9 @@ export const NotificationsScreen: FC<NotificationsScreenProps> = function Notifi
   const { userNotifications, isPending } = useUserNotifications()
 
   return (
-    <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
+    <Screen safeAreaEdges={["top"]}>
       <BackHeader title="Notifications" navigation={navigation} />
-            <Notification
+      <Notification
         type="leaveApproved"
         notificationDate={new Date()}
         fromUserFirstName="Jane"
