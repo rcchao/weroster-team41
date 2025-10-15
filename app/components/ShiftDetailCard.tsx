@@ -1,16 +1,15 @@
-import { Button, Card, Separator, TextArea, XStack, YStack } from "tamagui"
+import { Button, Card, Dialog, Separator, XStack, YStack } from "tamagui"
 
-import { ShiftWithNumUsers } from "backend/src/types/event.types"
-
-import { useCampusByLocationId } from "@/services/hooks/useCampus"
+import { OpenShift, ShiftWithNumUsers } from "backend/src/types/event.types"
 
 import { BodyText } from "./BodyText"
 import { StyledIcon } from "./common/StyledIcon"
 import { Icon } from "./Icon"
+import { isAfter } from "date-fns"
 
 interface ShiftDetailCardProps {
   shift: ShiftWithNumUsers
-  onRequestSwap?: (shift: ShiftWithNumUsers) => void
+  onPress: (shift: ShiftWithNumUsers | OpenShift) => void
 }
 
 const ShiftHeader = ({ location, address }: { location: string; address?: string | null }) => {
@@ -63,22 +62,6 @@ const TeamMemberButton = ({ name }: { name: string }) => (
   </Button>
 )
 
-const NotesSection = () => (
-  <YStack gap="$3">
-    <BodyText variant="body2">Notes</BodyText>
-    <TextArea
-      placeholder="Text"
-      size="$2"
-      padding="$3"
-      borderWidth={1}
-      borderColor="$mono400"
-      borderRadius="$radius.3"
-      height={100}
-      backgroundColor="$white100"
-    />
-  </YStack>
-)
-
 const PaySection = ({ amount }: { amount: number }) => (
   <YStack
     gap="$2"
@@ -112,9 +95,9 @@ const RequestButton = ({ isOpenShift, onPress }: { isOpenShift: boolean; onPress
   </Button>
 )
 
-const ShiftDetailCard = ({ shift, onRequestSwap }: ShiftDetailCardProps) => {
-  const { campus } = useCampusByLocationId(shift.location_id)
-  const isOpenShift = shift?.numUsers === 0
+const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
+  const now = new Date()
+  const isOpenShift = "status" in shift
 
   return (
     <Card
@@ -130,7 +113,7 @@ const ShiftDetailCard = ({ shift, onRequestSwap }: ShiftDetailCardProps) => {
       alignItems="center"
     >
       <YStack gap="$4" minWidth="100%">
-        <ShiftHeader location={shift.location} address={campus?.address} />
+        <ShiftHeader location={shift.location} address={shift.campus_address} />
 
         <Separator borderColor="$mono300" />
 
@@ -141,11 +124,13 @@ const ShiftDetailCard = ({ shift, onRequestSwap }: ShiftDetailCardProps) => {
           </>
         )}
 
-        {!isOpenShift && <NotesSection />}
-
         {isOpenShift && <PaySection amount={500} />}
 
-        <RequestButton isOpenShift={isOpenShift} onPress={() => onRequestSwap?.(shift)} />
+        {(!isOpenShift || shift.status !== "REQUESTED" && isAfter(shift.start_time, now)) && (
+          <Dialog.Close displayWhenAdapted asChild>
+            <RequestButton isOpenShift={isOpenShift} onPress={() => onPress?.(shift)} />
+          </Dialog.Close>
+        )}
       </YStack>
     </Card>
   )

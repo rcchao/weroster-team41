@@ -84,6 +84,7 @@ export function usePostAssignmentRequest() {
     mutationFn: requestsApi.setAssignmentRequests,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user-requests"] })
+      queryClient.invalidateQueries({ queryKey: ["open-shifts"] })
     },
   })
 }
