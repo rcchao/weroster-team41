@@ -84,13 +84,34 @@ model AssignmentRequest {
   event_id Int
 
   // Relations
-  user  User  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_1")
-  event Event @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_2")
+  user                          User                            @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_1")
+  event                         Event                           @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "AssignmentRequest_ibfk_2")
+  AssignmentRequestNotification AssignmentRequestNotification[]
 
   @@unique([user_id, event_id])
   // Indexes
   @@index([event_id], map: "event_id")
   @@index([user_id], map: "user_id")
+}
+
+model AssignmentRequestNotification {
+  // Primary key
+  id Int @id @default(autoincrement())
+
+  // Scalar fields
+  created_at         DateTime @default(now())
+  is_read            Boolean  @default(false)
+  requires_action    Boolean  @default(false)
+  user_id            Int
+  assignment_request Int
+
+  // Relations
+  user              User              @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  assignmentRequest AssignmentRequest @relation(fields: [assignment_request], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  // Indexes
+  @@index([user_id], map: "user_id")
+  @@index([assignment_request], map: "assignment_request")
 }
 
 model Campus {
@@ -218,10 +239,31 @@ model Leave {
   user_id Int
 
   // Relations
-  user User @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_1")
+  user              User                @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Leave_ibfk_1")
+  LeaveNotification LeaveNotification[]
 
   // Indexes
   @@index([user_id], map: "user_id")
+}
+
+model LeaveNotification {
+  // Primary key
+  id Int @id @default(autoincrement())
+
+  // Scalar fields
+  created_at      DateTime @default(now())
+  is_read         Boolean  @default(false)
+  requires_action Boolean  @default(false)
+  user_id         Int
+  leave_request   Int
+
+  // Relations
+  user  User  @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  leave Leave @relation(fields: [leave_request], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  // Indexes
+  @@index([user_id], map: "user_id")
+  @@index([leave_request], map: "leave_request")
 }
 
 model Location {
@@ -282,17 +324,19 @@ model User {
   hospital_id    Int
 
   // Relations
-  designation         Designation?         @relation(fields: [designation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_1")
-  campus              Campus?              @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_2")
-  hospital            Hospital             @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_3")
-  assignmentRequests  AssignmentRequest[]
-  eventAssignments    EventAssignment[]
-  leaves              Leave[]
-  dashboardPreference DashboardPreference?
-  savedFilters        SavedFilters[]
-  swapsFrom           Swap[]               @relation("SwapFromUser")
-  swapsTo             Swap[]               @relation("SwapToUser")
-  SwapNotification    SwapNotification[]
+  designation                   Designation?                    @relation(fields: [designation_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_1")
+  campus                        Campus?                         @relation(fields: [campus_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_2")
+  hospital                      Hospital                        @relation(fields: [hospital_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "User_ibfk_3")
+  assignmentRequests            AssignmentRequest[]
+  eventAssignments              EventAssignment[]
+  leaves                        Leave[]
+  dashboardPreference           DashboardPreference?
+  savedFilters                  SavedFilters[]
+  swapsFrom                     Swap[]                          @relation("SwapFromUser")
+  swapsTo                       Swap[]                          @relation("SwapToUser")
+  SwapNotification              SwapNotification[]
+  LeaveNotification             LeaveNotification[]
+  AssignmentRequestNotification AssignmentRequestNotification[]
 
   // Indexes
   @@index([campus_id], map: "campus_id")
