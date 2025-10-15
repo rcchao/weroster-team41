@@ -1,11 +1,16 @@
 import { Pressable } from "react-native"
 import { format } from "date-fns"
-import { Circle, useTheme, XStack, YStack } from "tamagui"
+import { Circle, useTheme, XStack, YStack, Card, Dialog, ScrollView } from "tamagui"
 
+import { ThemeProvider } from "@/theme/context"
 import { getInitials } from "@/utils/nameFormatting"
 
 import { BodyText } from "./BodyText"
+import { Icon } from "./Icon"
 import { Lozenge, LozengeType } from "./Lozenge"
+import { $closeButtonStyles } from "./ShiftCard"
+import { ShiftDetailsSubheader } from "./ShiftDetailsSubheader"
+// import { ShiftDetailCard } from "./ShiftDetailCard"
 
 type MessageContext = {
   initials: string
@@ -143,10 +148,65 @@ interface InteractiveNotificationProps extends NotificationBaseProps<SwapNotific
 }
 
 // Will turn this into a tamagui Dialog component
-export const InteractiveNotification = ({ disabled, ...props }: InteractiveNotificationProps) => {
+export const InteractiveNotification = ({ ...props }: InteractiveNotificationProps) => {
   return (
-    <Pressable onPress={() => console.log("Notification pressed!")} disabled={disabled}>
-      <NotificationBody {...props} />
-    </Pressable>
+    <Dialog modal>
+      <Dialog.Trigger asChild>
+        <Card>
+          <NotificationBody {...props} />
+        </Card>
+      </Dialog.Trigger>
+
+      <Dialog.Portal>
+        <ThemeProvider>
+          <Dialog.Close asChild>
+            <Dialog.Overlay key="overlay" opacity={0.5} backgroundColor="$mono900" />
+          </Dialog.Close>
+
+          <Dialog.Content
+            key="content"
+            width="90%"
+            height="70%"
+            padding={0}
+            margin={0}
+            backgroundColor="$white500"
+            shadowColor="transparent"
+            elevate={false}
+            elevation={0}
+            shadowOpacity={0}
+            shadowRadius={0}
+          >
+            <YStack height="100%">
+              <XStack
+                alignItems="center"
+                justifyContent="center"
+                height={56}
+                padding={16}
+                backgroundColor="$white100"
+                borderTopLeftRadius="$4"
+                borderTopRightRadius="$4"
+              >
+                <BodyText variant="body2" fontWeight={900} color="$mono900">
+                  Shift Details
+                </BodyText>
+                <Dialog.Close asChild>
+                  <Pressable hitSlop={10} style={$closeButtonStyles}>
+                    <Icon icon="lucideX" />
+                  </Pressable>
+                </Dialog.Close>
+              </XStack>
+              <ScrollView margin={0} flex={1}>
+                <YStack width="100%" alignItems="center">
+                  <ShiftDetailsSubheader startDate={new Date()} endDate={new Date()} session="AM" />
+                  <YStack width="90%" paddingBlockEnd={20}>
+                    {/* <ShiftDetailCard shift={shift} onPress={onPress} /> */}
+                  </YStack>
+                </YStack>
+              </ScrollView>
+            </YStack>
+          </Dialog.Content>
+        </ThemeProvider>
+      </Dialog.Portal>
+    </Dialog>
   )
 }
