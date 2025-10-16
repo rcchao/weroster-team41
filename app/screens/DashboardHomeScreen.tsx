@@ -2,7 +2,6 @@
 import { FC, ReactElement } from "react"
 import { View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import Toast from "react-native-toast-message"
 import { YStack } from "tamagui"
 
 import { BodyText } from "@/components/BodyText"
@@ -27,11 +26,13 @@ import { useMyShifts } from "@/services/hooks/useMyShifts"
 import { useOpenShifts } from "@/services/hooks/useOpenShifts"
 import { useProfile } from "@/services/hooks/useProfile"
 import { useUpcomingCampusEvents } from "@/services/hooks/useUpcomingCampusEvents"
-import { useLeaveRequests, usePostSwapRequest } from "@/services/hooks/useUserRequests"
+import { useLeaveRequests, useUpdateSwapRequest } from "@/services/hooks/useUserRequests"
 import { useAppTheme } from "@/theme/context"
 import { $headerContainer } from "@/theme/styles"
 import { $container, $fabButton } from "@/theme/styles"
 import type { Theme } from "@/theme/types"
+
+import { RequestStatusType } from "../../backend/src/types/enums.types"
 
 export interface Dashboard {
   name: string
@@ -45,30 +46,22 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
     const { themed } = useAppTheme()
     const userId = useAuthenticatedUserId()
     const { profile } = useProfile(userId)
-    const mutation = usePostSwapRequest()
+    const mutation = useUpdateSwapRequest()
 
-    const postSwapShiftRequest = async () => {
+    const updateSwapRequestStatus = async () => {
       const swapRequest = {
-        message: "I think I'll be sick that day soz", // Including a message is optional
-        event_id: 1,
-        to_user: 18,
+        id: 24,
+        status: "AWAITING" as RequestStatusType,
       }
       try {
         const data = await mutation.mutateAsync(swapRequest)
         if (data.success) {
-          console.log("Posted successfully", data)
-          Toast.show({
-            type: "success",
-            text1: "Successfully requested a shift swap",
-          })
+          console.log("updated successfully", data)
         } else {
-          console.log("Post failed", data.error)
-          Toast.show({
-            type: "failure",
-          })
+          console.log("Update failed", data.error)
         }
       } catch (error) {
-        console.error("Error posting:", error)
+        console.error("Error updating:", error)
       }
     }
 
@@ -154,7 +147,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
               />
             )}
           </YStack>
-          <SubmitButton text="apply to swap shift" onPress={postSwapShiftRequest} />
+          <SubmitButton text="update swap request status" onPress={updateSwapRequestStatus} />
         </Screen>
 
         {/* FAB positioned relative to the outer View */}
