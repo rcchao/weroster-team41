@@ -192,4 +192,57 @@ router.post("/swap", authenticate, async (req, res) => {
   return
 })
 
+router.patch("/swap/:id", authenticate, async (req, res) => {
+  try {
+    const service = new RequestsService(req.app.locals.prisma)
+
+    if (!req.userId) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        error: "User not authenticated",
+      })
+    }
+
+    const swapId = parseInt(req.params.id)
+    const { status } = req.body
+
+    if (!swapId || !status) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        error: "Invalid swap request update payload",
+      })
+    }
+
+    const swap_to_user = await req.app.locals.prisma.swap.findUnique({
+      where: {
+        id: swapId,
+      },
+      select: {
+        to_user: true,
+      },
+    })
+    const toUser = swap_to_user.to_user
+
+    if (req.userId != toUser) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        error: "Only the swap request recipient should be able to update the swap request status",
+      })
+    }
+
+    const updatedSwap = await service.updateSwapRequest({ id: swapId, status })
+
+    res.json({
+      success: true,
+      data: updatedSwap,
+    })
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: error.message,
+    })
+  }
+  return
+})
+
 export default router

@@ -7,6 +7,8 @@ import {
   Swap,
   SwapRequestPayload,
   SwapPostResponse,
+  SwapUpdatePayload,
+  SwapUpdatePostResponse,
 } from "../../../backend/src/types/requests.types"
 
 export class RequestsService {
@@ -188,5 +190,13 @@ export class RequestsService {
       },
     })
     return assignment
+  }
+
+  async updateSwapRequest(updateData: SwapUpdatePayload): Promise<SwapUpdatePostResponse> {
+    const updatedSwap = await this.prisma.swap.update({
+      where: { id: updateData.id },
+      data: { status: updateData.status },
+    })
+    return updatedSwap
   }
 }

@@ -70,3 +70,17 @@ export type SwapRequestPayload = {
   event_id: number
   message?: string
 }
+
+export type SwapUpdatePayload = Prisma.SwapGetPayload<{
+  select: {
+    id: true
+    status: true
+  }
+}>
+
+export type SwapUpdatePostResponse = Prisma.SwapGetPayload<{
+  select: {
+    id: true
+    status: true
+  }
+}>
