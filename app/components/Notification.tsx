@@ -35,7 +35,6 @@ type StatusByRequest = {
 type NotificationConfig = {
   request: LozengeType
   status?: LozengeType
-  backgroundColor?: string
   message: (context: MessageContext) => string | null
 }
 
@@ -48,7 +47,6 @@ const NOTIFICATION_CONFIG: NotificationConfigMap = {
   SWAP: {
     AWAITING: {
       request: "SWAP",
-      backgroundColor: "$secondary100",
       message: ({ initials, eventDateStr }) =>
         `You have been offered a shift swap by ${initials} for ${eventDateStr}.`,
     },
@@ -101,6 +99,8 @@ type BaseFields = {
   eventLocation?: string
   isRead: boolean
   requiresAction: boolean
+  userId?: number
+  toUserId?: number
 }
 
 // Generic props bind request/status to the valid pair
@@ -118,22 +118,29 @@ const NotificationBody = <R extends NotificationRequestType>({
   eventDate,
   eventLocation,
   isRead,
+  requiresAction,
+  userId,
+  toUserId,
 }: NotificationProps<R>) => {
   const theme = useTheme()
-  const { request, status, backgroundColor, message } = NOTIFICATION_CONFIG[requestType][statusType]
+  const { request, status, message } = NOTIFICATION_CONFIG[requestType][statusType]
 
-  const bgColorToken = backgroundColor ?? "$white200"
+  const bgColorToken = requiresAction ? "$secondary100" : "$white100"
   const bgColor = theme[bgColorToken]?.val
 
   const displayNotificationDate = format(notificationDate, "dd/MM/yy - HH:mm")
   const displayTargetDate = eventDate ? format(eventDate, "EEE, d MMM yyyy") : null
   const initials = getInitials(fromUserFirstName, fromUserLastName)
 
-  const text = message({
+  let text = message({
     initials,
     eventDateStr: displayTargetDate,
     eventLocation: eventLocation,
   })
+
+  if (userId === toUserId && !requiresAction) {
+    text = `You have ${status === "APPROVED" ? `accepted` : `declined`} a swap shift request by ${initials}.`
+  }
 
   return (
     <XStack
@@ -241,6 +248,7 @@ export const InteractiveNotification = ({ shift, ...props }: InteractiveNotifica
                         shift={shift}
                         message={props.message}
                         requiresAction={props.requiresAction}
+                        isAccepted={props.statusType === "APPROVED"}
                       />
                     </YStack>
                   </YStack>

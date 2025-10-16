@@ -10,6 +10,7 @@ import {
   SwapStatusType,
 } from "@/components/Notification"
 import { Screen } from "@/components/Screen"
+import { useAuth } from "@/context/AuthContext"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useUserNotifications } from "@/services/hooks/useUserNotifications"
 import { $styles } from "@/theme/styles"
@@ -22,11 +23,13 @@ export const NotificationsScreen: FC<NotificationsScreenProps> = function Notifi
   const { navigation } = _props
   const { userNotifications, isPending } = useUserNotifications()
 
+  const { userId } = useAuth()
+
   return (
     <Screen safeAreaEdges={["top"]} contentContainerStyle={$styles.barContainer}>
       <BackHeader title="Notifications" navigation={navigation} />
-      <ScrollView>
-        <YStack paddingVertical="$4">
+      <ScrollView height="100%">
+        <YStack>
           {isPending ? (
             <YStack paddingTop="60%" gap="$3" alignItems="center">
               <Spinner size="large" color="$primary500" />
@@ -47,6 +50,8 @@ export const NotificationsScreen: FC<NotificationsScreenProps> = function Notifi
                     requiresAction={notifs.requires_action}
                     shift={notifs.event}
                     message={notifs.message}
+                    userId={userId}
+                    toUserId={notifs.to_user}
                   />
                 ) : notifs.notif_type === "LEAVE" ? (
                   <Notification
