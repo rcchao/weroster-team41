@@ -94,6 +94,18 @@ export function usePostSwapRequest() {
   return useMutation({
     mutationFn: requestsApi.setSwapRequests,
     onSuccess: () => {
+      // This should be the from_user's swap requests
+      queryClient.invalidateQueries({ queryKey: ["user-requests"] })
+    },
+  })
+}
+
+export function useUpdateSwapRequest() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: requestsApi.updateSwapRequests,
+    onSuccess: () => {
+      // This should be the from_user's swap requests
       queryClient.invalidateQueries({ queryKey: ["user-requests"] })
     },
   })

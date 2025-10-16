@@ -8,6 +8,8 @@ import {
   Swap,
   SwapRequestPayload,
   SwapPostResponse,
+  SwapUpdatePayload,
+  SwapUpdatePostResponse,
 } from "../../../backend/src/types/requests.types"
 
 export const requestsApi = {
@@ -83,5 +85,20 @@ export const requestsApi = {
       success: false,
       error: (response.data as any)?.error || "Failed to post swap requests",
     } as ApiResponse<SwapPostResponse>
+  },
+
+  updateSwapRequests: async (swapRequestUpdate: SwapUpdatePayload) => {
+    const response = await api.patch<ApiResponse<SwapPostResponse>>(
+      `/requests/swap/${swapRequestUpdate.id}`,
+      swapRequestUpdate,
+    )
+    console.log("\n\n[requestsApi.updateSwapRequests] response:", response.data)
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to update swap requests",
+    } as ApiResponse<SwapUpdatePostResponse>
   },
 }
