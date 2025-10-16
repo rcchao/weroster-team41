@@ -87,3 +87,17 @@ export type SwapNotificationPostResponse = Prisma.SwapNotificationGetPayload<{
     swap_request: true
   }
 }>
+
+export type SwapNotificationUpdatePayload = {
+  id: number
+  is_read?: boolean
+  requires_action?: boolean
+}
+
+export type SwapNotificationUpdatePostPayload = Prisma.SwapNotificationGetPayload<{
+  select: {
+    id: true
+    is_read: true
+    requires_action: true
+  }
+}>
