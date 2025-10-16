@@ -34,6 +34,7 @@ export const DashboardHomeHeader = ({
       shadowRadius={4}
       padding={20}
       paddingTop={paddingTop}
+      marginBottom={10}
     >
       <YStack gap={8} width="75%">
         <Image
