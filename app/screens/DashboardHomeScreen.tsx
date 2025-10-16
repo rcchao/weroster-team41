@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { FC, ReactElement } from "react"
 import { View } from "react-native"
-import Toast from "react-native-toast-message"
 import { YStack } from "tamagui"
 
 import { Button } from "@/components/Button"
@@ -29,7 +28,6 @@ import { useUpcomingCampusEvents } from "@/services/hooks/useUpcomingCampusEvent
 import { useUpdateSwapNotification } from "@/services/hooks/useUserNotifications"
 import { useLeaveRequests, useUpdateSwapRequest } from "@/services/hooks/useUserRequests"
 import { useAppTheme } from "@/theme/context"
-import { $styles } from "@/theme/styles"
 import { $container, $fabButton } from "@/theme/styles"
 import type { Theme } from "@/theme/types"
 

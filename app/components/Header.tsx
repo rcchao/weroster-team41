@@ -13,7 +13,7 @@ const Header = ({ title }: HeaderProps) => {
 
   return (
     <BaseTopBar>
-      <XStack alignItems="center" gap="$4">
+      <XStack alignItems="center" gap="$4" marginLeft={6}>
         <HeaderText variant="h2" color={theme.white100.val}>
           {title}
         </HeaderText>
