@@ -172,7 +172,7 @@ type InteractiveNotificationProps = BaseFields & {
   requestType: "SWAP"
   statusType: StatusByRequest["SWAP"] // "APPROVED" | "DECLINED" | "AWAITING"
   shift: ShiftWithNumUsers
-  message: string
+  message: string | null
 }
 
 export const InteractiveNotification = ({ shift, ...props }: InteractiveNotificationProps) => {
