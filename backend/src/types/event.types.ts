@@ -1,5 +1,4 @@
 import { Prisma } from ".prisma/client"
-import { userInfo } from "os"
 
 export type ShiftDetails = Prisma.EventGetPayload<{
   select: {
