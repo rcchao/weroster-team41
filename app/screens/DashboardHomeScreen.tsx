@@ -20,6 +20,7 @@ import { SubmitButton } from "@/components/SubmitButton"
 import { useAuthenticatedUserId } from "@/context/AuthContext"
 import { TxKeyPath } from "@/i18n"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
+import { useDashboardPreferences } from "@/services/hooks/useDashboardPreferences"
 import { useMyShifts } from "@/services/hooks/useMyShifts"
 import { useOpenShifts } from "@/services/hooks/useOpenShifts"
 import { useProfile } from "@/services/hooks/useProfile"
@@ -45,6 +46,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
     const { themed } = useAppTheme()
     const userId = useAuthenticatedUserId()
     const { profile } = useProfile(userId)
+    const { dashboardPreferences } = useDashboardPreferences()
     const mutation = useUpdateSwapRequest()
 
     const updateSwapRequestStatus = async () => {
@@ -77,99 +79,111 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
         </SafeAreaView>
         <Screen preset="scroll">
           <YStack gap={10} marginBlockStart={30}>
-            <DashboardRow
-              title="Who's on duty"
-              onPressViewAll={() => navigation.navigate("DashboardTeams")}
-              cards={
-                teamMemberData
-                  ?.slice(0, 5)
-                  .map((member, index) => (
-                    <TeamMemberDashboardCard
-                      key={index}
-                      firstName={member.first_name}
-                      lastName={member.last_name}
-                      location={member.location_name}
-                      shiftStartTime={member.start_time}
-                      shiftEndTime={member.end_time}
-                      campus={member.campus_name}
-                    />
-                  )) || []
-              }
-            />
-            <DashboardRow
-              title="My Shifts"
-              onPressViewAll={() => navigation.navigate("DashboardRoster", { screen: "MyRoster" })}
-              cards={
-                myShifts
-                  ?.slice(0, 5)
-                  .map((shift, index) => (
-                    <AllocatedShiftDashboardCard
-                      key={index}
-                      startDate={shift.start_time}
-                      endDate={shift.end_time}
-                      campus={shift.campus}
-                      activity={shift.activity}
-                      numUsers={shift.numUsers}
-                      session={shift.eventSessions?.[0] as Session}
-                    />
-                  )) || []
-              }
-            />
-            <DashboardRow
-              title="Open Shifts"
-              onPressViewAll={() =>
-                navigation.navigate("DashboardRoster", { screen: "OpenShifts" })
-              }
-              cards={
-                openShifts
-                  ?.slice(0, 5)
-                  .map((openShifts, index) => (
-                    <OpenShiftDashboardCard
-                      key={index}
-                      startDate={openShifts.start_time}
-                      endDate={openShifts.end_time}
-                      campus={openShifts.campus}
-                      activity={openShifts.activity}
-                      extraPay={openShifts.pay}
-                      openShiftStatus={openShifts.status as LozengeType}
-                    />
-                  )) || []
-              }
-            />
-            <DashboardRow
-              title="My Leave Requests"
-              onPressViewAll={() => navigation.navigate("DashboardRequests")}
-              cards={
-                leaveRequests
-                  ?.slice(0, 5)
-                  .map((leaveRequests, index) => (
-                    <LeaveRequestDashboardCard
-                      key={index}
-                      startDate={leaveRequests.start_date}
-                      endDate={leaveRequests.end_date}
-                      leaveType={leaveRequests.leaveType}
-                      leaveStatus={leaveRequests.status as LozengeType}
-                    />
-                  )) || []
-              }
-            />
-            <DashboardRow
-              title="My Teams"
-              onPressViewAll={() => navigation.navigate("DashboardTeams")}
-              cards={
-                upcomingCampusEvents
-                  ?.slice(0, 5)
-                  .map((upcomingCampusEvents, index) => (
-                    <TeamDashboardCard
-                      key={index}
-                      campusName={upcomingCampusEvents.campus_name}
-                      startDate={upcomingCampusEvents.start_date}
-                      locationName={upcomingCampusEvents.location_name}
-                      numAssignments={upcomingCampusEvents.num_assignments}
-                    />
-                  )) || []
-              }
-            />
+            {dashboardPreferences?.whos_on_duty && (
+              <DashboardRow
+                title="Who's on duty"
+                onPressViewAll={() => navigation.navigate("DashboardTeams")}
+                cards={
+                  teamMemberData
+                    ?.slice(0, 5)
+                    .map((member, index) => (
+                      <TeamMemberDashboardCard
+                        key={index}
+                        firstName={member.first_name}
+                        lastName={member.last_name}
+                        location={member.location_name}
+                        shiftStartTime={member.start_time}
+                        shiftEndTime={member.end_time}
+                        campus={member.campus_name}
+                      />
+                    )) || []
+                }
+              />
+            )}
+            {dashboardPreferences?.upcoming_shifts && (
+              <DashboardRow
+                title="My Shifts"
+                onPressViewAll={() =>
+                  navigation.navigate("DashboardRoster", { screen: "MyRoster" })
+                }
+                cards={
+                  myShifts
+                    ?.slice(0, 5)
+                    .map((shift, index) => (
+                      <AllocatedShiftDashboardCard
+                        key={index}
+                        startDate={shift.start_time}
+                        endDate={shift.end_time}
+                        campus={shift.campus}
+                        activity={shift.activity}
+                        numUsers={shift.numUsers}
+                        session={shift.eventSessions?.[0] as Session}
+                      />
+                    )) || []
+                }
+              />
+            )}
+            {dashboardPreferences?.upcoming_leaves && (
+              <DashboardRow
+                title="My Leave Requests"
+                onPressViewAll={() => navigation.navigate("DashboardRequests")}
+                cards={
+                  leaveRequests
+                    ?.slice(0, 5)
+                    .map((leaveRequests, index) => (
+                      <LeaveRequestDashboardCard
+                        key={index}
+                        startDate={leaveRequests.start_date}
+                        endDate={leaveRequests.end_date}
+                        leaveType={leaveRequests.leaveType}
+                        leaveStatus={leaveRequests.status as LozengeType}
+                      />
+                    )) || []
+                }
+              />
+            )}
+            {dashboardPreferences?.open_shifts && (
+              <DashboardRow
+                title="Open Shifts"
+                onPressViewAll={() =>
+                  navigation.navigate("DashboardRoster", { screen: "OpenShifts" })
+                }
+                cards={
+                  openShifts
+                    ?.slice(0, 5)
+                    .map((openShifts, index) => (
+                      <OpenShiftDashboardCard
+                        key={index}
+                        startDate={openShifts.start_time}
+                        endDate={openShifts.end_time}
+                        campus={openShifts.campus}
+                        activity={openShifts.activity}
+                        extraPay={openShifts.pay}
+                        openShiftStatus={openShifts.status as LozengeType}
+                      />
+                    )) || []
+                }
+              />
+            )}
+            {dashboardPreferences?.team_roster && (
+              <DashboardRow
+                title="My Teams"
+                onPressViewAll={() => navigation.navigate("DashboardTeams")}
+                cards={
+                  upcomingCampusEvents
+                    ?.slice(0, 5)
+                    .map((upcomingCampusEvents, index) => (
+                      <TeamDashboardCard
+                        key={index}
+                        campusName={upcomingCampusEvents.campus_name}
+                        startDate={upcomingCampusEvents.start_date}
+                        locationName={upcomingCampusEvents.location_name}
+                        numAssignments={upcomingCampusEvents.num_assignments}
+                      />
+                    )) || []
+                }
+              />
+            )}
           </YStack>
           <SubmitButton text="update swap request status" onPress={updateSwapRequestStatus} />
         </Screen>
