@@ -9,7 +9,6 @@ import {
   SwapRequestPayload,
   SwapPostResponse,
   SwapUpdatePayload,
-  SwapUpdatePostResponse,
 } from "../../../backend/src/types/requests.types"
 
 export const requestsApi = {
@@ -99,6 +98,6 @@ export const requestsApi = {
     return {
       success: false,
       error: (response.data as any)?.error || "Failed to update swap requests",
-    } as ApiResponse<SwapUpdatePostResponse>
+    } as ApiResponse<SwapUpdatePayload>
   },
 }
