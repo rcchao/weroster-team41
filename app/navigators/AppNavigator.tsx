@@ -38,7 +38,7 @@ export type AppStackParamList = {
   EditDashboard: undefined
   ProfileScreen: undefined
   TeamDetails: { userId: number }
-  SwapShift: { shiftId: number }
+  SwapShift: { shiftId: number; teamIds: number[] }
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }

@@ -70,7 +70,10 @@ const ShiftCard = memo(({ shift, clashes }: ShiftCardProps) => {
 
   const requestSwap = (shift: ShiftWithNumUsers) => {
     requestAnimationFrame(() => {
-      navigationRef.navigate("SwapShift", { shiftId: shift.id })
+      navigationRef.navigate("SwapShift", {
+        shiftId: shift.id,
+        teamIds: shift.eventAssignments.map((ea) => ea.user.id),
+      })
     })
   }
 

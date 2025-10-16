@@ -12,7 +12,7 @@ import { PressableIcon } from "./Icon"
 
 interface TeamMemberCardProps {
   name: string
-  userId: number
+  userId?: number
   startDate: Date
   endDate: Date
   role: string
@@ -41,7 +41,7 @@ export const TeamMemberCard = (props: TeamMemberCardProps) => {
     <Card
       backgroundColor="$white200"
       height={140}
-      width="85%"
+      width="100%"
       justifyContent="center"
       paddingInline="$3"
       elevation={4}
@@ -76,7 +76,9 @@ export const TeamMemberCard = (props: TeamMemberCardProps) => {
           </YStack>
         </XStack>
         <YStack justifyContent="center" paddingInlineEnd="$3">
-          <PressableIcon icon="right" color={theme.accent500.val} onPress={goToUser} />
+          {props.userId && (
+            <PressableIcon icon="right" color={theme.accent500.val} onPress={goToUser} />
+          )}
         </YStack>
       </XStack>
     </Card>
