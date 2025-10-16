@@ -43,12 +43,15 @@ interface IconBadgeProps {
 }
 
 export const IconBadge = ({ type }: IconBadgeProps) => {
+  if (!ICON_BADGE_CONFIG[type]) {
+    return null
+  }
   const iconConfig = ICON_BADGE_CONFIG[type]
 
   const icon = iconConfig.icon
   //   const bgColor = iconConfig.bgColor
   return (
-    <Circle size="$4" backgroundColor="$yellow400">
+    <Circle size="$4" backgroundColor={`$${iconConfig.bgColor}` as any}>
       <Icon icon={icon} />
     </Circle>
   )

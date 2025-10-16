@@ -105,6 +105,10 @@ export const Lozenge = ({ type, active = false, onPress }: LozengeProps) => {
 
   const lozenge = LOZENGE_CONFIG[type]
 
+  if (!lozenge) {
+    return null
+  }
+
   const buttonText = lozenge.text || "Lozenge"
   const buttonIcon = lozenge.icon || null
 

@@ -5,7 +5,6 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import Toast from "react-native-toast-message"
 import { YStack } from "tamagui"
 
-import { BodyText } from "@/components/BodyText"
 import { Button } from "@/components/Button"
 import { AllocatedShiftDashboardCard } from "@/components/DashboardCards/AllocatedShiftDashboardCard"
 import { LeaveRequestDashboardCard } from "@/components/DashboardCards/LeaveRequestDashboardCard"
@@ -14,7 +13,6 @@ import { TeamDashboardCard } from "@/components/DashboardCards/TeamDashboardCard
 import { TeamMemberDashboardCard } from "@/components/DashboardCards/TeamMemberDashboardCard"
 import { DashboardHomeHeader } from "@/components/DashboardHomeHeader"
 import { DashboardRow } from "@/components/DashboardRow"
-import { HeaderText } from "@/components/HeaderText"
 import { Icon } from "@/components/Icon"
 import { LozengeType } from "@/components/Lozenge"
 import { Screen } from "@/components/Screen"
@@ -26,6 +24,7 @@ import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useMyShifts } from "@/services/hooks/useMyShifts"
 import { useOpenShifts } from "@/services/hooks/useOpenShifts"
 import { useProfile } from "@/services/hooks/useProfile"
+import { useTeamMemberData } from "@/services/hooks/useTeamMemberData"
 import { useUpcomingCampusEvents } from "@/services/hooks/useUpcomingCampusEvents"
 import { useLeaveRequests, usePostSwapRequest } from "@/services/hooks/useUserRequests"
 import { useAppTheme } from "@/theme/context"
@@ -72,6 +71,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
       }
     }
 
+    const { teamMemberData } = useTeamMemberData()
     const { myShifts } = useMyShifts()
     const { openShifts } = useOpenShifts()
     const { upcomingCampusEvents } = useUpcomingCampusEvents()
@@ -83,76 +83,100 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
           <DashboardHomeHeader userName={profile?.first_name ?? "User"} navigation={navigation} />
         </SafeAreaView>
         <Screen preset="scroll">
-          <YStack gap={20} marginBlockStart={30}>
+          <YStack gap={10} marginBlockStart={30}>
             <DashboardRow
               title="Who's on duty"
               onPressViewAll={() => navigation.navigate("DashboardTeams")}
-              cards={[
-                <TeamMemberDashboardCard
-                  key="1"
-                  firstName="John"
-                  lastName="Doe"
-                  location="Theatre 1"
-                  campus="General Campus"
-                  shiftStartTime={new Date()}
-                  shiftEndTime={new Date()}
-                />,
-                <TeamMemberDashboardCard
-                  key="2"
-                  firstName="Jane"
-                  lastName="Smith"
-                  location="Theatre 2"
-                  campus="General Campus"
-                  shiftStartTime={new Date()}
-                  shiftEndTime={new Date()}
-                />,
-              ]}
+              cards={
+                teamMemberData
+                  ?.slice(0, 5)
+                  .map((member, index) => (
+                    <TeamMemberDashboardCard
+                      key={index}
+                      firstName={member.first_name}
+                      lastName={member.last_name}
+                      location={member.location_name}
+                      shiftStartTime={member.start_time}
+                      shiftEndTime={member.end_time}
+                      campus={member.campus_name}
+                    />
+                  )) || []
+              }
             />
-          </YStack>
-          <HeaderText variant="h1">Home H1 Text</HeaderText>
-          <HeaderText variant="h2">H2 Text</HeaderText>
-          <HeaderText variant="h3">H3 Text</HeaderText>
-          <BodyText variant="body">Body Text</BodyText>
-          <BodyText variant="body2">Body2 Text</BodyText>
-          <BodyText variant="body3">Body3 Text</BodyText>
-          <BodyText variant="body4">Body4 Text</BodyText>
-          <YStack gap={20}>
-            {myShifts && (
-              <AllocatedShiftDashboardCard
-                startDate={myShifts[0].start_time}
-                endDate={myShifts[0].end_time}
-                campus={myShifts[0].campus}
-                activity={myShifts[0].activity}
-                numUsers={myShifts[0].numUsers}
-                session={myShifts[0].eventSessions[0] as Session}
-              />
-            )}
-            {openShifts && (
-              <OpenShiftDashboardCard
-                startDate={openShifts[0].start_time}
-                endDate={openShifts[0].end_time}
-                campus={openShifts[0].campus}
-                activity={openShifts[0].activity}
-                extraPay={openShifts[0].pay}
-                openShiftStatus={openShifts[0].status as LozengeType}
-              />
-            )}
-            {upcomingCampusEvents && (
-              <TeamDashboardCard
-                campusName={upcomingCampusEvents[0].campus_name}
-                startDate={upcomingCampusEvents[0].start_date}
-                locationName={upcomingCampusEvents[0].location_name}
-                numAssignments={upcomingCampusEvents[0].num_assignments}
-              />
-            )}
-            {leaveRequests && (
-              <LeaveRequestDashboardCard
-                startDate={leaveRequests[0].start_date}
-                endDate={leaveRequests[0].end_date}
-                leaveType={leaveRequests[0].leaveType}
-                leaveStatus={leaveRequests[0].status as LozengeType}
-              />
-            )}
+            <DashboardRow
+              title="My Shifts"
+              onPressViewAll={() => navigation.navigate("DashboardRoster", { screen: "MyRoster" })}
+              cards={
+                myShifts
+                  ?.slice(0, 5)
+                  .map((shift, index) => (
+                    <AllocatedShiftDashboardCard
+                      key={index}
+                      startDate={shift.start_time}
+                      endDate={shift.end_time}
+                      campus={shift.campus}
+                      activity={shift.activity}
+                      numUsers={shift.numUsers}
+                      session={shift.eventSessions?.[0] as Session}
+                    />
+                  )) || []
+              }
+            />
+            <DashboardRow
+              title="Open Shifts"
+              onPressViewAll={() =>
+                navigation.navigate("DashboardRoster", { screen: "OpenShifts" })
+              }
+              cards={
+                openShifts
+                  ?.slice(0, 5)
+                  .map((openShifts, index) => (
+                    <OpenShiftDashboardCard
+                      key={index}
+                      startDate={openShifts.start_time}
+                      endDate={openShifts.end_time}
+                      campus={openShifts.campus}
+                      activity={openShifts.activity}
+                      extraPay={openShifts.pay}
+                      openShiftStatus={openShifts.status as LozengeType}
+                    />
+                  )) || []
+              }
+            />
+            <DashboardRow
+              title="My Leave Requests"
+              onPressViewAll={() => navigation.navigate("DashboardRequests")}
+              cards={
+                leaveRequests
+                  ?.slice(0, 5)
+                  .map((leaveRequests, index) => (
+                    <LeaveRequestDashboardCard
+                      key={index}
+                      startDate={leaveRequests.start_date}
+                      endDate={leaveRequests.end_date}
+                      leaveType={leaveRequests.leaveType}
+                      leaveStatus={leaveRequests.status as LozengeType}
+                    />
+                  )) || []
+              }
+            />
+            <DashboardRow
+              title="My Teams"
+              onPressViewAll={() => navigation.navigate("DashboardTeams")}
+              cards={
+                upcomingCampusEvents
+                  ?.slice(0, 5)
+                  .map((upcomingCampusEvents, index) => (
+                    <TeamDashboardCard
+                      key={index}
+                      campusName={upcomingCampusEvents.campus_name}
+                      startDate={upcomingCampusEvents.start_date}
+                      locationName={upcomingCampusEvents.location_name}
+                      numAssignments={upcomingCampusEvents.num_assignments}
+                    />
+                  )) || []
+              }
+            />
           </YStack>
           <SubmitButton text="apply to swap shift" onPress={postSwapShiftRequest} />
         </Screen>
