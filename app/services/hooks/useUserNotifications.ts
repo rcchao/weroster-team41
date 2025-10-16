@@ -30,7 +30,7 @@ export const useUserNotifications = () => {
       // Unnest assignments and add type
       const assignments =
         AssignmentReqNotifs.data?.map(({ assignmentRequest, ...rest }) => ({
-          notif_type: "ASSIGNMENT",
+          notif_type: "ASSIGNMENT" as const,
           assignment_request_id: assignmentRequest?.id,
           status: assignmentRequest?.status,
           assignmentRequest_start_date: assignmentRequest?.event?.start_time,
@@ -43,7 +43,7 @@ export const useUserNotifications = () => {
       // Unnest swaps and add type
       const swaps =
         swapNotifs.data?.map(({ swap, fromUser, ...rest }) => ({
-          notif_type: "SWAP",
+          notif_type: "SWAP" as const,
           swap_id: swap?.id,
           message: swap?.message,
           status: swap?.status,
@@ -55,7 +55,7 @@ export const useUserNotifications = () => {
       // Add type to leave requests
       const leaves =
         LeaveNotifs.data?.map(({ leave, ...rest }) => ({
-          notif_type: "LEAVE",
+          notif_type: "LEAVE" as const,
           leave_id: leave?.id,
           leave_start_date: leave?.start_date,
           leave_end_date: leave?.end_date,
