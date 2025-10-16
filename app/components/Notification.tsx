@@ -12,7 +12,7 @@ import { HeaderText } from "./HeaderText"
 import { Icon } from "./Icon"
 import { Lozenge, LozengeType } from "./Lozenge"
 import { $closeButtonStyles } from "./ShiftCard"
-import { ShiftDetailCard, TeamMemberButton } from "./ShiftDetailCard"
+import { SwapDetailCard, TeamMemberButton } from "./ShiftDetailCard"
 import { ShiftDetailsSubheader } from "./ShiftDetailsSubheader"
 
 type MessageContext = {
@@ -22,6 +22,9 @@ type MessageContext = {
 }
 
 type NotificationRequestType = "LEAVE" | "SWAP" | "ASSIGNMENT"
+
+export type SwapStatusType = "APPROVED" | "DECLINED" | "AWAITING"
+export type NotificationStatusType = "APPROVED" | "DECLINED"
 
 type StatusByRequest = {
   LEAVE: "APPROVED" | "DECLINED"
@@ -169,6 +172,7 @@ type InteractiveNotificationProps = BaseFields & {
   requestType: "SWAP"
   statusType: StatusByRequest["SWAP"] // "APPROVED" | "DECLINED" | "AWAITING"
   shift: ShiftWithNumUsers
+  message: string
 }
 
 export const InteractiveNotification = ({ shift, ...props }: InteractiveNotificationProps) => {
@@ -233,7 +237,11 @@ export const InteractiveNotification = ({ shift, ...props }: InteractiveNotifica
                       session="AM"
                     />
                     <YStack width="90%" paddingBlockEnd={20}>
-                      <ShiftDetailCard shift={shift} onPress={() => {}} />
+                      <SwapDetailCard
+                        shift={shift}
+                        message={props.message}
+                        requiresAction={props.requiresAction}
+                      />
                     </YStack>
                   </YStack>
                 </YStack>

@@ -230,4 +230,4 @@ const SwapDetailCard = ({ shift, message, requiresAction, isAccepted }: SwapDeta
   )
 }
 
-export { ShiftDetailCard, SwapDetailCard }
+export { TeamMemberButton, ShiftDetailCard, SwapDetailCard }
