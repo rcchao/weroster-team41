@@ -10,6 +10,7 @@ import { Screen } from "@/components/Screen"
 import { TeamMemberCard } from "@/components/TeamMemberCard"
 import { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useTeamMemberData } from "@/services/hooks/useTeamMemberData"
+import { usePostSwapNotification } from "@/services/hooks/useUserNotifications"
 import { usePostSwapRequest } from "@/services/hooks/useUserRequests"
 import { $styles } from "@/theme/styles"
 
@@ -18,7 +19,8 @@ interface SwapShiftScreenProps extends AppStackScreenProps<"SwapShift"> {}
 export const SwapShiftScreen: FC<SwapShiftScreenProps> = ({ navigation, route }) => {
   const { shiftId, teamIds } = route.params
   const { teamMemberData } = useTeamMemberData()
-  const mutation = usePostSwapRequest()
+  const swapMutation = usePostSwapRequest()
+  const swapNotifMutation = usePostSwapNotification()
   const [selectedTeamMember, setSelectedTeamMember] = useState<any>()
   const [message, setMessage] = useState<string>("")
 
@@ -28,33 +30,39 @@ export const SwapShiftScreen: FC<SwapShiftScreenProps> = ({ navigation, route })
       return
     }
 
+    // Navigate out of the swap shift screen first
     navigation.goBack()
-
-    Toast.show({
-      type: "success",
-      text1: "Successfully requested to swap shift",
-    })
 
     // If a team member is selected, try post a swap request
     try {
       // Swap the event with this shiftId to the selected user
-      const data = await mutation.mutateAsync({
+      const swapData = await swapMutation.mutateAsync({
         to_user: selectedTeamMember.user_id,
         event_id: shiftId,
         message: message,
       })
 
-      if (data.success) {
-        Toast.show({
-          type: "success",
-          text1: "Successfully requested to swap shift",
+      if (swapData.success && swapData.data) {
+        const swapNotifData = await swapNotifMutation.mutateAsync({
+          to_user: selectedTeamMember.user_id,
+          swap_id: swapData.data.id,
+          requires_action: true,
         })
-      } else {
-        Toast.show({
-          type: "failure",
-          text1: "Error! Could not swap this shift",
-        })
+
+        if (swapNotifData.success) {
+          Toast.show({
+            type: "success",
+            text1: "Successfully requested to swap shift",
+          })
+          // Exit early on success
+          return
+        }
       }
+
+      Toast.show({
+        type: "failure",
+        text1: "Error! Could not swap this shift",
+      })
     } catch (error) {
       console.error("Swap shift error log:", error)
       Toast.show({
