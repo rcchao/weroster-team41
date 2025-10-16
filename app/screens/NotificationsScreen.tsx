@@ -26,7 +26,7 @@ export const NotificationsScreen: FC<NotificationsScreenProps> = function Notifi
     <Screen safeAreaEdges={["top"]} contentContainerStyle={$styles.barContainer}>
       <BackHeader title="Notifications" navigation={navigation} />
       <ScrollView>
-        <YStack paddingVertical="$4">
+        <YStack>
           {isPending ? (
             <YStack paddingTop="60%" gap="$3" alignItems="center">
               <Spinner size="large" color="$primary500" />
