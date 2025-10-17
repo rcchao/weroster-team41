@@ -3,6 +3,8 @@ import { Button, Card, Dialog, Separator, XStack, YStack } from "tamagui"
 
 import { OpenShift, ShiftWithNumUsers } from "backend/src/types/event.types"
 
+import { useAuth } from "@/context/AuthContext"
+
 import { BodyText } from "./BodyText"
 import { StyledIcon } from "./common/StyledIcon"
 import { HeaderText } from "./HeaderText"
@@ -40,16 +42,24 @@ const ShiftHeader = ({ location, address }: { location: string; address?: string
   )
 }
 
-const WorkingWith = ({ eventAssignments }: { eventAssignments: any[] }) => (
+const WorkingWith = ({
+  userId,
+  eventAssignments,
+}: {
+  userId: number | undefined
+  eventAssignments: any[]
+}) => (
   <YStack gap="$3">
     <XStack alignItems="center" gap="$2">
       <StyledIcon icon="teams" size={20} />
       <BodyText variant="body2">Working with</BodyText>
     </XStack>
     <YStack gap="$2" marginLeft="$2">
-      {eventAssignments.map((ea) => (
-        <TeamMemberButton key={ea.user.id} name={ea.user.first_name + " " + ea.user.last_name} />
-      ))}
+      {eventAssignments
+        .filter((ea) => ea.user.id !== userId)
+        .map((ea) => (
+          <TeamMemberButton key={ea.user.id} name={ea.user.first_name + " " + ea.user.last_name} />
+        ))}
     </YStack>
   </YStack>
 )
@@ -139,6 +149,7 @@ const DeclineButton = ({ disabled }: { disabled: boolean }) => (
 
 const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
   const now = new Date()
+  const { userId } = useAuth()
   const isOpenShift = "status" in shift
 
   return (
@@ -159,9 +170,10 @@ const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
 
         <Separator borderColor="$mono300" />
 
-        {shift.numUsers > 0 && (
+        {/* Check if there are more people assigned than just yourself */}
+        {shift.numUsers > 1 && (
           <>
-            <WorkingWith eventAssignments={shift.eventAssignments} />
+            <WorkingWith userId={userId} eventAssignments={shift.eventAssignments} />
             <Separator borderColor="$mono300" />
           </>
         )}
@@ -179,6 +191,8 @@ const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
 }
 
 const SwapDetailCard = ({ shift, message, requiresAction, isAccepted }: SwapDetailCardProps) => {
+  const { userId } = useAuth()
+
   return (
     <Card
       backgroundColor="$white100"
@@ -199,7 +213,7 @@ const SwapDetailCard = ({ shift, message, requiresAction, isAccepted }: SwapDeta
 
         {shift.numUsers > 0 && (
           <>
-            <WorkingWith eventAssignments={shift.eventAssignments} />
+            <WorkingWith userId={userId} eventAssignments={shift.eventAssignments} />
             <Separator borderColor="$mono300" />
           </>
         )}
