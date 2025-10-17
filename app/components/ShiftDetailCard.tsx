@@ -168,7 +168,7 @@ const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
 
         {isOpenShift && <PaySection amount={500} />}
 
-        {(!isOpenShift || (shift.status !== "REQUESTED" && isAfter(shift.start_time, now))) && (
+        {(!isOpenShift || shift.status !== "REQUESTED") && isAfter(shift.start_time, now) && (
           <Dialog.Close displayWhenAdapted asChild>
             <RequestButton isOpenShift={isOpenShift} onPress={() => onPress?.(shift)} />
           </Dialog.Close>
