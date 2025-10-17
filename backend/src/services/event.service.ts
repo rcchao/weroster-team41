@@ -5,6 +5,8 @@ import {
   OpenShift,
   CampusWithLocationsAndEvents,
   TeamShift,
+  EventAssignmentUpdatePayload,
+  EventAssignmentUpdateResponse,
 } from "../types/event.types"
 
 // Common select clause used across all shift queries
@@ -271,5 +273,33 @@ export class EventService {
     })
 
     return this.transformTeamShifts(campuses)
+  }
+
+  async updateEventAssignment(
+    updateData: EventAssignmentUpdatePayload,
+  ): Promise<EventAssignmentUpdateResponse> {
+    // First, find the assignment to update
+    const existingAssignment = await this.prisma.eventAssignment.findFirst({
+      where: {
+        event_id: updateData.event_id,
+        user_id: updateData.from_user,
+      },
+    })
+
+    if (!existingAssignment) {
+      throw new Error("Event assignment not found for the specified user")
+    }
+
+    // Update the assignment to the new user
+    const updatedEventAssignment = await this.prisma.eventAssignment.update({
+      where: {
+        id: existingAssignment.id,
+      },
+      data: {
+        user_id: updateData.to_user,
+      },
+    })
+
+    return updatedEventAssignment
   }
 }

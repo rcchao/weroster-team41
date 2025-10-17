@@ -188,3 +188,17 @@ export type TeamShift = {
     }>
   }>
 }
+
+export type EventAssignmentUpdatePayload = {
+  from_user: number
+  to_user: number
+  event_id: number
+}
+
+export type EventAssignmentUpdateResponse = Prisma.EventAssignmentGetPayload<{
+  select: {
+    id: true
+    event_id: true
+    user_id: true
+  }
+}>

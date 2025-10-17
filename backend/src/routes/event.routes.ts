@@ -114,4 +114,61 @@ router.get("/:shiftId", authenticate, async (req, res) => {
   return
 })
 
+router.patch("/event-assignment/:id", authenticate, async (req, res) => {
+  try {
+    const service = new EventService(req.app.locals.prisma)
+
+    if (!req.userId) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        error: "User not authenticated",
+      })
+    }
+
+    const event_id = parseInt(req.params.id)
+    const { from_user, to_user } = req.body
+
+    if (!event_id || !from_user || !to_user) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        error: "Invalid event assignment update payload",
+      })
+    }
+
+    const existing_event_assignment = await req.app.locals.prisma.eventAssignment.findFirst({
+      where: {
+        event_id: event_id,
+        user_id: to_user,
+      },
+      select: {
+        id: true,
+      },
+    })
+
+    if (existing_event_assignment) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        error: "This event assignment already exists",
+      })
+    }
+
+    const updatedSwap = await service.updateEventAssignment({
+      from_user: from_user,
+      to_user: to_user,
+      event_id: event_id,
+    })
+
+    res.json({
+      success: true,
+      data: updatedSwap,
+    })
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      error: error.message,
+    })
+  }
+  return
+})
+
 export default router

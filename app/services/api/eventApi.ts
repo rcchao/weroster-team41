@@ -1,6 +1,12 @@
 import { api } from "./apiClient"
 import { ApiResponse } from "../../../backend/src/types/api.types"
-import { OpenShift, ShiftWithNumUsers, TeamShift } from "../../../backend/src/types/event.types"
+import {
+  EventAssignmentUpdatePayload,
+  EventAssignmentUpdateResponse,
+  OpenShift,
+  ShiftWithNumUsers,
+  TeamShift,
+} from "../../../backend/src/types/event.types"
 
 export const eventApi = {
   getMyShifts: async () => {
@@ -55,5 +61,20 @@ export const eventApi = {
       success: false,
       error: (response.data as any)?.error || "Failed to retrieve team shifts",
     } as ApiResponse<TeamShift[]>
+  },
+
+  updateEventAssignment: async (eventAssignmentUpdate: EventAssignmentUpdatePayload) => {
+    const response = await api.patch<ApiResponse<EventAssignmentUpdateResponse>>(
+      `/events/event-assignment/${eventAssignmentUpdate.event_id}`,
+      eventAssignmentUpdate,
+    )
+    console.log("\n\n[eventsApi.updateEventAssignment] response:", response.data)
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to update swap requests",
+    } as ApiResponse<EventAssignmentUpdateResponse>
   },
 }
