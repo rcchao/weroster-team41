@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query"
-import { compareAsc } from "date-fns"
+import { compareDesc } from "date-fns"
 
 import { notificationsApi } from "../api/notificationsApi"
 
@@ -66,7 +66,7 @@ export const useUserNotifications = () => {
 
       // Combine all arrays into a single flat array
       return [...assignments, ...swaps, ...leaves].sort((a, b) =>
-        compareAsc(a.created_at, b.created_at),
+        compareDesc(a.created_at, b.created_at),
       )
     },
     refetchOnMount: true,
