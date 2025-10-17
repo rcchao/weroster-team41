@@ -232,7 +232,7 @@ ShiftCard.displayName = "ShiftCard"
 
 export { ShiftCard }
 
-const $closeButtonStyles = {
+export const $closeButtonStyles = {
   position: "absolute" as const,
   right: 16,
 }
