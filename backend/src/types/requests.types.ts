@@ -77,10 +77,3 @@ export type SwapUpdatePayload = Prisma.SwapGetPayload<{
     status: true
   }
 }>
-
-export type SwapUpdatePostResponse = Prisma.SwapGetPayload<{
-  select: {
-    id: true
-    status: true
-  }
-}>

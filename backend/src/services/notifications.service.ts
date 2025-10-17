@@ -3,6 +3,8 @@ import {
   SwapNotification,
   SwapNotificationPayload,
   SwapNotificationPostResponse,
+  SwapNotificationUpdatePayload,
+  SwapNotificationUpdatePostPayload,
   LeaveNotification,
   AssignmentRequestNotification,
 } from "../../../backend/src/types/notifications.types"
@@ -69,6 +71,18 @@ export class NotificationsService {
         swap_request: swapRequest,
         requires_action: requiresAction,
       },
+    })
+    return notification
+  }
+
+  async updateSwapNotifications(
+    updateSwapNotification: SwapNotificationUpdatePayload,
+  ): Promise<SwapNotificationUpdatePostPayload> {
+    const isRead = updateSwapNotification.is_read
+    const requiresAction = updateSwapNotification.requires_action
+    const notification = await this.prisma.swapNotification.update({
+      where: { id: updateSwapNotification.id },
+      data: { is_read: isRead, requires_action: requiresAction },
     })
     return notification
   }

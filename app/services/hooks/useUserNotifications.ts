@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query"
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query"
 import { compareAsc } from "date-fns"
 
 import { notificationsApi } from "../api/notificationsApi"
@@ -78,5 +78,15 @@ export const useUserNotifications = () => {
 export function usePostSwapNotification() {
   return useMutation({
     mutationFn: notificationsApi.setSwapNotifications,
+  })
+}
+
+export function useUpdateSwapNotification() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: notificationsApi.updateSwapNotifications,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user-notifications"] })
+    },
   })
 }

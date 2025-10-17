@@ -26,6 +26,7 @@ import { useOpenShifts } from "@/services/hooks/useOpenShifts"
 import { useProfile } from "@/services/hooks/useProfile"
 import { useTeamMemberData } from "@/services/hooks/useTeamMemberData"
 import { useUpcomingCampusEvents } from "@/services/hooks/useUpcomingCampusEvents"
+import { useUpdateSwapNotification } from "@/services/hooks/useUserNotifications"
 import { useLeaveRequests, useUpdateSwapRequest } from "@/services/hooks/useUserRequests"
 import { useAppTheme } from "@/theme/context"
 import { $headerContainer } from "@/theme/styles"
@@ -48,6 +49,25 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
     const { profile } = useProfile(userId)
     const { dashboardPreferences } = useDashboardPreferences()
     const mutation = useUpdateSwapRequest()
+    const mutation1 = useUpdateSwapNotification()
+
+    const updateSwapNotification = async () => {
+      const swapNotifUpdate = {
+        id: 1,
+        is_read: true, // optional
+        requires_action: true, // optional
+      }
+      try {
+        const data = await mutation1.mutateAsync(swapNotifUpdate)
+        if (data.success) {
+          console.log("updated successfully", data)
+        } else {
+          console.log("Update failed", data.error)
+        }
+      } catch (error) {
+        console.error("Error updating:", error)
+      }
+    }
 
     const updateSwapRequestStatus = async () => {
       const swapRequest = {
@@ -188,6 +208,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
             )}
           </YStack>
           <SubmitButton text="update swap request status" onPress={updateSwapRequestStatus} />
+          <SubmitButton text="update notification" onPress={updateSwapNotification} />
         </Screen>
 
         {/* FAB positioned relative to the outer View */}

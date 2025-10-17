@@ -6,6 +6,7 @@ import {
   SwapNotificationPostResponse,
   LeaveNotification,
   AssignmentRequestNotification,
+  SwapNotificationUpdatePayload,
 } from "../../../backend/src/types/notifications.types"
 
 export const notificationsApi = {
@@ -67,5 +68,20 @@ export const notificationsApi = {
       success: false,
       error: (response.data as any)?.error || "Failed to post swap notification",
     } as ApiResponse<SwapNotificationPostResponse>
+  },
+
+  updateSwapNotifications: async (swapRequestUpdate: SwapNotificationUpdatePayload) => {
+    const response = await api.patch<ApiResponse<SwapNotificationUpdatePayload>>(
+      `/notifications/swap/${swapRequestUpdate.id}`,
+      swapRequestUpdate,
+    )
+    console.log("\n\n[requestsApi.updateSwapNotifications] response:", response.data)
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to update swap requests",
+    } as ApiResponse<SwapNotificationUpdatePayload>
   },
 }
