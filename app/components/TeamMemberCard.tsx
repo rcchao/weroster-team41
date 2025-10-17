@@ -54,7 +54,10 @@ export const TeamMemberCard = (props: TeamMemberCardProps) => {
       <XStack justifyContent="space-between">
         <XStack marginLeft="$2" gap="$4" alignItems="center">
           <Avatar circular size="$5">
-            <Avatar.Image accessibilityLabel="Team member avatar" />
+            <Avatar.Image
+              accessibilityLabel="Team member avatar"
+              src={require("../../assets/images/default-avatar.png")}
+            />
             <Avatar.Fallback backgroundColor="$secondary400" />
           </Avatar>
           <YStack gap="$2.5" marginBottom="$3">

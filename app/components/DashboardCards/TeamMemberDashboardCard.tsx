@@ -41,7 +41,6 @@ export const TeamMemberDashboardCard = ({
   >
     <XStack alignItems="center" gap={15}>
       <Avatar size={84} borderRadius="$radius.4" width="40%">
-        <Avatar.Image accessibilityLabel="Profile avatar" />
         <Avatar.Fallback
           backgroundColor="$secondary400"
           justifyContent="center"
