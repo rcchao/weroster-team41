@@ -101,6 +101,7 @@ type BaseFields = {
   requiresAction: boolean
   userId?: number
   toUserId?: number
+  swapInitiator?: number
 }
 
 // Generic props bind request/status to the valid pair
@@ -121,6 +122,7 @@ const NotificationBody = <R extends NotificationRequestType>({
   requiresAction,
   userId,
   toUserId,
+  swapInitiator,
 }: NotificationProps<R>) => {
   const theme = useTheme()
   const { request, status, message } = NOTIFICATION_CONFIG[requestType][statusType]
@@ -138,7 +140,7 @@ const NotificationBody = <R extends NotificationRequestType>({
     eventLocation: eventLocation,
   })
 
-  if (userId === toUserId && !requiresAction) {
+  if (userId !== swapInitiator && userId === toUserId && !requiresAction) {
     text = `You have ${status === "APPROVED" ? `accepted` : `declined`} a swap shift request by ${initials}.`
   }
 
