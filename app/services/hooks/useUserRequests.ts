@@ -96,6 +96,7 @@ export function usePostSwapRequest() {
     onSuccess: () => {
       // This should be the from_user's swap requests
       queryClient.invalidateQueries({ queryKey: ["user-requests"] })
+      queryClient.invalidateQueries({ queryKey: ["user-notifications"] })
     },
   })
 }
