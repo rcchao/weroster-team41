@@ -34,7 +34,6 @@ export const ProfileInfoCard = ({ profile, editable = true }: ProfileInfoCardPro
       <YStack>
         <XStack gap={20}>
           <Avatar circular size="$10">
-            <Avatar.Image accessibilityLabel="Profile avatar" />
             <Avatar.Fallback
               backgroundColor="$secondary400"
               justifyContent="center"
