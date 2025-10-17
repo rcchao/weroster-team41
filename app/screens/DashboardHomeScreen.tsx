@@ -168,7 +168,9 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
             {dashboardPreferences?.team_roster && (
               <DashboardRow
                 title="My Teams"
-                onPressViewAll={() => navigation.navigate("DashboardTeams")}
+                onPressViewAll={() =>
+                  navigation.navigate("DashboardRoster", { screen: "TeamRoster" })
+                }
                 cards={
                   upcomingCampusEvents
                     ?.slice(0, 5)
