@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client"
+import { Prisma, PrismaClient } from "@prisma/client"
 import {
   SwapNotification,
   SwapNotificationPayload,
@@ -60,11 +60,13 @@ export class NotificationsService {
   async setSwapNotifications(
     userId: number,
     swapNotification: SwapNotificationPayload,
+    tx?: Prisma.TransactionClient,
   ): Promise<SwapNotificationPostResponse> {
+    const prismaClient = tx ?? this.prisma
     const toUser = swapNotification.to_user
     const swapRequest = swapNotification.swap_id
     const requiresAction = swapNotification.requires_action
-    const notification = await this.prisma.swapNotification.create({
+    const notification = await prismaClient.swapNotification.create({
       data: {
         from_user: userId,
         to_user: toUser,

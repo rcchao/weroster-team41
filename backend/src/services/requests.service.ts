@@ -176,11 +176,13 @@ export class RequestsService {
   async setSwapRequest(
     userId: number,
     assignmentRequest: SwapRequestPayload,
+    tx?: Prisma.TransactionClient,
   ): Promise<SwapPostResponse> {
+    const prismaClient = tx ?? this.prisma
     const eventId = assignmentRequest.event_id
     const toUser = assignmentRequest.to_user
     const message = assignmentRequest.message
-    const assignment = await this.prisma.swap.create({
+    const assignment = await prismaClient.swap.create({
       data: {
         from_user: userId,
         to_user: toUser,

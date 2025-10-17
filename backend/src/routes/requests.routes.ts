@@ -3,6 +3,10 @@ import { authenticate } from "../middleware/auth.middleware"
 import { RequestsService } from "../services/requests.service"
 import { HttpStatus } from "../constants/httpResponse"
 import { EventService } from "../services/event.service"
+import { NotificationsService } from "../services/notifications.service"
+import { Prisma } from "@prisma/client"
+import { SwapPostResponse } from "../types/requests.types"
+import { SwapNotificationPostResponse } from "../types/notifications.types"
 
 const router = Router()
 
@@ -145,8 +149,10 @@ router.get("/swap", authenticate, async (req, res) => {
 
 router.post("/swap", authenticate, async (req, res) => {
   try {
-    const service = new RequestsService(req.app.locals.prisma)
-    const eventService = new EventService(req.app.locals.prisma)
+    const prisma = req.app.locals.prisma
+    const requestService = new RequestsService(prisma)
+    const eventService = new EventService(prisma)
+    const notificationService = new NotificationsService(prisma)
 
     if (!req.userId) {
       return res.status(HttpStatus.UNAUTHORIZED).json({
@@ -155,8 +161,8 @@ router.post("/swap", authenticate, async (req, res) => {
       })
     }
 
-    const to_user = req.body.to_user
-    const event_id = req.body.event_id
+    const { to_user, event_id, message } = req.body
+    const from_user = req.userId
 
     if (!event_id || !to_user) {
       return res.status(HttpStatus.BAD_REQUEST).json({
@@ -174,14 +180,38 @@ router.post("/swap", authenticate, async (req, res) => {
       })
     }
 
-    // TODO: Validate to user from request body
-    // Add this check when there's an endpoint for getting
-    // one user
+    // Transaction with services
+    const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      // Pass transaction to services
+      const swapRequest = await requestService.setSwapRequest(
+        from_user,
+        {
+          to_user: to_user,
+          event_id: event_id,
+          message: message,
+        },
+        tx,
+      )
 
-    const swapRequest = await service.setSwapRequest(req.userId, req.body)
+      const notification = await notificationService.setSwapNotifications(
+        from_user,
+        {
+          to_user: to_user,
+          swap_id: swapRequest.id,
+          requires_action: req.body.requires_action ?? true,
+        },
+        tx,
+      )
+
+      return { swapRequest, notification }
+    })
+
     res.json({
       success: true,
-      data: swapRequest,
+      data: {
+        swap: result.swapRequest as SwapPostResponse,
+        notification: result.notification as SwapNotificationPostResponse,
+      },
     })
   } catch (error: any) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
