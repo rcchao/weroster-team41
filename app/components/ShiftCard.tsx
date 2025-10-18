@@ -161,7 +161,7 @@ const ShiftCard = memo(({ shift, clashes }: ShiftCardProps) => {
               {shift.numUsers > 0 && (
                 <XStack gap="$2">
                   <StyledIcon icon="user2" />
-                  <BodyText variant="body2">Working with {shift.numUsers} others</BodyText>
+                  <BodyText variant="body2">Working with {shift.numUsers - 1} others</BodyText>
                 </XStack>
               )}
             </YStack>
