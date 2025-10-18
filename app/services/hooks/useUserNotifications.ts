@@ -48,6 +48,7 @@ export const useUserNotifications = () => {
           message: swap?.message,
           status: swap?.status,
           event: swap?.event,
+          swap_initiator: swap?.from_user,
           ...fromUser,
           ...rest,
         })) || []

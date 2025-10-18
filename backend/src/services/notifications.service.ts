@@ -26,6 +26,7 @@ export class NotificationsService {
         swap: {
           select: {
             id: true,
+            from_user: true,
             message: true,
             status: true,
             event: {

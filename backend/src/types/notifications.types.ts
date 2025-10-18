@@ -10,6 +10,7 @@ export type SwapNotification = {
   from_user: number
   swap: {
     id: number
+    from_user: number
     message: string | null
     status: string
     event: ShiftWithNumUsers
