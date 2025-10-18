@@ -16,7 +16,6 @@ import { Icon } from "@/components/Icon"
 import { LozengeType } from "@/components/Lozenge"
 import { Screen } from "@/components/Screen"
 import { Session } from "@/components/ShiftDetailsSubheader"
-import { SubmitButton } from "@/components/SubmitButton"
 import { useAuthenticatedUserId } from "@/context/AuthContext"
 import { TxKeyPath } from "@/i18n"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
@@ -26,14 +25,11 @@ import { useOpenShifts } from "@/services/hooks/useOpenShifts"
 import { useProfile } from "@/services/hooks/useProfile"
 import { useTeamMemberData } from "@/services/hooks/useTeamMemberData"
 import { useUpcomingCampusEvents } from "@/services/hooks/useUpcomingCampusEvents"
-import { useUpdateSwapNotification } from "@/services/hooks/useUserNotifications"
-import { useLeaveRequests, useUpdateSwapRequest } from "@/services/hooks/useUserRequests"
+import { useLeaveRequests } from "@/services/hooks/useUserRequests"
 import { useAppTheme } from "@/theme/context"
 import { $headerContainer } from "@/theme/styles"
 import { $container, $fabButton } from "@/theme/styles"
 import type { Theme } from "@/theme/types"
-
-import { RequestStatusType } from "../../backend/src/types/enums.types"
 
 export interface Dashboard {
   name: string
@@ -48,44 +44,6 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
     const userId = useAuthenticatedUserId()
     const { profile } = useProfile(userId)
     const { dashboardPreferences } = useDashboardPreferences()
-    const mutation = useUpdateSwapRequest()
-    const mutation1 = useUpdateSwapNotification()
-
-    const updateSwapNotification = async () => {
-      const swapNotifUpdate = {
-        id: 1,
-        is_read: true, // optional
-        requires_action: true, // optional
-      }
-      try {
-        const data = await mutation1.mutateAsync(swapNotifUpdate)
-        if (data.success) {
-          console.log("updated successfully", data)
-        } else {
-          console.log("Update failed", data.error)
-        }
-      } catch (error) {
-        console.error("Error updating:", error)
-      }
-    }
-
-    const updateSwapRequestStatus = async () => {
-      const swapRequest = {
-        id: 24,
-        status: "AWAITING" as RequestStatusType,
-      }
-      try {
-        const data = await mutation.mutateAsync(swapRequest)
-        if (data.success) {
-          console.log("updated successfully", data)
-        } else {
-          console.log("Update failed", data.error)
-        }
-      } catch (error) {
-        console.error("Error updating:", error)
-      }
-    }
-
     const { teamMemberData } = useTeamMemberData()
     const { myShifts } = useMyShifts()
     const { openShifts } = useOpenShifts()
@@ -207,8 +165,6 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
               />
             )}
           </YStack>
-          <SubmitButton text="update swap request status" onPress={updateSwapRequestStatus} />
-          <SubmitButton text="update notification" onPress={updateSwapNotification} />
         </Screen>
 
         {/* FAB positioned relative to the outer View */}
