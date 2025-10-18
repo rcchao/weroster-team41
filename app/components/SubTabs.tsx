@@ -16,7 +16,7 @@ interface SubTabsProps {
 
 const TabButton = styled(Button, {
   flex: 1,
-  height: 56,
+  height: "100%",
   borderRadius: 0,
   chromeless: true,
   padding: 0,
@@ -37,7 +37,7 @@ export const SubTabs = ({ tabs, activeTab, onTabChange }: SubTabsProps) => {
   return (
     <XStack
       width="100%"
-      height={56}
+      height={100}
       alignItems="center"
       borderTopLeftRadius={0}
       borderTopRightRadius={0}
@@ -47,6 +47,7 @@ export const SubTabs = ({ tabs, activeTab, onTabChange }: SubTabsProps) => {
       overflow="hidden"
       borderColor="transparent"
       boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.5)"}
+      paddingTop={50}
     >
       {tabs.map((tab) => {
         const selected = tab.key === activeTab
@@ -57,11 +58,12 @@ export const SubTabs = ({ tabs, activeTab, onTabChange }: SubTabsProps) => {
               {selected && (
                 <XStack
                   position="absolute"
-                  top={0}
+                  bottom={0}
                   height={3}
                   width="100%"
                   backgroundColor="$accent500"
                   borderColor="$accent500"
+                  justifyContent="flex-end"
                 />
               )}
               <HeaderText variant="h3" color={selected ? "$accent500" : "$white100"}>

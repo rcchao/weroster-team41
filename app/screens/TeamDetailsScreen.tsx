@@ -8,15 +8,12 @@ import { Screen } from "@/components/Screen"
 import type { AppStackParamList } from "@/navigators/AppNavigator"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useProfile } from "@/services/hooks/useProfile"
-import { useAppTheme } from "@/theme/context"
-import { $container, $styles } from "@/theme/styles"
 
 type TeamDetailsRoute = RouteProp<AppStackParamList, "TeamDetails">
 
 interface TeamDetailsScreenProps extends AppStackScreenProps<"TeamDetails"> {}
 
 export const TeamDetailsScreen: FC<TeamDetailsScreenProps> = function TeamDetailsScreen(_props) {
-  const { themed } = useAppTheme()
   const { navigation } = _props
 
   const {
@@ -25,11 +22,7 @@ export const TeamDetailsScreen: FC<TeamDetailsScreenProps> = function TeamDetail
   const { profile } = useProfile(userId)
 
   return (
-    <Screen
-      preset="scroll"
-      safeAreaEdges={["top"]}
-      contentContainerStyle={[$styles.barContainer, themed($container)]}
-    >
+    <Screen preset="scroll">
       <BackHeader title={"Profile"} navigation={navigation} />
       <YStack
         justifyContent="center"

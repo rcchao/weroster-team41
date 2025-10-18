@@ -13,7 +13,6 @@ import { Screen } from "@/components/Screen"
 import { useAuth } from "@/context/AuthContext"
 import type { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useUserNotifications } from "@/services/hooks/useUserNotifications"
-import { $styles } from "@/theme/styles"
 
 interface NotificationsScreenProps extends AppStackScreenProps<"Notifications"> {}
 
@@ -26,7 +25,7 @@ export const NotificationsScreen: FC<NotificationsScreenProps> = function Notifi
   const { userId } = useAuth()
 
   return (
-    <Screen safeAreaEdges={["top"]} contentContainerStyle={$styles.barContainer}>
+    <Screen preset="scroll">
       <BackHeader title="Notifications" navigation={navigation} />
       <ScrollView height="100%">
         <YStack>

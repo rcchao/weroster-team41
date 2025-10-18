@@ -44,7 +44,7 @@ export const $headerIcons: ThemedStyle<TextStyle> = () => ({
   marginRight: spacing.md,
 })
 
-export const $container: ViewStyle = { flex: 1 }
+export const $container: ViewStyle = { flex: 1, backgroundColor: "#FFFFFF" }
 
 export const $headerContainer: ViewStyle = { overflow: "visible", zIndex: 999 }
 
