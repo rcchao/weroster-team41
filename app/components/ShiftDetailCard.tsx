@@ -1,9 +1,13 @@
 import { isAfter } from "date-fns"
+import Toast from "react-native-toast-message"
 import { Button, Card, Dialog, Separator, XStack, YStack } from "tamagui"
 
+import { SwapNotificationActionPayload } from "backend/src/types/action_swap_request.types"
+import { RequestStatusType } from "backend/src/types/enums.types"
 import { OpenShift, ShiftWithNumUsers } from "backend/src/types/event.types"
 
 import { useAuth } from "@/context/AuthContext"
+import { useActionSwapRequestNotif } from "@/services/hooks/useActionSwapRequestNotif"
 
 import { BodyText } from "./BodyText"
 import { StyledIcon } from "./common/StyledIcon"
@@ -20,6 +24,7 @@ interface SwapDetailCardProps {
   message: string | null
   requiresAction: boolean
   isAccepted?: boolean
+  swapNotifId: number
 }
 
 const ShiftHeader = ({ location, address }: { location: string; address?: string | null }) => {
@@ -113,39 +118,109 @@ const RequestButton = ({ isOpenShift, onPress }: { isOpenShift: boolean; onPress
   </Button>
 )
 
-const AcceptButton = ({ disabled }: { disabled: boolean }) => (
-  <Button
-    height={36}
-    backgroundColor={disabled ? "$green500" : "$primary500"}
-    borderRadius="$radius.8"
-    justifyContent="center"
-    alignItems="center"
-    marginTop="$2"
-    onPress={() => console.log("Swap accepted!")}
-    disabled={disabled}
-  >
-    <BodyText variant="body2" color={disabled ? "$green800" : "$white100"}>
-      {disabled ? "Accepted" : "Accept"}
-    </BodyText>
-  </Button>
-)
+const AcceptButton = ({ disabled, swapNotifId }: { disabled: boolean; swapNotifId: number }) => {
+  const mutation = useActionSwapRequestNotif()
+  const actionNotifPayload = {
+    swap_notif_id: swapNotifId,
+    status: "APPROVED" as RequestStatusType,
+  }
 
-const DeclineButton = ({ disabled }: { disabled: boolean }) => (
-  <Button
-    height={36}
-    backgroundColor={disabled ? "$red500" : "$secondary400"}
-    borderRadius="$radius.8"
-    justifyContent="center"
-    alignItems="center"
-    marginTop="$2"
-    onPress={() => console.log("Swap declined!")}
-    disabled={disabled}
-  >
-    <BodyText variant="body2" color={disabled ? "$red900" : "$white100"}>
-      {disabled ? "Declined" : "Decline"}
-    </BodyText>
-  </Button>
-)
+  const acceptSwapRequest = async (actionNotifPayload: SwapNotificationActionPayload) => {
+    try {
+      const data = await mutation.mutateAsync(actionNotifPayload)
+      if (data.success) {
+        console.log("Posted successfully", data)
+        Toast.show({
+          type: "success",
+          text1: "Successfully accepted swap request",
+        })
+      } else {
+        console.log("Post failed", data.error)
+        Toast.show({
+          type: "failure",
+          text1: "Error! Failed to accept swap request",
+        })
+      }
+    } catch (error) {
+      console.error("Error posting:", error)
+      Toast.show({
+        type: "failure",
+        text1: "Error! Something went wrong",
+      })
+    }
+  }
+
+  return (
+    <Button
+      height={36}
+      backgroundColor={disabled ? "$green500" : "$primary500"}
+      borderRadius="$radius.8"
+      justifyContent="center"
+      alignItems="center"
+      marginTop="$2"
+      onPress={async () => {
+        await acceptSwapRequest(actionNotifPayload)
+      }}
+      disabled={disabled}
+    >
+      <BodyText variant="body2" color={disabled ? "$green800" : "$white100"}>
+        {disabled ? "Accepted" : "Accept"}
+      </BodyText>
+    </Button>
+  )
+}
+
+const DeclineButton = ({ disabled, swapNotifId }: { disabled: boolean; swapNotifId: number }) => {
+  const mutation = useActionSwapRequestNotif()
+  const actionNotifPayload = {
+    swap_notif_id: swapNotifId,
+    status: "DECLINED" as RequestStatusType,
+  }
+
+  const declineSwapRequest = async (actionNotifPayload: SwapNotificationActionPayload) => {
+    try {
+      const data = await mutation.mutateAsync(actionNotifPayload)
+      if (data.success) {
+        console.log("Posted successfully", data)
+        Toast.show({
+          type: "success",
+          text1: "Successfully declined swap request",
+        })
+      } else {
+        console.log("Post failed", data.error)
+        Toast.show({
+          type: "failure",
+          text1: "Error! Failed to decline swap request",
+        })
+      }
+    } catch (error) {
+      console.error("Error posting:", error)
+      Toast.show({
+        type: "failure",
+        text1: "Error! Something went wrong",
+      })
+    }
+  }
+
+  return (
+    <Button
+      height={36}
+      backgroundColor={disabled ? "$red500" : "$secondary400"}
+      borderRadius="$radius.8"
+      justifyContent="center"
+      alignItems="center"
+      marginTop="$2"
+      onPress={async () => {
+        await declineSwapRequest(actionNotifPayload)
+      }}
+      disabled={disabled}
+    >
+      <BodyText variant="body2" color={disabled ? "$red900" : "$white100"}>
+        {disabled ? "Declined" : "Decline"}
+      </BodyText>
+    </Button>
+  )
+}
 
 const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
   const now = new Date()
@@ -190,7 +265,13 @@ const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
   )
 }
 
-const SwapDetailCard = ({ shift, message, requiresAction, isAccepted }: SwapDetailCardProps) => {
+const SwapDetailCard = ({
+  shift,
+  message,
+  requiresAction,
+  isAccepted,
+  swapNotifId,
+}: SwapDetailCardProps) => {
   const { userId } = useAuth()
 
   return (
@@ -231,12 +312,16 @@ const SwapDetailCard = ({ shift, message, requiresAction, isAccepted }: SwapDeta
 
         {requiresAction ? (
           <XStack justifyContent="flex-end" gap={10}>
-            <DeclineButton disabled={false} />
-            <AcceptButton disabled={false} />
+            <DeclineButton disabled={false} swapNotifId={swapNotifId} />
+            <AcceptButton disabled={false} swapNotifId={swapNotifId} />
           </XStack>
         ) : (
           <XStack justifyContent="flex-end">
-            {isAccepted ? <AcceptButton disabled={true} /> : <DeclineButton disabled={true} />}
+            {isAccepted ? (
+              <AcceptButton disabled={true} swapNotifId={swapNotifId} />
+            ) : (
+              <DeclineButton disabled={true} swapNotifId={swapNotifId} />
+            )}
           </XStack>
         )}
       </YStack>

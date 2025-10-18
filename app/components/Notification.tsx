@@ -182,6 +182,7 @@ type InteractiveNotificationProps = BaseFields & {
   statusType: StatusByRequest["SWAP"] // "APPROVED" | "DECLINED" | "AWAITING"
   shift: ShiftWithNumUsers
   message: string | null
+  swapNotifId: number
 }
 
 export const InteractiveNotification = ({ shift, ...props }: InteractiveNotificationProps) => {
@@ -251,6 +252,7 @@ export const InteractiveNotification = ({ shift, ...props }: InteractiveNotifica
                         message={props.message}
                         requiresAction={props.requiresAction}
                         isAccepted={props.statusType === "APPROVED"}
+                        swapNotifId={props.swapNotifId}
                       />
                     </YStack>
                   </YStack>

@@ -98,7 +98,11 @@ export type SwapNotificationUpdatePayload = {
 export type SwapNotificationUpdatePostPayload = Prisma.SwapNotificationGetPayload<{
   select: {
     id: true
+    created_at: true
     is_read: true
     requires_action: true
+    to_user: true
+    from_user: true
+    swap_request: true
   }
 }>

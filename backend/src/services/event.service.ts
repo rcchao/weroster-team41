@@ -277,9 +277,11 @@ export class EventService {
 
   async updateEventAssignment(
     updateData: EventAssignmentUpdatePayload,
+    tx?: Prisma.TransactionClient,
   ): Promise<EventAssignmentUpdateResponse> {
     // First, find the assignment to update
-    const existingAssignment = await this.prisma.eventAssignment.findFirst({
+    const prismaClient = tx ?? this.prisma
+    const existingAssignment = await prismaClient.eventAssignment.findFirst({
       where: {
         event_id: updateData.event_id,
         user_id: updateData.from_user,

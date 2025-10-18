@@ -7,6 +7,7 @@ import requestsRoutes from "./requests.routes"
 import userRoutes from "./users.routes"
 import campusRoutes from "./campus.routes"
 import notificationsRoutes from "./notifications.routes"
+import actionSwapRequestRoutes from "./action_swap_request.routes"
 
 const router = Router()
 
@@ -18,5 +19,6 @@ router.use("/requests", requestsRoutes)
 router.use("/user", userRoutes)
 router.use("/campus", campusRoutes)
 router.use("/notifications", notificationsRoutes)
+router.use("/action-swap-request", actionSwapRequestRoutes)
 
 export default router

@@ -1,4 +1,8 @@
 import { api } from "./apiClient"
+import {
+  SwapNotificationActionPayload,
+  SwapNotificationActionResponsePayload,
+} from "../../../backend/src/types/action_swap_request.types"
 import { ApiResponse } from "../../../backend/src/types/api.types"
 import {
   SwapNotification,
@@ -60,7 +64,7 @@ export const notificationsApi = {
       `/notifications/swap`,
       assignmentRequest,
     )
-    console.log("\n\n[getSwapNotifications.setSwapNotifications] response:", response.data)
+    console.log("\n\n[notificationsApi.setSwapNotifications] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }
@@ -75,7 +79,7 @@ export const notificationsApi = {
       `/notifications/swap/${swapRequestUpdate.id}`,
       swapRequestUpdate,
     )
-    console.log("\n\n[requestsApi.updateSwapNotifications] response:", response.data)
+    console.log("\n\n[notificationsApi.updateSwapNotifications] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }
@@ -83,5 +87,20 @@ export const notificationsApi = {
       success: false,
       error: (response.data as any)?.error || "Failed to update swap requests",
     } as ApiResponse<SwapNotificationUpdatePayload>
+  },
+
+  actionSwapNotifications: async (swapNotificationAction: SwapNotificationActionPayload) => {
+    const response = await api.post<ApiResponse<SwapNotificationActionResponsePayload>>(
+      `/action-swap-request`,
+      swapNotificationAction,
+    )
+    console.log("\n\n[notificationsApi.actionSwapNotifications] response:", response.data)
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to update swap notification",
+    } as ApiResponse<SwapNotificationActionResponsePayload>
   },
 }
