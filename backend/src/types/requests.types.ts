@@ -1,4 +1,5 @@
 import { Prisma } from ".prisma/client"
+import { SwapNotificationPostResponse } from "./notifications.types"
 
 export type Leave = Prisma.LeaveGetPayload<{
   select: {
@@ -64,6 +65,11 @@ export type SwapPostResponse = Prisma.SwapGetPayload<{
     event_id: true
   }
 }>
+
+export type SwapWithNotificationPostResponse = {
+  swap: SwapPostResponse
+  notification: SwapNotificationPostResponse
+}
 
 export type SwapRequestPayload = {
   to_user: number
