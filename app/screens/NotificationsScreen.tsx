@@ -53,6 +53,7 @@ export const NotificationsScreen: FC<NotificationsScreenProps> = function Notifi
                     userId={userId}
                     toUserId={notifs.to_user}
                     swapInitiator={notifs.swap_initiator}
+                    swapNotifId={notifs.id}
                   />
                 ) : notifs.notif_type === "LEAVE" ? (
                   <Notification
