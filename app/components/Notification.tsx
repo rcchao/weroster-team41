@@ -253,6 +253,7 @@ export const InteractiveNotification = ({ shift, ...props }: InteractiveNotifica
                         requiresAction={props.requiresAction}
                         isAccepted={props.statusType === "APPROVED"}
                         swapNotifId={props.swapNotifId}
+                        swapInitiator={props.swapInitiator}
                       />
                     </YStack>
                   </YStack>

@@ -25,6 +25,7 @@ interface SwapDetailCardProps {
   requiresAction: boolean
   isAccepted?: boolean
   swapNotifId: number
+  swapInitiator: number | undefined
 }
 
 const ShiftHeader = ({ location, address }: { location: string; address?: string | null }) => {
@@ -48,26 +49,38 @@ const ShiftHeader = ({ location, address }: { location: string; address?: string
 }
 
 const WorkingWith = ({
-  userId,
+  ignoreIds,
   eventAssignments,
 }: {
-  userId: number | undefined
+  ignoreIds: number[]
   eventAssignments: any[]
-}) => (
-  <YStack gap="$3">
-    <XStack alignItems="center" gap="$2">
-      <StyledIcon icon="teams" size={20} />
-      <BodyText variant="body2">Working with</BodyText>
-    </XStack>
-    <YStack gap="$2" marginLeft="$2">
-      {eventAssignments
-        .filter((ea) => ea.user.id !== userId)
-        .map((ea) => (
-          <TeamMemberButton key={ea.user.id} name={ea.user.first_name + " " + ea.user.last_name} />
-        ))}
-    </YStack>
-  </YStack>
-)
+}) => {
+  const visibleEventAssignments = eventAssignments.filter((ea) => !ignoreIds.includes(ea.user.id))
+
+  return (
+    <>
+      {visibleEventAssignments.length > 0 && (
+        <>
+          <YStack gap="$3">
+            <XStack alignItems="center" gap="$2">
+              <StyledIcon icon="teams" size={20} />
+              <BodyText variant="body2">Working with</BodyText>
+            </XStack>
+            <YStack gap="$2" marginLeft="$2">
+              {visibleEventAssignments.map((ea) => (
+                <TeamMemberButton
+                  key={ea.user.id}
+                  name={ea.user.first_name + " " + ea.user.last_name}
+                />
+              ))}
+            </YStack>
+          </YStack>
+          <Separator borderColor="$mono300" />
+        </>
+      )}
+    </>
+  )
+}
 
 const TeamMemberButton = ({ name }: { name: string }) => (
   <Button
@@ -225,6 +238,7 @@ const DeclineButton = ({ disabled, swapNotifId }: { disabled: boolean; swapNotif
 const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
   const now = new Date()
   const { userId } = useAuth()
+  const ignoreIds = userId ? [userId] : []
   const isOpenShift = "status" in shift
 
   return (
@@ -245,13 +259,7 @@ const ShiftDetailCard = ({ shift, onPress }: ShiftDetailCardProps) => {
 
         <Separator borderColor="$mono300" />
 
-        {/* Check if there are more people assigned than just yourself */}
-        {shift.numUsers > 1 && (
-          <>
-            <WorkingWith userId={userId} eventAssignments={shift.eventAssignments} />
-            <Separator borderColor="$mono300" />
-          </>
-        )}
+        <WorkingWith ignoreIds={ignoreIds} eventAssignments={shift.eventAssignments} />
 
         {isOpenShift && <PaySection amount={500} />}
 
@@ -271,8 +279,10 @@ const SwapDetailCard = ({
   requiresAction,
   isAccepted,
   swapNotifId,
+  swapInitiator,
 }: SwapDetailCardProps) => {
   const { userId } = useAuth()
+  const ignoreIds = [userId, swapInitiator].filter((id): id is number => id !== undefined)
 
   return (
     <Card
@@ -292,12 +302,7 @@ const SwapDetailCard = ({
 
         <Separator borderColor="$mono300" />
 
-        {shift.numUsers > 0 && (
-          <>
-            <WorkingWith userId={userId} eventAssignments={shift.eventAssignments} />
-            <Separator borderColor="$mono300" />
-          </>
-        )}
+        <WorkingWith ignoreIds={ignoreIds} eventAssignments={shift.eventAssignments} />
 
         <YStack gap={10}>
           <HeaderText variant="h2">Message</HeaderText>
