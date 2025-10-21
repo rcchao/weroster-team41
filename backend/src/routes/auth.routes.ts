@@ -95,31 +95,4 @@ router.patch("/profile", authenticate, async (req, res) => {
   return
 })
 
-// router.patch("/swap/:id", authenticate, async (req, res) => {
-//   try {
-//     const service = new NotificationsService(req.app.locals.prisma)
-
-//     const swapNotifId = parseInt(req.params.id)
-//     const is_read = req.body.is_read
-//     const requires_action = req.body.requires_action
-
-//     const updatedSwapNotif = await service.updateSwapNotifications({
-//       id: swapNotifId,
-//       is_read,
-//       requires_action,
-//     })
-
-//     res.json({
-//       success: true,
-//       data: updatedSwapNotif,
-//     })
-//   } catch (error: any) {
-//     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-//       success: false,
-//       error: error.message,
-//     })
-//   }
-//   return
-// })
-
 export default router

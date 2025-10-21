@@ -2,7 +2,7 @@ import { MMKV } from "react-native-mmkv"
 
 import { api } from "./apiClient"
 import { ApiResponse } from "../../../backend/src/types/api.types"
-import { ProfileData } from "../../../backend/src/types/auth.types"
+import { ProfileData, UpdateProfileData } from "../../../backend/src/types/auth.types"
 
 const storage = new MMKV()
 
@@ -52,6 +52,18 @@ export const authApi = {
     return {
       success: false,
       error: (response.data as any)?.error || "Failed to retrieve profile",
+    } as ApiResponse<ProfileData>
+  },
+
+  updateProfile: async (profileUpdate: UpdateProfileData) => {
+    const response = await api.patch<ApiResponse<ProfileData>>(`/auth/profile`, profileUpdate)
+    console.log("\n\n[authApi.updateProfile] response:", response.data)
+    if (response.ok && response.data) {
+      return response.data
+    }
+    return {
+      success: false,
+      error: (response.data as any)?.error || "Failed to update profile",
     } as ApiResponse<ProfileData>
   },
 
