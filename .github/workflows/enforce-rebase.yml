@@ -43,7 +43,7 @@ jobs:
         env:
           PR_SHA: ${{ github.event.inputs.pr_sha }}
         with:
-          github-token: ${{ secrets.PAT_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
@@ -61,7 +61,7 @@ jobs:
         env:
           PR_SHA: ${{ github.event.inputs.pr_sha }}
         with:
-          github-token: ${{ secrets.PAT_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
