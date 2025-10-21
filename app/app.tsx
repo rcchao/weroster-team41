@@ -147,20 +147,20 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TamaguiProvider config={tamaguiConfig}>
-          <PortalProvider shouldAddRootHost>
-            <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-              <KeyboardProvider>
-                <ThemeProvider>
+          <ThemeProvider>
+            <PortalProvider shouldAddRootHost>
+              <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+                <KeyboardProvider>
                   <AppNavigator
                     linking={linking}
                     initialState={initialNavigationState}
                     onStateChange={onNavigationStateChange}
                   />
                   <Toast topOffset={60} visibilityTime={1500} config={toastConfig} />
-                </ThemeProvider>
-              </KeyboardProvider>
-            </SafeAreaProvider>
-          </PortalProvider>
+                </KeyboardProvider>
+              </SafeAreaProvider>
+            </PortalProvider>
+          </ThemeProvider>
         </TamaguiProvider>
       </AuthProvider>
     </QueryClientProvider>
