@@ -1,0 +1,45 @@
+name: Trigger Rebase Check On Open PRs
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger rebase check on open PRs
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              base: 'main'
+            });
+
+            for (const pr of prs.data) {
+              // Set commit status to pending before dispatching workflow
+              await github.rest.repos.createCommitStatus({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                sha: pr.head.sha,
+                state: 'pending',
+                target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions`,
+                description: 'Rebase check in progress',
+                context: 'Automated Rebase Check'
+              });
+
+              // Dispatch the enforce-rebase workflow
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'enforce-rebase.yml',
+                ref: pr.head.ref,
+                  inputs: {
+                  pr_sha: pr.head.sha
+                  }
+              });
+            }
