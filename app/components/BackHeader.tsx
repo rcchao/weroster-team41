@@ -11,10 +11,11 @@ import { Icon } from "./Icon"
 interface BackHeaderProps {
   navigation: NativeStackNavigationProp<any, any>
   title: string
+  right?: React.ReactNode
   onSavePress?: () => void | Promise<void>
 }
 
-const BackHeader = ({ navigation, title, onSavePress }: BackHeaderProps) => {
+const BackHeader = ({ navigation, title, right, onSavePress }: BackHeaderProps) => {
   const theme = useTheme()
   const [isSaving, setIsSaving] = useState(false)
 
@@ -47,6 +48,7 @@ const BackHeader = ({ navigation, title, onSavePress }: BackHeaderProps) => {
           {title}
         </HeaderText>
       </XStack>
+      {right}
 
       {onSavePress && (
         <Pressable

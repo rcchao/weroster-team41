@@ -16,6 +16,7 @@ import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navig
 import Config from "@/config"
 import { useAuth } from "@/context/AuthContext"
 import { DashboardEditScreen } from "@/screens/DashboardEditScreen"
+import { EditProfileScreen } from "@/screens/EditProfileScreen"
 import { ErrorBoundary } from "@/screens/ErrorScreen/ErrorBoundary"
 import { LoginScreen } from "@/screens/LoginScreen"
 import { NotificationsScreen } from "@/screens/NotificationsScreen"
@@ -44,6 +45,7 @@ export type AppStackParamList = {
   ProfileScreen: undefined
   TeamDetails: { userId: number }
   SwapShift: { shiftId: number; teamIds: number[] }
+  EditProfileScreen: undefined
   // 🔥 Your screens go here
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
@@ -96,8 +98,16 @@ const AppStack = () => {
             name="ProfileScreen"
             component={ProfileScreen}
             options={{
-              presentation: "fullScreenModal",
-              animation: "fade",
+              presentation: "card",
+              animation: "none",
+            }}
+          />
+          <Stack.Screen
+            name="EditProfileScreen"
+            component={EditProfileScreen}
+            options={{
+              presentation: "card",
+              animation: "none",
             }}
           />
         </>

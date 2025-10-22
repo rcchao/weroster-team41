@@ -22,10 +22,6 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
   // Can be refactored - useProfile() should return isLoading
   const isLoading = isPending || isFetching
 
-  const handleSavePress = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-  }
-
   const handleLogout = async () => {
     if (isLoggingOut) return
 
@@ -42,7 +38,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
 
   return (
     <Screen preset="scroll">
-      <BackHeader navigation={navigation} title="Profile" onSavePress={handleSavePress} />
+      <BackHeader navigation={navigation} title="Profile" />
       {isLoading && (
         <YStack alignItems="center" justifyContent="center" py="$6" gap="$3">
           <Spinner size="large" />
