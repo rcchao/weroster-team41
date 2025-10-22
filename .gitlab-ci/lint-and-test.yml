@@ -1,0 +1,30 @@
+lint:
+  stage: lint
+  image: node:20
+  script:
+    - npm ci
+    - npm run lint
+    - npx prettier --check .
+
+commitlint:
+  stage: commitlint
+  image: node:20
+  before_script:
+    - npm ci
+  script:
+    - npx commitlint --from=HEAD~1 --to=HEAD --config commitlint.config.js || echo "Commitlint failed (for PRs, check manually)"
+
+frontend_tests:
+  stage: test
+  image: node:20
+  script:
+    - npm ci
+    - npm test
+
+backend_tests:
+  stage: test
+  image: node:20
+  script:
+    - cd backend
+    - npm install
+    - npm run test

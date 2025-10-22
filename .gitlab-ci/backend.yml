@@ -1,0 +1,10 @@
+backend:
+  stage: backend
+  image: node:22
+  script:
+    - cd backend && npm ci
+    - npm run build
+    - cd ..
+  only:
+    - main
+    - merge_requests

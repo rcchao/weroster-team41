@@ -1,0 +1,10 @@
+typescript_compile:
+  stage: typescript_compile
+  image: node:22
+  script:
+    - npm ci
+    - cd backend && npm ci && cd ..
+    - npx tsc --noEmit -p .
+  only:
+    - main
+    - merge_requests
