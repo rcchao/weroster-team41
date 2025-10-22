@@ -67,7 +67,7 @@ router.get("/profile/:userId", authenticate, async (req, res) => {
   return
 })
 
-router.put("/profile", authenticate, async (req, res) => {
+router.patch("/profile", authenticate, async (req, res) => {
   try {
     const service = new AuthService(req.app.locals.prisma)
 

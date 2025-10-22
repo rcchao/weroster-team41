@@ -46,7 +46,4 @@ export interface UpdateProfileData {
   first_name?: string
   last_name?: string
   phone?: string
-  designation_id?: number
-  campus_id?: number
-  hospital_id?: number
 }

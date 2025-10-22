@@ -86,9 +86,6 @@ export class AuthService {
         ...(data.first_name !== undefined && { first_name: data.first_name }),
         ...(data.last_name !== undefined && { last_name: data.last_name }),
         ...(data.phone !== undefined && { phone: data.phone }),
-        ...(data.designation_id !== undefined && { designation_id: data.designation_id }),
-        ...(data.campus_id !== undefined && { campus_id: data.campus_id }),
-        ...(data.hospital_id !== undefined && { hospital_id: data.hospital_id }),
       },
       include: {
         campus: true,
