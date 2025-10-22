@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Button, useTheme } from "tamagui"
 
 import { BodyText } from "./BodyText"
@@ -21,6 +20,7 @@ interface LozengeProps {
   type: LozengeType
   active?: boolean
   onPress?: () => void
+  selected?: boolean
 }
 
 interface LozengeConfig {
@@ -99,9 +99,8 @@ export const LOZENGE_CONFIG: Record<LozengeProps["type"], LozengeConfig> = {
   },
 }
 
-export const Lozenge = ({ type, active = false, onPress }: LozengeProps) => {
+export const Lozenge = ({ type, active = false, onPress, selected }: LozengeProps) => {
   const theme = useTheme()
-  const [selected, setSelected] = useState(false)
 
   const lozenge = LOZENGE_CONFIG[type]
 
@@ -131,11 +130,9 @@ export const Lozenge = ({ type, active = false, onPress }: LozengeProps) => {
       backgroundColor={buttonBgColor}
       accessibilityState={{ disabled: !active, selected }}
       testID={`lozenge-${type}`}
-      onPress={() => {
-        if (!active) return
-        setSelected(!selected)
-        onPress?.()
-      }}
+      onPress={onPress}
+      animation="quick"
+      animateOnly={["transform", "backgroundColor"]}
     >
       {buttonIcon && (
         <Icon icon={buttonIcon} size={16} color={buttonTextColor} testID={buttonIcon} />
