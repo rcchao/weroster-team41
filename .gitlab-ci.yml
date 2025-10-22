@@ -1,0 +1,13 @@
+# Uncomment these when migrating to gitlab
+
+# stages:
+#   - lint
+#   - commitlint
+#   - test
+#   - backend
+#   - typescript_compile
+
+# include:
+#   - local: ".gitlab-ci/lint-and-test.yml"
+#   - local: ".gitlab-ci/backend.yml"
+#   - local: ".gitlab-ci/typescript.yml"
