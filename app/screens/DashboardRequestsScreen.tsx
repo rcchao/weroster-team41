@@ -17,11 +17,12 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
   const [date, setDate] = useState(new Date())
   const month = date.getMonth() + 1
   const year = date.getFullYear()
-  const { userRequests, isPending } = useUserRequests(month, year)
 
   const [filterSheetOpen, setFilterSheetOpen] = useState(false)
   const [selectedTypes, setSelectedTypes] = useState<RequestType[]>([])
   const [selectedStatuses, setSelectedStatuses] = useState<RequestStatus[]>([])
+
+  const { userRequests, isPending } = useUserRequests(month, year, selectedTypes, selectedStatuses)
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
