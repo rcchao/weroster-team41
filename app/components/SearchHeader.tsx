@@ -54,7 +54,10 @@ export function SearchHeader({ onSearch, style }: SearchHeaderProps) {
             placeholderTextColor={theme.mono900.val}
             fontSize={16}
             value={value}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              onChange(text)
+              onSearch(text)
+            }}
             onBlur={() => {
               onBlur()
               //setIsFocused(false)
@@ -63,7 +66,8 @@ export function SearchHeader({ onSearch, style }: SearchHeaderProps) {
             returnKeyType="search"
             onSubmitEditing={() => {
               onSearch(value)
-              searchInput.reset()
+              // better to keep input after search?
+              // searchInput.reset()
               // setIsFocused(false)
             }}
           />
