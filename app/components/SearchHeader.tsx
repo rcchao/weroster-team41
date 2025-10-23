@@ -1,4 +1,3 @@
-// import { useState } from "react"
 import { Pressable, ViewStyle } from "react-native"
 import { Controller, useForm } from "react-hook-form"
 import { Input, XStack, useTheme } from "tamagui"
@@ -19,9 +18,6 @@ export function SearchHeader({ onSearch, style }: SearchHeaderProps) {
       query: "",
     },
   })
-
-  // Optional isFocused state to manage input focus styling
-  // const [isFocused, setIsFocused] = useState(false)
 
   return (
     <XStack
@@ -50,21 +46,20 @@ export function SearchHeader({ onSearch, style }: SearchHeaderProps) {
             borderWidth={1}
             borderColor={tamaguiConfig.tokens.color.white900}
             backgroundColor={tamaguiConfig.tokens.color.white900}
-            placeholder="Search"
+            placeholder="Search name, designation or location"
             placeholderTextColor={theme.mono900.val}
             fontSize={16}
             value={value}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              onChange(text)
+              onSearch(text)
+            }}
             onBlur={() => {
               onBlur()
-              //setIsFocused(false)
             }}
-            //onFocus={() => setIsFocused(true)}
             returnKeyType="search"
             onSubmitEditing={() => {
               onSearch(value)
-              searchInput.reset()
-              // setIsFocused(false)
             }}
           />
         )}
