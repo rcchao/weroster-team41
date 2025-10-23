@@ -1,7 +1,10 @@
+import { useNavigation } from "@react-navigation/native"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { Avatar, Card, Separator, XStack, YStack } from "tamagui"
 
 import { ProfileData } from "backend/src/types/auth.types"
 
+import { AppStackParamList } from "@/navigators/AppNavigator"
 import { getAbbreviatedName, getInitials } from "@/utils/nameFormatting"
 
 import { BodyText } from "./BodyText"
@@ -17,6 +20,8 @@ interface ProfileInfoCardProps {
 export const ProfileInfoCard = ({ profile, editable = true }: ProfileInfoCardProps) => {
   const initials = getInitials(profile.first_name, profile.last_name ?? "")
   const displayName = getAbbreviatedName(profile.first_name, profile.last_name ?? "")
+
+  const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>()
 
   return (
     <Card
@@ -47,7 +52,15 @@ export const ProfileInfoCard = ({ profile, editable = true }: ProfileInfoCardPro
               <HeaderText variant="h2" numberOfLines={1} ellipsizeMode="tail">
                 {displayName}
               </HeaderText>
-              {editable && <PressableIcon icon="edit" size={22} />}
+              {editable && (
+                <PressableIcon
+                  icon="edit"
+                  size={22}
+                  onPress={() => {
+                    navigation.navigate("EditProfileScreen")
+                  }}
+                />
+              )}
             </XStack>
             <BodyText variant="body2" color="$mono500">
               {profile?.role}

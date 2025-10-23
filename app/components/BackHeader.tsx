@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Pressable } from "react-native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { useTheme, XStack } from "tamagui"
+import { Form, useTheme, XStack } from "tamagui"
 
 import { HeaderText } from "@/components/HeaderText"
 
@@ -12,9 +12,10 @@ interface BackHeaderProps {
   navigation: NativeStackNavigationProp<any, any>
   title: string
   onSavePress?: () => void | Promise<void>
+  isForm?: boolean
 }
 
-const BackHeader = ({ navigation, title, onSavePress }: BackHeaderProps) => {
+const BackHeader = ({ navigation, title, onSavePress, isForm = false }: BackHeaderProps) => {
   const theme = useTheme()
   const [isSaving, setIsSaving] = useState(false)
 
@@ -37,6 +38,23 @@ const BackHeader = ({ navigation, title, onSavePress }: BackHeaderProps) => {
     }
   }
 
+  const SaveButton = (
+    <Pressable
+      testID="save-button"
+      onPress={handleSavePress}
+      disabled={isSaving}
+      style={({ pressed }) => ({ opacity: isSaving ? 0.5 : pressed ? 0.7 : 1 })}
+    >
+      <HeaderText
+        variant="h3"
+        color={isSaving ? (theme.white50?.val ?? theme.white100.val) : theme.white100.val}
+        mx="$4"
+      >
+        {isSaving ? "Saving..." : "Save"}
+      </HeaderText>
+    </Pressable>
+  )
+
   return (
     <BaseTopBar>
       <XStack alignItems="center" gap="$4">
@@ -47,25 +65,7 @@ const BackHeader = ({ navigation, title, onSavePress }: BackHeaderProps) => {
           {title}
         </HeaderText>
       </XStack>
-
-      {onSavePress && (
-        <Pressable
-          testID="save-button"
-          onPress={handleSavePress}
-          disabled={isSaving}
-          style={({ pressed }) => ({
-            opacity: isSaving ? 0.5 : pressed ? 0.7 : 1,
-          })}
-        >
-          <HeaderText
-            variant="h3"
-            color={isSaving ? theme.white50?.val || theme.white100.val : theme.white100.val}
-            mx="$4"
-          >
-            {isSaving ? "Saving..." : "Save"}
-          </HeaderText>
-        </Pressable>
-      )}
+      {onSavePress && (isForm ? <Form.Trigger asChild>{SaveButton}</Form.Trigger> : SaveButton)}
     </BaseTopBar>
   )
 }
