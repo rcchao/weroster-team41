@@ -1,6 +1,5 @@
-import { FC, useRef, useState } from "react"
-import { Pressable } from "react-native"
-import { Avatar, Form, ScrollView, Spinner, useTheme, XStack, YStack } from "tamagui"
+import { FC, useRef } from "react"
+import { Avatar, Form, ScrollView, Spinner, XStack, YStack } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
 import { BodyText } from "@/components/BodyText"
@@ -16,14 +15,12 @@ interface EditProfileScreenProps extends AppStackScreenProps<"EditProfileScreen"
 
 export const EditProfileScreen: FC<EditProfileScreenProps> = function EditProfileScreen(_props) {
   const { navigation } = _props
-  const theme = useTheme()
 
   const userId = useAuthenticatedUserId()
   const { profile, error, isFetching, isPending } = useProfile(userId)
 
   // Can be refactored - useProfile() should return isLoading
   const isLoading = isPending || isFetching
-  const [isSaving, setIsSaving] = useState(false)
 
   const initials = getInitials(profile?.first_name ?? "", profile?.last_name ?? "")
 
@@ -34,44 +31,27 @@ export const EditProfileScreen: FC<EditProfileScreenProps> = function EditProfil
   })
 
   const handleSubmit = async (_event?: any) => {
-    if (isSaving) return
-    setIsSaving(true)
     try {
       const { firstName, lastName, phone } = formRef.current
       console.log("Saving user input:", { firstName, lastName, phone })
-      await new Promise((r) => setTimeout(r, 1000))
-      navigation.goBack()
     } catch (e) {
       console.log(e)
-    } finally {
-      setIsSaving(false)
     }
   }
 
-  const SaveButton = (
-    <Form.Trigger asChild>
-      <Pressable
-        testID="save-button"
-        disabled={isSaving}
-        style={({ pressed }) => ({ opacity: isSaving ? 0.5 : pressed ? 0.7 : 1 })}
-      >
-        <HeaderText
-          variant="h3"
-          color={isSaving ? (theme.white50?.val ?? theme.white100.val) : theme.white100.val}
-          mx="$4"
-        >
-          {isSaving ? "Saving..." : "Save"}
-        </HeaderText>
-      </Pressable>
-    </Form.Trigger>
-  )
-
   return (
-    <Screen safeAreaEdges={["top"]}>
+    <Screen>
       <Form onSubmit={handleSubmit} height="100%">
-        <BackHeader navigation={navigation} title="Edit Profile" right={SaveButton} />
+        <BackHeader
+          navigation={navigation}
+          title="Edit Profile"
+          onSavePress={async () => {
+            await new Promise((resolve) => setTimeout(resolve, 1000))
+          }}
+          isForm={true}
+        />
 
-        <YStack flex={1} paddingTop={50}>
+        <YStack flex={1}>
           {isLoading && (
             <YStack alignItems="center" justifyContent="center" py="$6" gap="$3">
               <Spinner size="large" />
