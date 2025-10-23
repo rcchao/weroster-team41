@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { FC, ReactElement } from "react"
 import { View } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
 import { YStack } from "tamagui"
 
 import { Button } from "@/components/Button"
@@ -27,7 +26,6 @@ import { useTeamMemberData } from "@/services/hooks/useTeamMemberData"
 import { useUpcomingCampusEvents } from "@/services/hooks/useUpcomingCampusEvents"
 import { useLeaveRequests } from "@/services/hooks/useUserRequests"
 import { useAppTheme } from "@/theme/context"
-import { $headerContainer } from "@/theme/styles"
 import { $container, $fabButton } from "@/theme/styles"
 import type { Theme } from "@/theme/types"
 
@@ -52,9 +50,11 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
 
     return (
       <View style={$container}>
-        <SafeAreaView style={$headerContainer} edges={["top"]}>
-          <DashboardHomeHeader userName={profile?.first_name ?? "User"} navigation={navigation} />
-        </SafeAreaView>
+        <DashboardHomeHeader
+          userName={profile?.first_name ?? "User"}
+          navigation={navigation}
+          paddingTop={50}
+        />
         <Screen preset="scroll">
           <YStack gap={10} marginBlockStart={30}>
             {dashboardPreferences?.whos_on_duty && (

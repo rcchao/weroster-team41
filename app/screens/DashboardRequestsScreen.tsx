@@ -9,7 +9,6 @@ import { RequestFilterBottomSheet } from "@/components/RequestFilterBottomSheet"
 import { Screen } from "@/components/Screen"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useUserRequests } from "@/services/hooks/useUserRequests"
-import { $styles } from "@/theme/styles"
 
 export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardRequests">> = (
   _props,
@@ -25,44 +24,46 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
   const { userRequests, isPending } = useUserRequests(month, year, selectedTypes, selectedStatuses)
 
   return (
-    <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
-      <Header title="My Requests" />
-      <DateSelectorBar
-        mode="month"
-        selectedDate={date}
-        setSelectedDate={setDate}
-        setFilterSheetOpen={setFilterSheetOpen}
-      />
-      <YStack gap="$4" paddingVertical="$4">
-        {isPending ? (
-          <YStack paddingTop="60%" gap="$3" alignItems="center">
-            <Spinner size="large" color="$primary500" />
-            <BodyText variant="body2">Loading...</BodyText>
-          </YStack>
-        ) : userRequests && userRequests.length > 0 ? (
-          userRequests.map((request, idx) => (
-            <XStack key={idx} justifyContent="center">
-              <RequestCard
-                requestType={request.type as RequestType}
-                startDate={request.start_date}
-                endDate={request.end_date}
-                leaveType={"leaveType" in request ? request.leaveType : undefined}
-                status={request.status}
-              />
-            </XStack>
-          ))
-        ) : (
-          <BodyText variant="body4">No requests found</BodyText>
-        )}
+    <Screen preset="scroll">
+      <YStack flex={1}>
+        <Header title="My Requests" />
+        <DateSelectorBar
+          mode="month"
+          selectedDate={date}
+          setSelectedDate={setDate}
+          setFilterSheetOpen={setFilterSheetOpen}
+        />
+        <YStack gap="$4" paddingVertical="$4">
+          {isPending ? (
+            <YStack paddingTop="60%" gap="$3" alignItems="center">
+              <Spinner size="large" color="$primary500" />
+              <BodyText variant="body2">Loading...</BodyText>
+            </YStack>
+          ) : userRequests && userRequests.length > 0 ? (
+            userRequests.map((request, idx) => (
+              <XStack key={idx} justifyContent="center">
+                <RequestCard
+                  requestType={request.type as RequestType}
+                  startDate={request.start_date}
+                  endDate={request.end_date}
+                  leaveType={"leaveType" in request ? request.leaveType : undefined}
+                  status={request.status}
+                />
+              </XStack>
+            ))
+          ) : (
+            <BodyText variant="body4">No requests found</BodyText>
+          )}
+        </YStack>
+        <RequestFilterBottomSheet
+          open={filterSheetOpen}
+          onOpenChange={setFilterSheetOpen}
+          selectedTypes={selectedTypes}
+          setSelectedTypes={setSelectedTypes}
+          selectedStatuses={selectedStatuses}
+          setSelectedStatuses={setSelectedStatuses}
+        />
       </YStack>
-      <RequestFilterBottomSheet
-        open={filterSheetOpen}
-        onOpenChange={setFilterSheetOpen}
-        selectedTypes={selectedTypes}
-        setSelectedTypes={setSelectedTypes}
-        selectedStatuses={selectedStatuses}
-        setSelectedStatuses={setSelectedStatuses}
-      />
     </Screen>
   )
 }
