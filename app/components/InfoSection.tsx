@@ -1,3 +1,7 @@
+import { useState } from "react"
+import { Pressable } from "react-native"
+import * as Clipboard from "expo-clipboard"
+import Toast from "react-native-toast-message"
 import { useTheme, XStack, YStack } from "tamagui"
 
 import { BodyText } from "./BodyText"
@@ -22,6 +26,28 @@ export const InfoSection = ({ infoType, info, canCopy = false }: InfoSectionProp
   const theme = useTheme()
   const meta = INFO_META_MAP[infoType]
 
+  const hasCopyValue = info && info.trim().length > 0
+  const [copied, setCopied] = useState(false)
+
+  const onCopy = async () => {
+    if (!hasCopyValue) {
+      Toast.show({
+        type: "error",
+        text1: "Nothing to copy",
+      })
+      return
+    }
+    await Clipboard.setStringAsync(info!)
+    Toast.show({
+      type: "success",
+      text1: "Copied to clipboard",
+    })
+
+    setCopied(true)
+
+    setTimeout(() => setCopied(false), 1500)
+  }
+
   return (
     <XStack alignItems="center" marginInline={10} justifyContent="space-between">
       <XStack alignItems="center" gap={20}>
@@ -35,7 +61,15 @@ export const InfoSection = ({ infoType, info, canCopy = false }: InfoSectionProp
           </BodyText>
         </YStack>
       </XStack>
-      {canCopy && <Icon icon="copy" size={20} color={theme.mono600.val} />}
+      {canCopy && (
+        <Pressable onPress={onCopy} disabled={!hasCopyValue} hitSlop={8}>
+          <Icon
+            icon={copied ? "check" : "copy"}
+            size={20}
+            color={copied ? theme.green600.val : theme.mono600.val}
+          />
+        </Pressable>
+      )}
     </XStack>
   )
 }
