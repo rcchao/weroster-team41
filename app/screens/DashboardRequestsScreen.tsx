@@ -4,7 +4,8 @@ import { XStack, YStack, Spinner } from "tamagui"
 import { BodyText } from "@/components/BodyText"
 import { DateSelectorBar } from "@/components/DateSelectorBar"
 import { Header } from "@/components/Header"
-import { RequestCard, RequestType } from "@/components/RequestCard"
+import { RequestCard, RequestType, RequestStatus } from "@/components/RequestCard"
+import { RequestFilterBottomSheet } from "@/components/RequestFilterBottomSheet"
 import { Screen } from "@/components/Screen"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useUserRequests } from "@/services/hooks/useUserRequests"
@@ -16,12 +17,22 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
   const [date, setDate] = useState(new Date())
   const month = date.getMonth() + 1
   const year = date.getFullYear()
-  const { userRequests, isPending } = useUserRequests(month, year)
+
+  const [filterSheetOpen, setFilterSheetOpen] = useState(false)
+  const [selectedTypes, setSelectedTypes] = useState<RequestType[]>([])
+  const [selectedStatuses, setSelectedStatuses] = useState<RequestStatus[]>([])
+
+  const { userRequests, isPending } = useUserRequests(month, year, selectedTypes, selectedStatuses)
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.barContainer} safeAreaEdges={["top"]}>
       <Header title="My Requests" />
-      <DateSelectorBar mode="month" selectedDate={date} setSelectedDate={setDate} />
+      <DateSelectorBar
+        mode="month"
+        selectedDate={date}
+        setSelectedDate={setDate}
+        setFilterSheetOpen={setFilterSheetOpen}
+      />
       <YStack gap="$4" paddingVertical="$4">
         {isPending ? (
           <YStack paddingTop="60%" gap="$3" alignItems="center">
@@ -44,6 +55,14 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
           <BodyText variant="body4">No requests found</BodyText>
         )}
       </YStack>
+      <RequestFilterBottomSheet
+        open={filterSheetOpen}
+        onOpenChange={setFilterSheetOpen}
+        selectedTypes={selectedTypes}
+        setSelectedTypes={setSelectedTypes}
+        selectedStatuses={selectedStatuses}
+        setSelectedStatuses={setSelectedStatuses}
+      />
     </Screen>
   )
 }

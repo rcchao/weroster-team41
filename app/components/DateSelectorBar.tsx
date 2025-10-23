@@ -1,10 +1,6 @@
 import { Pressable } from "react-native"
-import { ViewStyle } from "react-native"
 import { format, addMonths, addDays } from "date-fns"
 import { useTheme, XStack } from "tamagui"
-
-import { useAppTheme } from "@/theme/context"
-import { ThemedStyle } from "@/theme/types"
 
 import { BodyText } from "./BodyText"
 import { Icon } from "./Icon"
@@ -15,11 +11,16 @@ interface DateSelectorBarProps {
   mode: SelectorMode
   selectedDate: Date
   setSelectedDate: (date: Date) => void
+  setFilterSheetOpen?: (open: boolean) => void
 }
 
-const DateSelectorBar = ({ mode, selectedDate, setSelectedDate }: DateSelectorBarProps) => {
+const DateSelectorBar = ({
+  mode,
+  selectedDate,
+  setSelectedDate,
+  setFilterSheetOpen,
+}: DateSelectorBarProps) => {
   const theme = useTheme()
-  const { themed } = useAppTheme()
 
   const adjustDate = (direction: "next" | "previous") => {
     const adjustment = direction === "next" ? 1 : -1
@@ -40,7 +41,11 @@ const DateSelectorBar = ({ mode, selectedDate, setSelectedDate }: DateSelectorBa
       px={16}
     >
       {/* Slider icon for configurations */}
-      <Pressable>
+      <Pressable
+        onPress={() => {
+          if (setFilterSheetOpen) setFilterSheetOpen(true)
+        }}
+      >
         <Icon icon="sliders" size={24} color={theme.mono900.val} />
       </Pressable>
 
@@ -58,7 +63,8 @@ const DateSelectorBar = ({ mode, selectedDate, setSelectedDate }: DateSelectorBa
       </XStack>
 
       {/* Search icon - disabled, not in use */}
-      <Pressable disabled={true} style={themed($searchIcon)}>
+      {/* eslint-disable-next-line react-native/no-inline-styles */}
+      <Pressable disabled={true} style={{ opacity: 0 }}>
         <Icon icon="search" size={24} color={theme.mono900.val} />
       </Pressable>
     </XStack>
@@ -66,7 +72,3 @@ const DateSelectorBar = ({ mode, selectedDate, setSelectedDate }: DateSelectorBa
 }
 
 export { DateSelectorBar }
-
-export const $searchIcon: ThemedStyle<ViewStyle> = () => ({
-  opacity: 0,
-})

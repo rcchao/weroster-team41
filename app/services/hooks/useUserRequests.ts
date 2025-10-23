@@ -1,16 +1,23 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { compareAsc } from "date-fns"
 
+import { RequestStatus, RequestType } from "@/components/RequestCard"
+
 import { requestsApi } from "../api/requestsApi"
 
-export const useUserRequests = (month: number, year: number) => {
+export const useUserRequests = (
+  month: number,
+  year: number,
+  filterTypes?: RequestType[],
+  filterStatuses?: RequestStatus[],
+) => {
   const {
     data: userRequests,
     error,
     isPending,
     isFetching,
   } = useQuery({
-    queryKey: ["user-requests", month, year],
+    queryKey: ["user-requests", month, year, filterTypes, filterStatuses],
     queryFn: async () => {
       const [leaveRes, assignmentRes, swapRes] = await Promise.all([
         requestsApi.getLeaveRequests(month, year),
@@ -27,7 +34,7 @@ export const useUserRequests = (month: number, year: number) => {
       // Unnest assignments and add type
       const assignments =
         assignmentRes.data?.map(({ event, ...rest }) => ({
-          type: "ASSIGNMENT",
+          type: "ASSIGNMENT" as RequestType,
           ...rest,
           event_id: event?.id,
           start_date: event?.start_time,
@@ -37,7 +44,7 @@ export const useUserRequests = (month: number, year: number) => {
       // Unnest swaps and add type
       const swaps =
         swapRes.data?.map(({ event, ...rest }) => ({
-          type: "SWAP",
+          type: "SWAP" as RequestType,
           ...rest,
           event_id: event?.id,
           start_date: event?.start_time,
@@ -47,14 +54,24 @@ export const useUserRequests = (month: number, year: number) => {
       // Add type to leave requests
       const leave =
         leaveRes.data?.map((item) => ({
-          type: "LEAVE",
+          type: "LEAVE" as RequestType,
           ...item,
         })) || []
 
       // Combine all arrays into a single flat array
-      return [...assignments, ...swaps, ...leave].sort((a, b) =>
-        compareAsc(a.start_date, b.start_date),
-      )
+      let allRequests = [...assignments, ...swaps, ...leave]
+
+      // Apply filters
+      if (filterTypes && filterTypes.length > 0) {
+        allRequests = allRequests.filter((request) => filterTypes.includes(request.type))
+      }
+
+      if (filterStatuses && filterStatuses.length > 0) {
+        allRequests = allRequests.filter((request) => filterStatuses.includes(request.status))
+      }
+
+      // Sort by date
+      return allRequests.sort((a, b) => compareAsc(a.start_date, b.start_date))
     },
     refetchOnMount: true,
   })

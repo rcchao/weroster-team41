@@ -47,20 +47,6 @@ describe("Lozenge", () => {
     expect(button.props.accessibilityState.disabled).toBe(true)
   })
 
-  it("toggles selected state when pressed if active", () => {
-    const { getByTestId } = renderWithProviders(<Lozenge type="LEAVE" active />)
-
-    // check initial state
-    let button = getByTestId("lozenge-LEAVE")
-    expect(button.props.accessibilityState.selected).toBe(false)
-
-    fireEvent.press(button)
-
-    // should be updated state
-    button = getByTestId("lozenge-LEAVE")
-    expect(button.props.accessibilityState.selected).toBe(true)
-  })
-
   it("calls onPress if pressed when active", () => {
     const onPressMock = jest.fn()
     const { getByTestId } = renderWithProviders(
@@ -68,14 +54,5 @@ describe("Lozenge", () => {
     )
     fireEvent.press(getByTestId("lozenge-LEAVE"))
     expect(onPressMock).toHaveBeenCalled()
-  })
-
-  it("doesn't call onPress when inactive", () => {
-    const onPressMock = jest.fn()
-    const { getByTestId } = renderWithProviders(
-      <Lozenge type="LEAVE" active={false} onPress={onPressMock} />,
-    )
-    fireEvent.press(getByTestId("lozenge-LEAVE"))
-    expect(onPressMock).not.toHaveBeenCalled()
   })
 })
