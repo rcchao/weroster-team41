@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react"
-import { Pressable } from "react-native"
-import { Sheet, XStack, YStack, Separator } from "tamagui"
+import { XStack, YStack, Separator } from "tamagui"
 
-import { BodyText } from "./BodyText"
+import { BaseFilterBottomSheet } from "./BaseFilterBottomSheet"
 import { HeaderText } from "./HeaderText"
 import { Icon } from "./Icon"
 import { Lozenge } from "./Lozenge"
@@ -67,84 +66,59 @@ const RequestFilterBottomSheet = ({
   }
 
   return (
-    <Sheet modal open={open} onOpenChange={onOpenChange} snapPoints={[40]} dismissOnSnapToBottom>
-      <Sheet.Overlay backgroundColor="$mono900" opacity={0.5} />
-      <Sheet.Handle />
-      <Sheet.Frame backgroundColor="$white100" borderTopLeftRadius="$6" borderTopRightRadius="$6">
-        {/* Header */}
-        <XStack
-          justifyContent="space-between"
-          alignItems="center"
-          paddingHorizontal="$4"
-          paddingVertical="$3"
-          backgroundColor="$white300"
-          shadowColor="$mono500"
-          shadowOffset={{ width: 0, height: 2 }}
-          shadowOpacity={0.1}
-          shadowRadius={4}
-          elevation={3}
-          zIndex={1}
-        >
-          <Pressable onPress={handleClear}>
-            <BodyText variant="body2">Clear</BodyText>
-          </Pressable>
+    <BaseFilterBottomSheet
+      open={open}
+      onOpenChange={onOpenChange}
+      size={40}
+      handleClear={handleClear}
+      handleApply={handleApply}
+    >
+      <YStack padding="$4" gap="$4">
+        {/* Type Section */}
+        <YStack gap="$3">
+          <XStack alignItems="center" gap="$2">
+            <Icon icon="layoutGrid" />
+            <HeaderText variant="h3">Type</HeaderText>
+          </XStack>
 
-          <HeaderText variant="h2">Filter</HeaderText>
+          <Separator borderColor="$mono300" />
 
-          <Pressable onPress={handleApply}>
-            <BodyText variant="body2" color="$secondary500">
-              Apply
-            </BodyText>
-          </Pressable>
-        </XStack>
-
-        <YStack padding="$4" gap="$4">
-          {/* Type Section */}
-          <YStack gap="$3">
-            <XStack alignItems="center" gap="$2">
-              <Icon icon="layoutGrid" />
-              <HeaderText variant="h3">Type</HeaderText>
-            </XStack>
-
-            <Separator borderColor="$mono300" />
-
-            <XStack gap="$2" justifyContent="space-around">
-              {REQUEST_TYPES.map((type) => (
-                <Lozenge
-                  key={type}
-                  type={type}
-                  active={true}
-                  selected={tempTypes.includes(type)}
-                  onPress={() => toggleType(type)}
-                />
-              ))}
-            </XStack>
-          </YStack>
-
-          {/* Status Section */}
-          <YStack gap="$3">
-            <XStack alignItems="center" gap="$2">
-              <Icon icon="checkCircle" />
-              <HeaderText variant="h3">Status</HeaderText>
-            </XStack>
-
-            <Separator borderColor="$mono300" />
-
-            <XStack gap="$2" justifyContent="space-around">
-              {REQUEST_STATUSES.map((status) => (
-                <Lozenge
-                  key={status}
-                  type={status}
-                  active={true}
-                  selected={tempStatuses.includes(status)}
-                  onPress={() => toggleStatus(status)}
-                />
-              ))}
-            </XStack>
-          </YStack>
+          <XStack gap="$2" justifyContent="space-around">
+            {REQUEST_TYPES.map((type) => (
+              <Lozenge
+                key={type}
+                type={type}
+                active={true}
+                selected={tempTypes.includes(type)}
+                onPress={() => toggleType(type)}
+              />
+            ))}
+          </XStack>
         </YStack>
-      </Sheet.Frame>
-    </Sheet>
+
+        {/* Status Section */}
+        <YStack gap="$3">
+          <XStack alignItems="center" gap="$2">
+            <Icon icon="checkCircle" />
+            <HeaderText variant="h3">Status</HeaderText>
+          </XStack>
+
+          <Separator borderColor="$mono300" />
+
+          <XStack gap="$2" justifyContent="space-around">
+            {REQUEST_STATUSES.map((status) => (
+              <Lozenge
+                key={status}
+                type={status}
+                active={true}
+                selected={tempStatuses.includes(status)}
+                onPress={() => toggleStatus(status)}
+              />
+            ))}
+          </XStack>
+        </YStack>
+      </YStack>
+    </BaseFilterBottomSheet>
   )
 }
 
