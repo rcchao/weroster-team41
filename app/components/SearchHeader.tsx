@@ -1,8 +1,7 @@
-import { Pressable, ViewStyle } from "react-native"
-import { Controller, useForm } from "react-hook-form"
+import { useState, memo } from "react"
+import { ViewStyle } from "react-native"
 import { Input, XStack, useTheme } from "tamagui"
 
-import { Icon } from "@/components/Icon"
 import { tamaguiConfig } from "@/tamagui.config"
 
 interface SearchHeaderProps {
@@ -10,14 +9,14 @@ interface SearchHeaderProps {
   style?: ViewStyle
 }
 
-export function SearchHeader({ onSearch, style }: SearchHeaderProps) {
+const SearchHeaderComponent = ({ onSearch, style }: SearchHeaderProps) => {
   const theme = useTheme()
+  const [searchValue, setSearchValue] = useState("")
 
-  const searchInput = useForm<{ query: string }>({
-    defaultValues: {
-      query: "",
-    },
-  })
+  const handleTextChange = (text: string) => {
+    setSearchValue(text)
+    onSearch(text)
+  }
 
   return (
     <XStack
@@ -29,41 +28,28 @@ export function SearchHeader({ onSearch, style }: SearchHeaderProps) {
       position="relative"
       style={style}
     >
-      <Pressable onPress={() => {}}>
-        <Icon icon="sliders" size={24} color={theme.mono900.val} />
-      </Pressable>
-      <Controller
-        control={searchInput.control}
-        name="query"
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input
-            unstyled
-            flex={1}
-            marginHorizontal="$2"
-            paddingVertical="$2"
-            paddingHorizontal="$3"
-            borderRadius="$7"
-            borderWidth={1}
-            borderColor={tamaguiConfig.tokens.color.white900}
-            backgroundColor={tamaguiConfig.tokens.color.white900}
-            placeholder="Search name, designation or location"
-            placeholderTextColor={theme.mono900.val}
-            fontSize={16}
-            value={value}
-            onChangeText={(text) => {
-              onChange(text)
-              onSearch(text)
-            }}
-            onBlur={() => {
-              onBlur()
-            }}
-            returnKeyType="search"
-            onSubmitEditing={() => {
-              onSearch(value)
-            }}
-          />
-        )}
+      <Input
+        unstyled
+        flex={1}
+        marginHorizontal="$2"
+        paddingVertical="$2"
+        paddingHorizontal="$3"
+        borderRadius="$7"
+        borderWidth={1}
+        borderColor={tamaguiConfig.tokens.color.white900}
+        backgroundColor={tamaguiConfig.tokens.color.white900}
+        placeholder="Search name, designation or location"
+        placeholderTextColor={theme.mono900.val}
+        fontSize={14}
+        value={searchValue}
+        onChangeText={handleTextChange}
+        returnKeyType="search"
+        onSubmitEditing={() => {
+          onSearch(searchValue)
+        }}
       />
     </XStack>
   )
 }
+
+export const SearchHeader = memo(SearchHeaderComponent)
