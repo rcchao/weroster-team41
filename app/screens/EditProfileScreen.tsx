@@ -1,4 +1,5 @@
 import { FC, useRef } from "react"
+import Toast from "react-native-toast-message"
 import { Avatar, Form, ScrollView, Spinner, XStack, YStack } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
@@ -8,7 +9,7 @@ import { InputField } from "@/components/InputField"
 import { Screen } from "@/components/Screen"
 import { useAuthenticatedUserId } from "@/context/AuthContext"
 import { AppStackScreenProps } from "@/navigators/AppNavigator"
-import { useProfile } from "@/services/hooks/useProfile"
+import { useProfile, useUpdateProfile } from "@/services/hooks/useProfile"
 import { getInitials } from "@/utils/nameFormatting"
 
 interface EditProfileScreenProps extends AppStackScreenProps<"EditProfileScreen"> {}
@@ -18,6 +19,7 @@ export const EditProfileScreen: FC<EditProfileScreenProps> = function EditProfil
 
   const userId = useAuthenticatedUserId()
   const { profile, error, isFetching, isPending } = useProfile(userId)
+  const mutation = useUpdateProfile()
 
   // Can be refactored - useProfile() should return isLoading
   const isLoading = isPending || isFetching
@@ -33,9 +35,28 @@ export const EditProfileScreen: FC<EditProfileScreenProps> = function EditProfil
   const handleSubmit = async (_event?: any) => {
     try {
       const { firstName, lastName, phone } = formRef.current
-      console.log("Saving user input:", { firstName, lastName, phone })
-    } catch (e) {
-      console.log(e)
+      const updatedProfile = await mutation.mutateAsync({
+        first_name: firstName,
+        last_name: lastName,
+        phone: phone,
+      })
+      if (updatedProfile.success) {
+        Toast.show({
+          type: "success",
+          text1: "Successfully updated profile",
+        })
+      } else {
+        Toast.show({
+          type: "failure",
+          text1: "Error! Could not update profile",
+        })
+      }
+    } catch (error) {
+      console.error("Edit profile error log:", error)
+      Toast.show({
+        type: "failure",
+        text1: "Error! Something went wrong",
+      })
     }
   }
 
