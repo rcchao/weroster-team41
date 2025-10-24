@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react"
+import { FC, useMemo, useState, useCallback } from "react"
 import { Pressable } from "react-native"
 import Toast from "react-native-toast-message"
 import { ScrollView, Separator, Spinner, TextArea, XStack, YStack } from "tamagui"
@@ -7,6 +7,7 @@ import { BodyText } from "@/components/BodyText"
 import { HeaderText } from "@/components/HeaderText"
 import { Icon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
+import { SearchHeader } from "@/components/SearchHeader"
 import { TeamMemberCard } from "@/components/TeamMemberCard"
 import { AppStackScreenProps } from "@/navigators/AppNavigator"
 import { useTeamMemberData } from "@/services/hooks/useTeamMemberData"
@@ -15,12 +16,77 @@ import { $styles } from "@/theme/styles"
 
 interface SwapShiftScreenProps extends AppStackScreenProps<"SwapShift"> {}
 
+interface SwapWithSectionProps {
+  filteredTeamMembers: any[]
+  teamIds: number[]
+  selectedTeamMember: any
+  teamMemberData: any[]
+  searchQuery: string
+  onSearch: (query: string) => void
+  onSelectMember: (member: any) => void
+}
+
+const SwapWithSection: FC<SwapWithSectionProps> = ({
+  filteredTeamMembers,
+  teamIds,
+  selectedTeamMember,
+  teamMemberData,
+  searchQuery,
+  onSearch,
+  onSelectMember,
+}) => {
+  const availableTeamMembers = filteredTeamMembers?.filter(
+    (teamMember) =>
+      !teamIds.includes(teamMember.user_id) && teamMember.user_id !== selectedTeamMember?.user_id,
+  )
+
+  return (
+    <YStack gap="$3" flex={1} minHeight={0}>
+      <HeaderText variant="h3">Swap With</HeaderText>
+      <SearchHeader onSearch={onSearch} />
+      <ScrollView flex={1} showsVerticalScrollIndicator={false}>
+        <YStack gap="$3" paddingBottom={10}>
+          {!teamMemberData ? (
+            <YStack paddingTop="60%" gap="$3" alignItems="center">
+              <Spinner size="large" color="$primary500" />
+              <BodyText variant="body2">Loading...</BodyText>
+            </YStack>
+          ) : availableTeamMembers && availableTeamMembers.length > 0 ? (
+            availableTeamMembers.map((teamMember) => (
+              <Pressable key={teamMember.id} onPress={() => onSelectMember(teamMember)}>
+                <TeamMemberCard
+                  name={`${teamMember.first_name} ${teamMember.last_name}`}
+                  startDate={teamMember.start_time}
+                  endDate={teamMember.end_time}
+                  role={teamMember.designation_title ?? "General Staff"}
+                  location={teamMember.location_name}
+                />
+              </Pressable>
+            ))
+          ) : (
+            <YStack paddingTop="60%" gap="$3" alignItems="center">
+              <BodyText variant="body2">
+                {searchQuery
+                  ? "No shifts found matching your search."
+                  : teamMemberData && teamMemberData.length > 0
+                    ? "No available team members for swap."
+                    : "No team members available."}
+              </BodyText>
+            </YStack>
+          )}
+        </YStack>
+      </ScrollView>
+    </YStack>
+  )
+}
+
 export const SwapShiftScreen: FC<SwapShiftScreenProps> = ({ navigation, route }) => {
   const { shiftId, teamIds } = route.params
   const { teamMemberData } = useTeamMemberData()
   const swapMutation = usePostSwapRequest()
   const [selectedTeamMember, setSelectedTeamMember] = useState<any>()
   const [message, setMessage] = useState<string>("")
+  const [searchQuery, setSearchQuery] = useState("")
 
   const requestSwapShift = async () => {
     // Validate that a team member must be selected
@@ -119,45 +185,28 @@ export const SwapShiftScreen: FC<SwapShiftScreenProps> = ({ navigation, route })
     </Pressable>
   )
 
-  const SwapWithSection = () => (
-    <YStack gap="$3" flex={1} minHeight={0}>
-      <HeaderText variant="h3">Swap With</HeaderText>
-      <ScrollView flex={1} showsVerticalScrollIndicator={false}>
-        <YStack gap="$3" paddingBottom={10}>
-          {teamMemberData && teamMemberData.length > 0 ? (
-            teamMemberData
-              .filter(
-                // Omit existing users on this shift and the selected user
-                (teamMember) =>
-                  !teamIds.includes(teamMember.user_id) &&
-                  teamMember.user_id !== selectedTeamMember?.user_id,
-              )
-              .map((teamMember) => (
-                <Pressable
-                  key={teamMember.id}
-                  onPress={() => {
-                    setSelectedTeamMember(teamMember)
-                  }}
-                >
-                  <TeamMemberCard
-                    name={`${teamMember.first_name} ${teamMember.last_name}`}
-                    startDate={teamMember.start_time}
-                    endDate={teamMember.end_time}
-                    role={teamMember.designation_title ?? "General Staff"}
-                    location={teamMember.location_name}
-                  />
-                </Pressable>
-              ))
-          ) : (
-            <YStack paddingTop="60%" gap="$3" alignItems="center">
-              <Spinner size="large" color="$primary500" />
-              <BodyText variant="body2">Loading...</BodyText>
-            </YStack>
-          )}
-        </YStack>
-      </ScrollView>
-    </YStack>
-  )
+  const filteredTeamMembers = useMemo(() => {
+    if (!teamMemberData || !searchQuery.trim()) {
+      return teamMemberData
+    }
+
+    const query = searchQuery.toLowerCase().trim()
+    return teamMemberData.filter((member) => {
+      const fullName = `${member.first_name} ${member.last_name}`.toLowerCase()
+      const role = (member.designation_title || "").toLowerCase()
+      const location = (member.location_name || "").toLowerCase()
+
+      return fullName.includes(query) || role.includes(query) || location.includes(query)
+    })
+  }, [teamMemberData, searchQuery])
+
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query)
+  }, [])
+
+  const handleSelectMember = useCallback((member: any) => {
+    setSelectedTeamMember(member)
+  }, [])
 
   return (
     <Screen contentContainerStyle={$styles.barContainer}>
@@ -166,7 +215,15 @@ export const SwapShiftScreen: FC<SwapShiftScreenProps> = ({ navigation, route })
         {MessageSection}
         {selectedTeamMember && <DisplaySelectedSection />}
         <Separator />
-        <SwapWithSection />
+        <SwapWithSection
+          filteredTeamMembers={filteredTeamMembers || []}
+          teamIds={teamIds}
+          selectedTeamMember={selectedTeamMember}
+          teamMemberData={teamMemberData || []}
+          searchQuery={searchQuery}
+          onSearch={handleSearch}
+          onSelectMember={handleSelectMember}
+        />
       </YStack>
     </Screen>
   )
