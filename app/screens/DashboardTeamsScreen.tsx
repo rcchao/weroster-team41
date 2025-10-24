@@ -1,4 +1,4 @@
-import { FC, useState, useMemo } from "react"
+import { FC, useState, useMemo, useCallback } from "react"
 import { XStack, YStack, Spinner, ScrollView } from "tamagui"
 
 import { BodyText } from "@/components/BodyText"
@@ -30,9 +30,9 @@ export const DashboardTeamsScreen: FC<DashboardTabScreenProps<"DashboardTeams">>
       })
     }, [teamMemberData, searchQuery])
 
-    const handleSearch = (query: string) => {
+    const handleSearch = useCallback((query: string) => {
       setSearchQuery(query)
-    }
+    }, [])
 
     return (
       <Screen>
