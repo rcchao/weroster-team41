@@ -6,6 +6,30 @@ import { authenticate } from "../middleware/auth.middleware"
 import { Session } from "@prisma/client"
 
 const router = Router()
+
+/**
+ * @swagger
+ * tags:
+ *   name: Events
+ *   description: Event and shift management
+ */
+
+/**
+ * @swagger
+ * /events/my-shifts:
+ *   get:
+ *     summary: Get user's assigned shifts
+ *     tags: [Events]
+ *     security: [{bearerAuth: []}]
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 success: {type: boolean}
+ *                 data: {type: array, items: {$ref: '#/components/schemas/ShiftWithNumUsers'}}
+ */
 router.get("/my-shifts", authenticate, async (req, res) => {
   try {
     const service = new EventService(req.app.locals.prisma)
@@ -30,6 +54,22 @@ router.get("/my-shifts", authenticate, async (req, res) => {
   return
 })
 
+/**
+ * @swagger
+ * /events/open-shifts:
+ *   get:
+ *     summary: Get available open shifts
+ *     tags: [Events]
+ *     security: [{bearerAuth: []}]
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 success: {type: boolean}
+ *                 data: {type: array, items: {$ref: '#/components/schemas/OpenShift'}}
+ */
 router.get("/open-shifts", authenticate, async (req, res) => {
   try {
     const service = new EventService(req.app.locals.prisma)
@@ -54,6 +94,27 @@ router.get("/open-shifts", authenticate, async (req, res) => {
   return
 })
 
+/**
+ * @swagger
+ * /events/team-shifts:
+ *   get:
+ *     summary: Get team shifts for specific date/session
+ *     tags: [Events]
+ *     security: [{bearerAuth: []}]
+ *     parameters:
+ *       - {in: query, name: day, required: true, schema: {type: integer}}
+ *       - {in: query, name: month, required: true, schema: {type: integer}}
+ *       - {in: query, name: year, required: true, schema: {type: integer}}
+ *       - {in: query, name: session, required: true, schema: {type: string, enum: [MORNING, AFTERNOON, EVENING, NIGHT]}}
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 success: {type: boolean}
+ *                 data: {type: array, items: {$ref: '#/components/schemas/TeamShift'}}
+ */
 router.get("/team-shifts", authenticate, async (req, res) => {
   try {
     const day = parseInt(req.query.day as string)
@@ -99,6 +160,24 @@ router.get("/team-shifts", authenticate, async (req, res) => {
   return
 })
 
+/**
+ * @swagger
+ * /events/{shiftId}:
+ *   get:
+ *     summary: Get shift details by ID
+ *     tags: [Events]
+ *     security: [{bearerAuth: []}]
+ *     parameters:
+ *       - {in: path, name: shiftId, required: true, schema: {type: integer}}
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 success: {type: boolean}
+ *                 data: {$ref: '#/components/schemas/ShiftDetails'}
+ */
 router.get("/:shiftId", authenticate, async (req, res) => {
   try {
     const service = new EventService(req.app.locals.prisma)
@@ -130,6 +209,34 @@ router.get("/:shiftId", authenticate, async (req, res) => {
   return
 })
 
+/**
+ * @swagger
+ * /events/event-assignment/{id}:
+ *   patch:
+ *     summary: Reassign event to different user
+ *     tags: [Events]
+ *     security: [{bearerAuth: []}]
+ *     parameters:
+ *       - {in: path, name: id, required: true, schema: {type: integer}}
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [from_user, to_user]
+ *             properties:
+ *               from_user: {type: integer}
+ *               to_user: {type: integer}
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 success: {type: boolean}
+ *                 data: {$ref: '#/components/schemas/EventAssignmentUpdateResponse'}
+ */
 router.patch("/event-assignment/:id", authenticate, async (req, res) => {
   try {
     const service = new EventService(req.app.locals.prisma)
