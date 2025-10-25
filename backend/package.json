@@ -7,7 +7,8 @@
     "lint": "eslint . --fix",
     "build": "tsc",
     "start": "node dist/app.js",
-    "dev": "nodemon --watch src --exec ts-node src/app.ts"
+    "dev": "nodemon --watch src --exec ts-node src/app.ts",
+    "generate-schemas": "node src/scripts/generate-schemas.js"
   },
   "keywords": [],
   "author": "",
