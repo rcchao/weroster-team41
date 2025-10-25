@@ -4,7 +4,7 @@ import { format } from "date-fns"
 import Toast from "react-native-toast-message"
 import { Card, Dialog, ScrollView, useTheme, XStack, YStack } from "tamagui"
 
-import { ShiftWithNumUsers, OpenShift } from "backend/src/types/event.types"
+import { ShiftWithNumUsers, OpenShift } from "backend/src/types/events.types"
 
 import { navigationRef } from "@/navigators/navigationUtilities"
 import { usePostAssignmentRequest } from "@/services/hooks/useUserRequests"

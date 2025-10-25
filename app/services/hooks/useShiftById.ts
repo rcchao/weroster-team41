@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { eventApi } from "../api/eventApi"
+import { eventApi } from "../api/eventsApi"
 
 export const useShiftById = (shiftId: number) => {
   const {

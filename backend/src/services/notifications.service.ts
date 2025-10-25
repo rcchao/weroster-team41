@@ -8,7 +8,7 @@ import {
   LeaveNotification,
   AssignmentRequestNotification,
 } from "../../../backend/src/types/notifications.types"
-import { shiftSelect, annotateWithNumUsers } from "../services/event.service"
+import { shiftSelect, annotateWithNumUsers } from "./events.service"
 
 export class NotificationsService {
   constructor(private prisma: PrismaClient) {}

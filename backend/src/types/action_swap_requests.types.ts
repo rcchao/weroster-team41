@@ -1,6 +1,6 @@
 import { SwapNotificationUpdatePayload, SwapNotificationPayload } from "./notifications.types"
 import { SwapPostResponse } from "./requests.types"
-import { EventAssignmentUpdateResponse } from "./event.types"
+import { EventAssignmentUpdateResponse } from "./events.types"
 import { RequestStatus } from ".prisma/client"
 
 export type SwapNotificationActionPayload = {

@@ -1,7 +1,7 @@
 import { Router } from "express"
 
 import { HttpStatus } from "../constants/httpResponse"
-import { EventService } from "../services/event.service"
+import { EventService } from "../services/events.service"
 import { authenticate } from "../middleware/auth.middleware"
 import { Session } from "@prisma/client"
 

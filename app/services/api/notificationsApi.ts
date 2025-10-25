@@ -2,7 +2,7 @@ import { api } from "./apiClient"
 import {
   SwapNotificationActionPayload,
   SwapNotificationActionResponsePayload,
-} from "../../../backend/src/types/action_swap_request.types"
+} from "../../../backend/src/types/action_swap_requests.types"
 import { ApiResponse } from "../../../backend/src/types/api.types"
 import {
   SwapNotification,

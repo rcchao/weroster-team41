@@ -1,4 +1,4 @@
-import { ShiftWithNumUsers } from "../types/event.types"
+import { ShiftWithNumUsers } from "./events.types"
 import { Prisma } from ".prisma/client"
 
 export type SwapNotification = {

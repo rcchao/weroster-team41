@@ -6,7 +6,7 @@ import {
   OpenShift,
   ShiftWithNumUsers,
   TeamShift,
-} from "../../../backend/src/types/event.types"
+} from "../../../backend/src/types/events.types"
 
 export const eventApi = {
   getMyShifts: async () => {

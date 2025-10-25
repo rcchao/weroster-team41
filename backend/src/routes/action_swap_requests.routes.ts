@@ -3,7 +3,7 @@ import { Router } from "express"
 import { authenticate } from "../middleware/auth.middleware"
 import { RequestsService } from "../services/requests.service"
 import { NotificationsService } from "../services/notifications.service"
-import { EventService } from "../services/event.service"
+import { EventService } from "../services/events.service"
 import { HttpStatus } from "../constants/httpResponse"
 
 const router = Router()

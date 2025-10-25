@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-import { eventApi } from "../api/eventApi"
+import { eventApi } from "../api/eventsApi"
 
 export const useMyShifts = () => {
   const {

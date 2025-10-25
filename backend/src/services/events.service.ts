@@ -7,7 +7,7 @@ import {
   TeamShift,
   EventAssignmentUpdatePayload,
   EventAssignmentUpdateResponse,
-} from "../types/event.types"
+} from "../types/events.types"
 
 // Common select clause used across all shift queries
 export const shiftSelect = {
