@@ -25,9 +25,9 @@ export const NotificationsScreen: FC<NotificationsScreenProps> = function Notifi
   const { userId } = useAuth()
 
   return (
-    <Screen preset="scroll">
-      <BackHeader title="Notifications" navigation={navigation} />
-      <ScrollView height="100%">
+    <Screen>
+      <ScrollView height="100%" stickyHeaderIndices={[0]}>
+        <BackHeader title="Notifications" navigation={navigation} />
         <YStack>
           {isPending ? (
             <YStack paddingTop="60%" gap="$3" alignItems="center">

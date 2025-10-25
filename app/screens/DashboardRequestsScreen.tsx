@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import { XStack, YStack, Spinner } from "tamagui"
+import { XStack, YStack, Spinner, ScrollView } from "tamagui"
 
 import { BodyText } from "@/components/BodyText"
 import { DateSelectorBar } from "@/components/DateSelectorBar"
@@ -24,15 +24,17 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
   const { userRequests, isPending } = useUserRequests(month, year, selectedTypes, selectedStatuses)
 
   return (
-    <Screen preset="scroll">
-      <YStack flex={1}>
-        <Header title="My Requests" />
-        <DateSelectorBar
-          mode="month"
-          selectedDate={date}
-          setSelectedDate={setDate}
-          setFilterSheetOpen={setFilterSheetOpen}
-        />
+    <Screen>
+      <ScrollView height="100%" stickyHeaderIndices={[0]}>
+        <YStack>
+          <Header title="My Requests" />
+          <DateSelectorBar
+            mode="month"
+            selectedDate={date}
+            setSelectedDate={setDate}
+            setFilterSheetOpen={setFilterSheetOpen}
+          />
+        </YStack>
         <YStack gap="$4" paddingVertical="$4">
           {isPending ? (
             <YStack paddingTop="60%" gap="$3" alignItems="center">
@@ -55,15 +57,15 @@ export const DashboardRequestsScreen: FC<DashboardTabScreenProps<"DashboardReque
             <BodyText variant="body4">No requests found</BodyText>
           )}
         </YStack>
-        <RequestFilterBottomSheet
-          open={filterSheetOpen}
-          onOpenChange={setFilterSheetOpen}
-          selectedTypes={selectedTypes}
-          setSelectedTypes={setSelectedTypes}
-          selectedStatuses={selectedStatuses}
-          setSelectedStatuses={setSelectedStatuses}
-        />
-      </YStack>
+      </ScrollView>
+      <RequestFilterBottomSheet
+        open={filterSheetOpen}
+        onOpenChange={setFilterSheetOpen}
+        selectedTypes={selectedTypes}
+        setSelectedTypes={setSelectedTypes}
+        selectedStatuses={selectedStatuses}
+        setSelectedStatuses={setSelectedStatuses}
+      />
     </Screen>
   )
 }

@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { RouteProp, useRoute } from "@react-navigation/native"
-import { YStack } from "tamagui"
+import { ScrollView, YStack } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
 import { ProfileInfoCard } from "@/components/ProfileInfoCard"
@@ -22,17 +22,19 @@ export const TeamDetailsScreen: FC<TeamDetailsScreenProps> = function TeamDetail
   const { profile } = useProfile(userId)
 
   return (
-    <Screen preset="scroll">
-      <BackHeader title={"Profile"} navigation={navigation} />
-      <YStack
-        justifyContent="center"
-        alignItems="center"
-        margin={20}
-        marginBlockStart={40}
-        gap={30}
-      >
-        {profile && <ProfileInfoCard profile={profile} editable={false} />}
-      </YStack>
+    <Screen>
+      <ScrollView height="100%" stickyHeaderIndices={[0]}>
+        <BackHeader title={"Profile"} navigation={navigation} />
+        <YStack
+          justifyContent="center"
+          alignItems="center"
+          margin={20}
+          marginBlockStart={40}
+          gap={30}
+        >
+          {profile && <ProfileInfoCard profile={profile} editable={false} />}
+        </YStack>
+      </ScrollView>
     </Screen>
   )
 }

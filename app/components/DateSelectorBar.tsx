@@ -33,12 +33,12 @@ const DateSelectorBar = ({
   return (
     <XStack
       height={50}
-      paddingTop={10}
       width="100%"
       alignItems="center"
       justifyContent="space-between"
       boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.4)"}
       px={16}
+      backgroundColor="$white100"
     >
       {/* Slider icon for configurations */}
       <Pressable

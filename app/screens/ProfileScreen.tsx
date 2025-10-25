@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import { Spinner, YStack, Button } from "tamagui"
+import { Spinner, YStack, Button, ScrollView } from "tamagui"
 
 import { BackHeader } from "@/components/BackHeader"
 import { BodyText } from "@/components/BodyText"
@@ -37,46 +37,48 @@ export const ProfileScreen: FC<ProfileScreenProps> = function ProfileScreen(_pro
   }
 
   return (
-    <Screen preset="scroll">
-      <BackHeader navigation={navigation} title="Profile" />
-      {isLoading && (
-        <YStack alignItems="center" justifyContent="center" py="$6" gap="$3">
-          <Spinner size="large" />
-          <BodyText variant="body" opacity={0.7}>
-            Loading your profile...
-          </BodyText>
-        </YStack>
-      )}
+    <Screen>
+      <ScrollView height="100%" stickyHeaderIndices={[0]}>
+        <BackHeader navigation={navigation} title="Profile" />
+        {isLoading && (
+          <YStack alignItems="center" justifyContent="center" py="$6" gap="$3">
+            <Spinner size="large" />
+            <BodyText variant="body" opacity={0.7}>
+              Loading your profile...
+            </BodyText>
+          </YStack>
+        )}
 
-      {!isLoading && error && (
-        <YStack px="$3" py="$4">
-          <BodyText variant="body">Couldn’t load your profile</BodyText>
-          <BodyText variant="body2" opacity={0.7}>
-            {error.message}
-          </BodyText>
-        </YStack>
-      )}
+        {!isLoading && error && (
+          <YStack px="$3" py="$4">
+            <BodyText variant="body">Couldn’t load your profile</BodyText>
+            <BodyText variant="body2" opacity={0.7}>
+              {error.message}
+            </BodyText>
+          </YStack>
+        )}
 
-      <YStack
-        justifyContent="center"
-        alignItems="center"
-        margin={20}
-        marginBlockStart={40}
-        gap={30}
-      >
-        {profile && <ProfileInfoCard profile={profile} />}
-        <Button
-          width="50%"
-          borderRadius="$radius.10"
-          borderColor="$red900"
-          backgroundColor="$red500"
-          fontWeight={900}
-          onPress={handleLogout}
-          disabled={isLoggingOut ? true : false}
+        <YStack
+          justifyContent="center"
+          alignItems="center"
+          margin={20}
+          marginBlockStart={40}
+          gap={30}
         >
-          {isLoggingOut ? "Logging out..." : "Log out"}
-        </Button>
-      </YStack>
+          {profile && <ProfileInfoCard profile={profile} />}
+          <Button
+            width="50%"
+            borderRadius="$radius.10"
+            borderColor="$red900"
+            backgroundColor="$red500"
+            fontWeight={900}
+            onPress={handleLogout}
+            disabled={isLoggingOut ? true : false}
+          >
+            {isLoggingOut ? "Logging out..." : "Log out"}
+          </Button>
+        </YStack>
+      </ScrollView>
     </Screen>
   )
 }

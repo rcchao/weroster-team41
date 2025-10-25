@@ -16,7 +16,7 @@ const BaseTopBar = ({ children }: BaseTopBarProps) => {
       boxShadow={"0px 5px 10px rgba(0, 0, 0, 0.5)"}
       padding={10}
       paddingTop={50}
-      marginBottom={12}
+      zIndex={999}
       alignItems="center"
       justifyContent="space-between"
     >
