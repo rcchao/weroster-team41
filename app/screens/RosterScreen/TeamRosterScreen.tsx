@@ -16,7 +16,16 @@ export function TeamRosterScreen(_props: Props) {
   const [session, setSession] = useState("AM" as Session)
   const [filterBottomSheet, setFilterBottomSheet] = useState(false)
 
-  const { teamShifts } = useTeamShifts(selectedDate, session)
+  const [selectedCampuses, setSelectedCampuses] = useState<string[]>([])
+  const [selectedShowLocWithShifts, setSelectedShowLocWithShifts] = useState(false)
+
+  const { teamShifts: allCampusShifts } = useTeamShifts(selectedDate, session, [], false)
+  const { teamShifts } = useTeamShifts(
+    selectedDate,
+    session,
+    selectedCampuses,
+    selectedShowLocWithShifts,
+  )
 
   return (
     <>
@@ -27,13 +36,17 @@ export function TeamRosterScreen(_props: Props) {
         setFilterSheetOpen={setFilterBottomSheet}
       />
       <TeamRosterShiftTabBar timeSection={session} setTimeSection={setSession} />
-      {teamShifts && (
+      {teamShifts && allCampusShifts && (
         <>
           <TeamRosterTableView campusShifts={teamShifts} />
           <TeamRosterFilterBottomSheet
             open={filterBottomSheet}
             onOpenChange={setFilterBottomSheet}
-            campusShifts={teamShifts}
+            campusShifts={allCampusShifts}
+            selectedCampuses={selectedCampuses}
+            setSelectedCampuses={setSelectedCampuses}
+            selectedShowLocWithShifts={selectedShowLocWithShifts}
+            setSelectedShowLocWithShifts={setSelectedShowLocWithShifts}
           />
         </>
       )}

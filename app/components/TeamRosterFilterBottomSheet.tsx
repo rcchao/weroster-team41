@@ -13,6 +13,10 @@ interface TeamRosterFilterBottomSheetProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   campusShifts: TeamShift[]
+  selectedCampuses: string[]
+  setSelectedCampuses: (campuses: string[]) => void
+  selectedShowLocWithShifts: boolean
+  setSelectedShowLocWithShifts: (selectedShowLocWithShifts: boolean) => void
 }
 
 // Define arrays of all possible values
@@ -51,19 +55,26 @@ const TeamRosterFilterBottomSheet = ({
   open,
   onOpenChange,
   campusShifts,
+  selectedCampuses,
+  setSelectedCampuses,
+  selectedShowLocWithShifts,
+  setSelectedShowLocWithShifts,
 }: TeamRosterFilterBottomSheetProps) => {
   const allCampuses = campusShifts.map((c) => c.name)
 
   // Internal state for temporary selections
-  const [tempCampuses, setTempCampuses] = useState<string[]>([])
-  const [onlyShowLocWithShifts, setOnlyShowLocWithShifts] = useState(false)
+  const [tempCampuses, setTempCampuses] = useState<string[]>(selectedCampuses)
+  const [tempShowLocWithShifts, setTempShowLocWithShifts] =
+    useState<boolean>(selectedShowLocWithShifts)
 
   const handleClear = () => {
     setTempCampuses([])
-    setOnlyShowLocWithShifts(false)
+    setTempShowLocWithShifts(false)
   }
 
   const handleApply = () => {
+    setSelectedCampuses(tempCampuses)
+    setSelectedShowLocWithShifts(tempShowLocWithShifts)
     onOpenChange(false)
   }
 
@@ -117,9 +128,9 @@ const TeamRosterFilterBottomSheet = ({
           <XStack gap="$2">
             <Pill
               text={"Only show locations with shifts scheduled"}
-              selected={onlyShowLocWithShifts}
+              selected={tempShowLocWithShifts}
               onPress={() => {
-                setOnlyShowLocWithShifts(!onlyShowLocWithShifts)
+                setTempShowLocWithShifts(!tempShowLocWithShifts)
               }}
             />
           </XStack>
