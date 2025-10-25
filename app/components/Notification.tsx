@@ -2,7 +2,7 @@ import { Pressable } from "react-native"
 import { format } from "date-fns"
 import { Circle, useTheme, XStack, YStack, Card, Dialog, ScrollView } from "tamagui"
 
-import { ShiftWithNumUsers } from "backend/src/types/event.types"
+import { ShiftWithNumUsers } from "backend/src/types/events.types"
 
 import { ThemeProvider } from "@/theme/context"
 import { getInitials } from "@/utils/nameFormatting"

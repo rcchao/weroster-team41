@@ -1,6 +1,6 @@
 import { ScrollView, Separator, XStack, YStack } from "tamagui"
 
-import { TeamShift } from "backend/src/types/event.types"
+import { TeamShift } from "backend/src/types/events.types"
 
 import { AccordionDropdown } from "./AccordionDropdown"
 import { BodyText } from "./BodyText"

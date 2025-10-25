@@ -3,7 +3,7 @@ import { format, parseISO } from "date-fns"
 import { AgendaList, CalendarProvider, ExpandableCalendar } from "react-native-calendars"
 import { View, Text, useTheme } from "tamagui"
 
-import { ShiftWithNumUsers } from "backend/src/types/event.types"
+import { ShiftWithNumUsers } from "backend/src/types/events.types"
 
 import { BodyText } from "./BodyText"
 import { CustomMarking, DayEvent, DayPill } from "./DayPill"

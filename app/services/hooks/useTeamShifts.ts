@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { getDate, getMonth, getYear } from "date-fns"
 
-import { eventApi } from "../api/eventApi"
+import { eventApi } from "../api/eventsApi"
 
 export const useTeamShifts = (date: Date, session: string) => {
   const day = getDate(date)

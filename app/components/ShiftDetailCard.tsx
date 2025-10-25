@@ -2,12 +2,12 @@ import { isAfter } from "date-fns"
 import Toast from "react-native-toast-message"
 import { Button, Card, Dialog, Separator, XStack, YStack } from "tamagui"
 
-import { SwapNotificationActionPayload } from "backend/src/types/action_swap_request.types"
+import { SwapNotificationActionPayload } from "backend/src/types/action_swap_requests.types"
 import { RequestStatusType } from "backend/src/types/enums.types"
-import { OpenShift, ShiftWithNumUsers } from "backend/src/types/event.types"
+import { OpenShift, ShiftWithNumUsers } from "backend/src/types/events.types"
 
 import { useAuth } from "@/context/AuthContext"
-import { useActionSwapRequestNotif } from "@/services/hooks/useActionSwapRequestNotif"
+import { useActionSwapRequestNotif } from "@/services/hooks/useActionSwapRequestNotifs"
 
 import { BodyText } from "./BodyText"
 import { StyledIcon } from "./common/StyledIcon"

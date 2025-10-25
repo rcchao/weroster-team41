@@ -1,13 +1,13 @@
 import { Router } from "express"
 
-import eventRoutes from "./event.routes"
+import eventRoutes from "./events.routes"
 import authRoutes from "./auth.routes"
 import settingsRoutes from "./settings.routes"
 import requestsRoutes from "./requests.routes"
 import userRoutes from "./users.routes"
 import campusRoutes from "./campus.routes"
 import notificationsRoutes from "./notifications.routes"
-import actionSwapRequestRoutes from "./action_swap_request.routes"
+import actionSwapRequestRoutes from "./action_swap_requests.routes"
 
 const router = Router()
 
