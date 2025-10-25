@@ -1,0 +1,1840 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "$Enums.LeaveType": {
+      "enum": ["ANNUAL", "COMPASSIONATE", "PARENTAL", "SICK", "UNPAID"],
+      "type": "string"
+    },
+    "$Enums.RequestStatus": {
+      "enum": ["APPROVED", "AWAITING", "DECLINED"],
+      "type": "string"
+    },
+    "$Enums.Session": {
+      "enum": ["AH", "AM", "PM"],
+      "type": "string"
+    },
+    "ApiResponse": {
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/T"
+        },
+        "error": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        }
+      },
+      "required": ["success"],
+      "type": "object"
+    },
+    "Assignment": {
+      "properties": {
+        "event": {
+          "$ref": "#/definitions/{id:number;start_time:Date;end_time:Date;}"
+        },
+        "id": {
+          "type": "number"
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        }
+      },
+      "required": ["event", "id", "status"],
+      "type": "object"
+    },
+    "AssignmentPostResponse": {
+      "properties": {
+        "event_id": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        },
+        "user_id": {
+          "type": "number"
+        }
+      },
+      "required": ["event_id", "id", "status", "user_id"],
+      "type": "object"
+    },
+    "AssignmentRequestNotification": {
+      "properties": {
+        "assignmentRequest": {
+          "$ref": "#/definitions/{id:number;event:{id:number;start_time:Date;end_time:Date;activity:{name:string;}|null;location:{name:string;};};status:$Enums.RequestStatus;}"
+        },
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "is_read": {
+          "type": "boolean"
+        },
+        "requires_action": {
+          "type": "boolean"
+        }
+      },
+      "required": ["assignmentRequest", "created_at", "id", "is_read", "requires_action"],
+      "type": "object"
+    },
+    "AssignmentRequestPayload": {
+      "properties": {
+        "event_id": {
+          "type": "number"
+        }
+      },
+      "required": ["event_id"],
+      "type": "object"
+    },
+    "AuthResult": {
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/Omit<{id:number;campus_id:number|null;hospital_id:number;designation_id:number|null;first_name:string;last_name:string;email:string;password:string;phone:string|null;role:string|null;preference:$Enums.Preference|null;},\"password\">"
+        }
+      },
+      "required": ["token", "user"],
+      "type": "object"
+    },
+    "Campus": {
+      "properties": {
+        "address": {
+          "type": ["null", "string"]
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["address", "id", "name"],
+      "type": "object"
+    },
+    "CampusWithLocationsAndEvents": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "locations": {
+          "items": {
+            "$ref": "#/definitions/{id:number;name:string;events:{id:number;start_time:Date;end_time:Date;on_call:boolean;activity:{id:number;name:string;activityGroup:{id:number;name:string|null;}|null;}|null;eventAssignments:{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}[];eventSessions:{id:number;session:$Enums.Session;}[];}[];}"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "locations", "name"],
+      "type": "object"
+    },
+    "DashboardPreferences": {
+      "properties": {
+        "open_shifts": {
+          "type": "boolean"
+        },
+        "team_roster": {
+          "type": "boolean"
+        },
+        "upcoming_leaves": {
+          "type": "boolean"
+        },
+        "upcoming_shifts": {
+          "type": "boolean"
+        },
+        "whos_on_duty": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "open_shifts",
+        "team_roster",
+        "upcoming_leaves",
+        "upcoming_shifts",
+        "whos_on_duty"
+      ],
+      "type": "object"
+    },
+    "EventAssignmentUpdatePayload": {
+      "properties": {
+        "event_id": {
+          "type": "number"
+        },
+        "from_user": {
+          "type": "number"
+        },
+        "to_user": {
+          "type": "number"
+        }
+      },
+      "required": ["event_id", "from_user", "to_user"],
+      "type": "object"
+    },
+    "EventAssignmentUpdateResponse": {
+      "properties": {
+        "event_id": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "user_id": {
+          "type": "number"
+        }
+      },
+      "required": ["event_id", "id", "user_id"],
+      "type": "object"
+    },
+    "Leave": {
+      "properties": {
+        "end_date": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "leaveType": {
+          "$ref": "#/definitions/$Enums.LeaveType"
+        },
+        "start_date": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        }
+      },
+      "required": ["end_date", "id", "leaveType", "start_date", "status"],
+      "type": "object"
+    },
+    "LeaveNotification": {
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "is_read": {
+          "type": "boolean"
+        },
+        "leave": {
+          "$ref": "#/definitions/{id:number;start_date:Date;end_date:Date;status:$Enums.RequestStatus;leaveType:$Enums.LeaveType;}"
+        },
+        "requires_action": {
+          "type": "boolean"
+        }
+      },
+      "required": ["created_at", "id", "is_read", "leave", "requires_action"],
+      "type": "object"
+    },
+    "LoginRequest": {
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": ["email", "password"],
+      "type": "object"
+    },
+    "Omit<{id:number;campus_id:number|null;hospital_id:number;designation_id:number|null;first_name:string;last_name:string;email:string;password:string;phone:string|null;role:string|null;preference:$Enums.Preference|null;},\"password\">": {
+      "properties": {
+        "campus_id": {
+          "type": ["null", "number"]
+        },
+        "designation_id": {
+          "type": ["null", "number"]
+        },
+        "email": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "hospital_id": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": ["null", "string"]
+        },
+        "preference": {
+          "enum": ["PREFERENCE1", "PREFERENCE2", "PREFERENCE3"],
+          "type": "string",
+          "nullable": true
+        },
+        "role": {
+          "type": ["null", "string"]
+        }
+      },
+      "required": [
+        "campus_id",
+        "designation_id",
+        "email",
+        "first_name",
+        "hospital_id",
+        "id",
+        "last_name",
+        "phone",
+        "preference",
+        "role"
+      ],
+      "type": "object"
+    },
+    "OpenShift": {
+      "allOf": [
+        {
+          "properties": {
+            "activity": {
+              "type": ["null", "string"]
+            },
+            "activity_id": {
+              "type": ["null", "number"]
+            },
+            "campus": {
+              "type": "string"
+            },
+            "campus_address": {
+              "type": ["null", "string"]
+            },
+            "campus_id": {
+              "type": "number"
+            },
+            "end_time": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "eventAssignments": {
+              "items": {
+                "properties": {
+                  "designation": {
+                    "type": ["null", "string"]
+                  },
+                  "user": {
+                    "properties": {
+                      "first_name": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "number"
+                      },
+                      "last_name": {
+                        "type": ["null", "string"]
+                      }
+                    },
+                    "required": ["first_name", "id", "last_name"],
+                    "type": "object"
+                  }
+                },
+                "required": ["designation", "user"],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "eventSessions": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "id": {
+              "type": "number"
+            },
+            "location": {
+              "type": "string"
+            },
+            "location_id": {
+              "type": "number"
+            },
+            "numUsers": {
+              "type": "number"
+            },
+            "on_call": {
+              "type": "boolean"
+            },
+            "pay": {
+              "type": ["null", "number"]
+            },
+            "start_time": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          "required": [
+            "activity",
+            "activity_id",
+            "campus",
+            "campus_address",
+            "campus_id",
+            "end_time",
+            "eventAssignments",
+            "eventSessions",
+            "id",
+            "location",
+            "location_id",
+            "numUsers",
+            "on_call",
+            "pay",
+            "start_time"
+          ],
+          "type": "object"
+        },
+        {
+          "properties": {
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": ["status"],
+          "type": "object"
+        }
+      ]
+    },
+    "ProfileData": {
+      "properties": {
+        "campus": {
+          "$ref": "#/definitions/{id:number;name:string;hospital_id:number|null;}",
+          "nullable": true
+        },
+        "designation": {
+          "$ref": "#/definitions/{id:number;title:string;description:string|null;}_2",
+          "nullable": true
+        },
+        "email": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "hospital": {
+          "$ref": "#/definitions/{id:number;name:string;address:string|null;}_1"
+        },
+        "id": {
+          "type": "number"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": ["null", "string"]
+        },
+        "role": {
+          "type": ["null", "string"]
+        }
+      },
+      "required": [
+        "campus",
+        "designation",
+        "email",
+        "first_name",
+        "hospital",
+        "id",
+        "last_name",
+        "phone",
+        "role"
+      ],
+      "type": "object"
+    },
+    "RequestStatus": {
+      "enum": ["APPROVED", "AWAITING", "DECLINED"],
+      "type": "string"
+    },
+    "RequestStatusType": {
+      "enum": ["APPROVED", "AWAITING", "DECLINED"],
+      "type": "string"
+    },
+    "ShiftDetails": {
+      "properties": {
+        "activity": {
+          "$ref": "#/definitions/{id:number;location_id:number|null;name:string;group_id:number|null;}",
+          "nullable": true
+        },
+        "end_time": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "eventAssignments": {
+          "items": {
+            "$ref": "#/definitions/{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}"
+          },
+          "type": "array"
+        },
+        "eventSessions": {
+          "items": {
+            "$ref": "#/definitions/{session:$Enums.Session;}"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "number"
+        },
+        "location": {
+          "$ref": "#/definitions/{id:number;name:string;campus:{id:number;name:string;address:string|null;};}"
+        },
+        "on_call": {
+          "type": "boolean"
+        },
+        "pay": {
+          "type": "number"
+        },
+        "start_time": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "activity",
+        "end_time",
+        "eventAssignments",
+        "eventSessions",
+        "id",
+        "location",
+        "on_call",
+        "pay",
+        "start_time"
+      ],
+      "type": "object"
+    },
+    "ShiftWithLocation": {
+      "properties": {
+        "activity": {
+          "$ref": "#/definitions/{id:number;name:string;}",
+          "nullable": true
+        },
+        "end_time": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "eventAssignments": {
+          "items": {
+            "$ref": "#/definitions/{id:number;user:{id:number;first_name:string;last_name:string;};}"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "number"
+        },
+        "location": {
+          "$ref": "#/definitions/{id:number;name:string;campus:{id:number;name:string;};}"
+        },
+        "on_call": {
+          "type": "boolean"
+        },
+        "start_time": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "activity",
+        "end_time",
+        "eventAssignments",
+        "id",
+        "location",
+        "on_call",
+        "start_time"
+      ],
+      "type": "object"
+    },
+    "ShiftWithNumUsers": {
+      "properties": {
+        "activity": {
+          "type": ["null", "string"]
+        },
+        "activity_id": {
+          "type": ["null", "number"]
+        },
+        "campus": {
+          "type": "string"
+        },
+        "campus_address": {
+          "type": ["null", "string"]
+        },
+        "campus_id": {
+          "type": "number"
+        },
+        "end_time": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "eventAssignments": {
+          "items": {
+            "properties": {
+              "designation": {
+                "type": ["null", "string"]
+              },
+              "user": {
+                "properties": {
+                  "first_name": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "number"
+                  },
+                  "last_name": {
+                    "type": ["null", "string"]
+                  }
+                },
+                "required": ["first_name", "id", "last_name"],
+                "type": "object"
+              }
+            },
+            "required": ["designation", "user"],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "eventSessions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "number"
+        },
+        "location": {
+          "type": "string"
+        },
+        "location_id": {
+          "type": "number"
+        },
+        "numUsers": {
+          "type": "number"
+        },
+        "on_call": {
+          "type": "boolean"
+        },
+        "pay": {
+          "type": ["null", "number"]
+        },
+        "start_time": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "activity",
+        "activity_id",
+        "campus",
+        "campus_address",
+        "campus_id",
+        "end_time",
+        "eventAssignments",
+        "eventSessions",
+        "id",
+        "location",
+        "location_id",
+        "numUsers",
+        "on_call",
+        "pay",
+        "start_time"
+      ],
+      "type": "object"
+    },
+    "Swap": {
+      "properties": {
+        "event": {
+          "$ref": "#/definitions/{id:number;start_time:Date;end_time:Date;}_1"
+        },
+        "from_user": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "message": {
+          "type": ["null", "string"]
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        },
+        "to_user": {
+          "type": "number"
+        }
+      },
+      "required": ["event", "from_user", "id", "message", "status", "to_user"],
+      "type": "object"
+    },
+    "SwapNotification": {
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "fromUser": {
+          "properties": {
+            "first_name": {
+              "type": "string"
+            },
+            "last_name": {
+              "type": "string"
+            }
+          },
+          "required": ["first_name", "last_name"],
+          "type": "object"
+        },
+        "from_user": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "is_read": {
+          "type": "boolean"
+        },
+        "requires_action": {
+          "type": "boolean"
+        },
+        "swap": {
+          "properties": {
+            "event": {
+              "properties": {
+                "activity": {
+                  "type": ["null", "string"]
+                },
+                "activity_id": {
+                  "type": ["null", "number"]
+                },
+                "campus": {
+                  "type": "string"
+                },
+                "campus_address": {
+                  "type": ["null", "string"]
+                },
+                "campus_id": {
+                  "type": "number"
+                },
+                "end_time": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "eventAssignments": {
+                  "items": {
+                    "properties": {
+                      "designation": {
+                        "type": ["null", "string"]
+                      },
+                      "user": {
+                        "properties": {
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "number"
+                          },
+                          "last_name": {
+                            "type": ["null", "string"]
+                          }
+                        },
+                        "required": ["first_name", "id", "last_name"],
+                        "type": "object"
+                      }
+                    },
+                    "required": ["designation", "user"],
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "eventSessions": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "id": {
+                  "type": "number"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "location_id": {
+                  "type": "number"
+                },
+                "numUsers": {
+                  "type": "number"
+                },
+                "on_call": {
+                  "type": "boolean"
+                },
+                "pay": {
+                  "type": ["null", "number"]
+                },
+                "start_time": {
+                  "format": "date-time",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "activity",
+                "activity_id",
+                "campus",
+                "campus_address",
+                "campus_id",
+                "end_time",
+                "eventAssignments",
+                "eventSessions",
+                "id",
+                "location",
+                "location_id",
+                "numUsers",
+                "on_call",
+                "pay",
+                "start_time"
+              ],
+              "type": "object"
+            },
+            "from_user": {
+              "type": "number"
+            },
+            "id": {
+              "type": "number"
+            },
+            "message": {
+              "type": ["null", "string"]
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": ["event", "from_user", "id", "message", "status"],
+          "type": "object"
+        },
+        "to_user": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "created_at",
+        "fromUser",
+        "from_user",
+        "id",
+        "is_read",
+        "requires_action",
+        "swap",
+        "to_user"
+      ],
+      "type": "object"
+    },
+    "SwapNotificationActionPayload": {
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/RequestStatus"
+        },
+        "swap_notif_id": {
+          "type": "number"
+        }
+      },
+      "required": ["status", "swap_notif_id"],
+      "type": "object"
+    },
+    "SwapNotificationActionResponsePayload": {
+      "properties": {
+        "send_notification": {
+          "properties": {
+            "requires_action": {
+              "type": "boolean"
+            },
+            "swap_id": {
+              "type": "number"
+            },
+            "to_user": {
+              "type": "number"
+            }
+          },
+          "required": ["swap_id", "to_user"],
+          "type": "object"
+        },
+        "swap": {
+          "$ref": "#/definitions/{id:number;event_id:number;status:$Enums.RequestStatus;to_user:number;from_user:number;message:string|null;}"
+        },
+        "swapped_event_assignment": {
+          "$ref": "#/definitions/{id:number;event_id:number;user_id:number;}"
+        },
+        "updated_notification": {
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "is_read": {
+              "type": "boolean"
+            },
+            "requires_action": {
+              "type": "boolean"
+            }
+          },
+          "required": ["id"],
+          "type": "object"
+        }
+      },
+      "required": ["send_notification", "swap", "updated_notification"],
+      "type": "object"
+    },
+    "SwapNotificationPayload": {
+      "properties": {
+        "requires_action": {
+          "type": "boolean"
+        },
+        "swap_id": {
+          "type": "number"
+        },
+        "to_user": {
+          "type": "number"
+        }
+      },
+      "required": ["swap_id", "to_user"],
+      "type": "object"
+    },
+    "SwapNotificationPostResponse": {
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "from_user": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "is_read": {
+          "type": "boolean"
+        },
+        "requires_action": {
+          "type": "boolean"
+        },
+        "swap_request": {
+          "type": "number"
+        },
+        "to_user": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "created_at",
+        "from_user",
+        "id",
+        "is_read",
+        "requires_action",
+        "swap_request",
+        "to_user"
+      ],
+      "type": "object"
+    },
+    "SwapNotificationUpdatePayload": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "is_read": {
+          "type": "boolean"
+        },
+        "requires_action": {
+          "type": "boolean"
+        }
+      },
+      "required": ["id"],
+      "type": "object"
+    },
+    "SwapNotificationUpdatePostPayload": {
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "from_user": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "is_read": {
+          "type": "boolean"
+        },
+        "requires_action": {
+          "type": "boolean"
+        },
+        "swap_request": {
+          "type": "number"
+        },
+        "to_user": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "created_at",
+        "from_user",
+        "id",
+        "is_read",
+        "requires_action",
+        "swap_request",
+        "to_user"
+      ],
+      "type": "object"
+    },
+    "SwapPostResponse": {
+      "properties": {
+        "event_id": {
+          "type": "number"
+        },
+        "from_user": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "message": {
+          "type": ["null", "string"]
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        },
+        "to_user": {
+          "type": "number"
+        }
+      },
+      "required": ["event_id", "from_user", "id", "message", "status", "to_user"],
+      "type": "object"
+    },
+    "SwapRequestPayload": {
+      "properties": {
+        "event_id": {
+          "type": "number"
+        },
+        "message": {
+          "type": "string"
+        },
+        "to_user": {
+          "type": "number"
+        }
+      },
+      "required": ["event_id", "to_user"],
+      "type": "object"
+    },
+    "SwapUpdatePayload": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        }
+      },
+      "required": ["id", "status"],
+      "type": "object"
+    },
+    "SwapUpdateResponsePayload": {
+      "properties": {
+        "event_id": {
+          "type": "number"
+        },
+        "from_user": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "message": {
+          "type": ["null", "string"]
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        },
+        "to_user": {
+          "type": "number"
+        }
+      },
+      "required": ["event_id", "from_user", "id", "message", "status", "to_user"],
+      "type": "object"
+    },
+    "SwapWithNotificationPostResponse": {
+      "properties": {
+        "notification": {
+          "$ref": "#/definitions/{id:number;created_at:Date;is_read:boolean;requires_action:boolean;to_user:number;from_user:number;swap_request:number;}"
+        },
+        "swap": {
+          "$ref": "#/definitions/{id:number;event_id:number;status:$Enums.RequestStatus;to_user:number;from_user:number;message:string|null;}"
+        }
+      },
+      "required": ["notification", "swap"],
+      "type": "object"
+    },
+    "T": {
+      "type": "object"
+    },
+    "TeamMemberData": {
+      "properties": {
+        "designation": {
+          "$ref": "#/definitions/{title:string;}",
+          "nullable": true
+        },
+        "designation_id": {
+          "type": ["null", "number"]
+        },
+        "event": {
+          "$ref": "#/definitions/{start_time:Date;end_time:Date;location:{id:number;name:string;campus:{id:number;name:string;};};}"
+        },
+        "event_id": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "user": {
+          "$ref": "#/definitions/{first_name:string;last_name:string;}_1"
+        },
+        "user_id": {
+          "type": "number"
+        }
+      },
+      "required": ["designation", "designation_id", "event", "event_id", "id", "user", "user_id"],
+      "type": "object"
+    },
+    "TeamShift": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "locations": {
+          "items": {
+            "properties": {
+              "events": {
+                "items": {
+                  "properties": {
+                    "activity": {
+                      "type": ["null", "string"]
+                    },
+                    "end_time": {
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "eventAssignments": {
+                      "items": {
+                        "properties": {
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "number"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["first_name", "id", "last_name"],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "id": {
+                      "type": "number"
+                    },
+                    "on_call": {
+                      "type": "boolean"
+                    },
+                    "start_time": {
+                      "format": "date-time",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "activity",
+                    "end_time",
+                    "eventAssignments",
+                    "id",
+                    "on_call",
+                    "start_time"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": ["events", "id", "name"],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "locations", "name"],
+      "type": "object"
+    },
+    "UpcomingCampusEvent": {
+      "properties": {
+        "campus_name": {
+          "type": "string"
+        },
+        "location_name": {
+          "type": "string"
+        },
+        "num_assignments": {
+          "type": "number"
+        },
+        "start_date": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": ["campus_name", "location_name", "num_assignments", "start_date"],
+      "type": "object"
+    },
+    "UpdateProfileData": {
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "{first_name:string;last_name:string;}_1": {
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        }
+      },
+      "required": ["first_name", "last_name"],
+      "type": "object"
+    },
+    "{id:number;created_at:Date;is_read:boolean;requires_action:boolean;to_user:number;from_user:number;swap_request:number;}": {
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "from_user": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "is_read": {
+          "type": "boolean"
+        },
+        "requires_action": {
+          "type": "boolean"
+        },
+        "swap_request": {
+          "type": "number"
+        },
+        "to_user": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "created_at",
+        "from_user",
+        "id",
+        "is_read",
+        "requires_action",
+        "swap_request",
+        "to_user"
+      ],
+      "type": "object"
+    },
+    "{id:number;event:{id:number;start_time:Date;end_time:Date;activity:{name:string;}|null;location:{name:string;};};status:$Enums.RequestStatus;}": {
+      "properties": {
+        "event": {
+          "$ref": "#/definitions/{id:number;start_time:Date;end_time:Date;activity:{name:string;}|null;location:{name:string;};}"
+        },
+        "id": {
+          "type": "number"
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        }
+      },
+      "required": ["event", "id", "status"],
+      "type": "object"
+    },
+    "{id:number;event_id:number;status:$Enums.RequestStatus;to_user:number;from_user:number;message:string|null;}": {
+      "properties": {
+        "event_id": {
+          "type": "number"
+        },
+        "from_user": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "message": {
+          "type": ["null", "string"]
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        },
+        "to_user": {
+          "type": "number"
+        }
+      },
+      "required": ["event_id", "from_user", "id", "message", "status", "to_user"],
+      "type": "object"
+    },
+    "{id:number;event_id:number;user_id:number;}": {
+      "properties": {
+        "event_id": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "user_id": {
+          "type": "number"
+        }
+      },
+      "required": ["event_id", "id", "user_id"],
+      "type": "object"
+    },
+    "{id:number;first_name:string;last_name:string;}": {
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "last_name": {
+          "type": "string"
+        }
+      },
+      "required": ["first_name", "id", "last_name"],
+      "type": "object"
+    },
+    "{id:number;first_name:string;last_name:string;}_1": {
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "last_name": {
+          "type": "string"
+        }
+      },
+      "required": ["first_name", "id", "last_name"],
+      "type": "object"
+    },
+    "{id:number;first_name:string;last_name:string;}_2": {
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "last_name": {
+          "type": "string"
+        }
+      },
+      "required": ["first_name", "id", "last_name"],
+      "type": "object"
+    },
+    "{id:number;location_id:number|null;name:string;group_id:number|null;}": {
+      "properties": {
+        "group_id": {
+          "type": ["null", "number"]
+        },
+        "id": {
+          "type": "number"
+        },
+        "location_id": {
+          "type": ["null", "number"]
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["group_id", "id", "location_id", "name"],
+      "type": "object"
+    },
+    "{id:number;name:string;activityGroup:{id:number;name:string|null;}|null;}": {
+      "properties": {
+        "activityGroup": {
+          "$ref": "#/definitions/{id:number;name:string|null;}",
+          "nullable": true
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["activityGroup", "id", "name"],
+      "type": "object"
+    },
+    "{id:number;name:string;address:string|null;}": {
+      "properties": {
+        "address": {
+          "type": ["null", "string"]
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["address", "id", "name"],
+      "type": "object"
+    },
+    "{id:number;name:string;address:string|null;}_1": {
+      "properties": {
+        "address": {
+          "type": ["null", "string"]
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["address", "id", "name"],
+      "type": "object"
+    },
+    "{id:number;name:string;campus:{id:number;name:string;address:string|null;};}": {
+      "properties": {
+        "campus": {
+          "$ref": "#/definitions/{id:number;name:string;address:string|null;}"
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["campus", "id", "name"],
+      "type": "object"
+    },
+    "{id:number;name:string;campus:{id:number;name:string;};}": {
+      "properties": {
+        "campus": {
+          "$ref": "#/definitions/{id:number;name:string;}_1"
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["campus", "id", "name"],
+      "type": "object"
+    },
+    "{id:number;name:string;campus:{id:number;name:string;};}_1": {
+      "properties": {
+        "campus": {
+          "$ref": "#/definitions/{id:number;name:string;}_2"
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["campus", "id", "name"],
+      "type": "object"
+    },
+    "{id:number;name:string;events:{id:number;start_time:Date;end_time:Date;on_call:boolean;activity:{id:number;name:string;activityGroup:{id:number;name:string|null;}|null;}|null;eventAssignments:{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}[];eventSessions:{id:number;session:$Enums.Session;}[];}[];}": {
+      "properties": {
+        "events": {
+          "items": {
+            "$ref": "#/definitions/{id:number;start_time:Date;end_time:Date;on_call:boolean;activity:{id:number;name:string;activityGroup:{id:number;name:string|null;}|null;}|null;eventAssignments:{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}[];eventSessions:{id:number;session:$Enums.Session;}[];}"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["events", "id", "name"],
+      "type": "object"
+    },
+    "{id:number;name:string;hospital_id:number|null;}": {
+      "properties": {
+        "hospital_id": {
+          "type": ["null", "number"]
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["hospital_id", "id", "name"],
+      "type": "object"
+    },
+    "{id:number;name:string;}": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "name"],
+      "type": "object"
+    },
+    "{id:number;name:string;}_1": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "name"],
+      "type": "object"
+    },
+    "{id:number;name:string;}_2": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "name"],
+      "type": "object"
+    },
+    "{id:number;name:string|null;}": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": ["null", "string"]
+        }
+      },
+      "required": ["id", "name"],
+      "type": "object"
+    },
+    "{id:number;session:$Enums.Session;}": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "session": {
+          "$ref": "#/definitions/$Enums.Session"
+        }
+      },
+      "required": ["id", "session"],
+      "type": "object"
+    },
+    "{id:number;start_date:Date;end_date:Date;status:$Enums.RequestStatus;leaveType:$Enums.LeaveType;}": {
+      "properties": {
+        "end_date": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "leaveType": {
+          "$ref": "#/definitions/$Enums.LeaveType"
+        },
+        "start_date": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        }
+      },
+      "required": ["end_date", "id", "leaveType", "start_date", "status"],
+      "type": "object"
+    },
+    "{id:number;start_time:Date;end_time:Date;activity:{name:string;}|null;location:{name:string;};}": {
+      "properties": {
+        "activity": {
+          "$ref": "#/definitions/{name:string;}",
+          "nullable": true
+        },
+        "end_time": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "location": {
+          "$ref": "#/definitions/{name:string;}_1"
+        },
+        "start_time": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": ["activity", "end_time", "id", "location", "start_time"],
+      "type": "object"
+    },
+    "{id:number;start_time:Date;end_time:Date;on_call:boolean;activity:{id:number;name:string;activityGroup:{id:number;name:string|null;}|null;}|null;eventAssignments:{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}[];eventSessions:{id:number;session:$Enums.Session;}[];}": {
+      "properties": {
+        "activity": {
+          "$ref": "#/definitions/{id:number;name:string;activityGroup:{id:number;name:string|null;}|null;}",
+          "nullable": true
+        },
+        "end_time": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "eventAssignments": {
+          "items": {
+            "$ref": "#/definitions/{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}_1"
+          },
+          "type": "array"
+        },
+        "eventSessions": {
+          "items": {
+            "$ref": "#/definitions/{id:number;session:$Enums.Session;}"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "number"
+        },
+        "on_call": {
+          "type": "boolean"
+        },
+        "start_time": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "activity",
+        "end_time",
+        "eventAssignments",
+        "eventSessions",
+        "id",
+        "on_call",
+        "start_time"
+      ],
+      "type": "object"
+    },
+    "{id:number;start_time:Date;end_time:Date;}": {
+      "properties": {
+        "end_time": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "start_time": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": ["end_time", "id", "start_time"],
+      "type": "object"
+    },
+    "{id:number;start_time:Date;end_time:Date;}_1": {
+      "properties": {
+        "end_time": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "start_time": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": ["end_time", "id", "start_time"],
+      "type": "object"
+    },
+    "{id:number;title:string;description:string|null;}": {
+      "properties": {
+        "description": {
+          "type": ["null", "string"]
+        },
+        "id": {
+          "type": "number"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": ["description", "id", "title"],
+      "type": "object"
+    },
+    "{id:number;title:string;description:string|null;}_1": {
+      "properties": {
+        "description": {
+          "type": ["null", "string"]
+        },
+        "id": {
+          "type": "number"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": ["description", "id", "title"],
+      "type": "object"
+    },
+    "{id:number;title:string;description:string|null;}_2": {
+      "properties": {
+        "description": {
+          "type": ["null", "string"]
+        },
+        "id": {
+          "type": "number"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": ["description", "id", "title"],
+      "type": "object"
+    },
+    "{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}": {
+      "properties": {
+        "designation": {
+          "$ref": "#/definitions/{id:number;title:string;description:string|null;}",
+          "nullable": true
+        },
+        "id": {
+          "type": "number"
+        },
+        "user": {
+          "$ref": "#/definitions/{id:number;first_name:string;last_name:string;}"
+        }
+      },
+      "required": ["designation", "id", "user"],
+      "type": "object"
+    },
+    "{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}_1": {
+      "properties": {
+        "designation": {
+          "$ref": "#/definitions/{id:number;title:string;description:string|null;}_1",
+          "nullable": true
+        },
+        "id": {
+          "type": "number"
+        },
+        "user": {
+          "$ref": "#/definitions/{id:number;first_name:string;last_name:string;}_1"
+        }
+      },
+      "required": ["designation", "id", "user"],
+      "type": "object"
+    },
+    "{id:number;user:{id:number;first_name:string;last_name:string;};}": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "user": {
+          "$ref": "#/definitions/{id:number;first_name:string;last_name:string;}_2"
+        }
+      },
+      "required": ["id", "user"],
+      "type": "object"
+    },
+    "{name:string;}": {
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["name"],
+      "type": "object"
+    },
+    "{name:string;}_1": {
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["name"],
+      "type": "object"
+    },
+    "{session:$Enums.Session;}": {
+      "properties": {
+        "session": {
+          "$ref": "#/definitions/$Enums.Session"
+        }
+      },
+      "required": ["session"],
+      "type": "object"
+    },
+    "{start_time:Date;end_time:Date;location:{id:number;name:string;campus:{id:number;name:string;};};}": {
+      "properties": {
+        "end_time": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/definitions/{id:number;name:string;campus:{id:number;name:string;};}_1"
+        },
+        "start_time": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": ["end_time", "location", "start_time"],
+      "type": "object"
+    },
+    "{title:string;}": {
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": ["title"],
+      "type": "object"
+    }
+  }
+}
