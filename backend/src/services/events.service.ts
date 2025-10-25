@@ -193,6 +193,8 @@ export class EventService {
     month: number,
     year: number,
     session: Session,
+    selectedCampuses: string[],
+    selectedShowLocWithShifts: boolean,
   ): Promise<TeamShift[]> {
     // Get start and end datetime of the day
     const startDate = new Date(year, month, day, 0)
@@ -224,11 +226,21 @@ export class EventService {
     const campuses: CampusWithLocationsAndEvents[] = await this.prisma.campus.findMany({
       where: {
         hospital_id: hospitalId,
+        ...(selectedCampuses.length > 0 && {
+          name: { in: selectedCampuses },
+        }),
       },
       select: {
         id: true,
         name: true,
         locations: {
+          where: selectedShowLocWithShifts
+            ? {
+                events: {
+                  some: eventsForDayAndSession,
+                },
+              }
+            : undefined,
           select: {
             id: true,
             name: true,

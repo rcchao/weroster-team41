@@ -60,6 +60,14 @@ router.get("/team-shifts", authenticate, async (req, res) => {
     const month = parseInt(req.query.month as string)
     const year = parseInt(req.query.year as string)
     const session = req.query.session as Session
+    const selectedShowLocWithShifts = req.query.selectedShowLocWithShifts === "true"
+
+    // Convert query param to array (handle both single and multi values)
+    const selectedCampusesParam = req.query.selectedCampuses
+    const selectedCampuses =
+      typeof selectedCampusesParam === "string" && selectedCampusesParam.length > 0
+        ? selectedCampusesParam.split(",")
+        : []
 
     const service = new EventService(req.app.locals.prisma)
 
@@ -71,7 +79,15 @@ router.get("/team-shifts", authenticate, async (req, res) => {
       })
     }
 
-    const shifts = await service.getTeamShifts(req.userHospitalId, day, month, year, session)
+    const shifts = await service.getTeamShifts(
+      req.userHospitalId,
+      day,
+      month,
+      year,
+      session,
+      selectedCampuses,
+      selectedShowLocWithShifts,
+    )
 
     res.json({
       success: true,
