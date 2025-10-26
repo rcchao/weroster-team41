@@ -16,7 +16,6 @@ import { LozengeType } from "@/components/Lozenge"
 import { Screen } from "@/components/Screen"
 import { Session } from "@/components/ShiftDetailsSubheader"
 import { useAuthenticatedUserId } from "@/context/AuthContext"
-import { TxKeyPath } from "@/i18n"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useDashboardPreferences } from "@/services/hooks/useDashboardPreferences"
 import { useMyShifts } from "@/services/hooks/useMyShifts"
@@ -31,7 +30,6 @@ import type { Theme } from "@/theme/types"
 
 export interface Dashboard {
   name: string
-  description: TxKeyPath
   data: ({ themed, theme }: { themed: any; theme: Theme }) => ReactElement[]
 }
 

@@ -10,7 +10,6 @@ import { useTheme } from "tamagui"
 import { BottomDashboardNavBar } from "@/components/BottomDashboardNavBar"
 import { Icon } from "@/components/Icon"
 import { EpisodeProvider } from "@/context/EpisodeContext"
-import { translate } from "@/i18n/translate"
 import { DashboardHomeScreen } from "@/screens/DashboardHomeScreen"
 import { DashboardRequestsScreen } from "@/screens/DashboardRequestsScreen"
 import { DashboardTeamsScreen } from "@/screens/DashboardTeamsScreen"
@@ -81,7 +80,7 @@ export function DashboardNavigator() {
           name="DashboardHome"
           component={DashboardHomeScreen}
           options={{
-            tabBarLabel: translate("dashboardNavigator:homeTab"),
+            tabBarLabel: "Home",
             tabBarIcon: ({ focused }) => (
               <Icon
                 icon="house"
@@ -96,7 +95,7 @@ export function DashboardNavigator() {
           name="DashboardRoster"
           component={DashboardRosterScreen}
           options={{
-            tabBarLabel: translate("dashboardNavigator:rosterTab"),
+            tabBarLabel: "Roster",
             tabBarIcon: ({ focused }) => (
               <Icon
                 icon="roster"
@@ -111,8 +110,7 @@ export function DashboardNavigator() {
           name="DashboardRequests"
           component={DashboardRequestsScreen}
           options={{
-            tabBarAccessibilityLabel: translate("dashboardNavigator:requestsTab"),
-            tabBarLabel: translate("dashboardNavigator:requestsTab"),
+            tabBarLabel: "Requests",
             tabBarIcon: ({ focused }) => (
               <Icon
                 icon="requests"
@@ -127,7 +125,7 @@ export function DashboardNavigator() {
           name="DashboardTeams"
           component={DashboardTeamsScreen}
           options={{
-            tabBarLabel: translate("dashboardNavigator:teamsTab"),
+            tabBarLabel: "Teams",
             tabBarIcon: ({ focused }) => (
               <Icon
                 icon="teams"

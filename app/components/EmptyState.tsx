@@ -1,6 +1,5 @@
 import { Image, ImageProps, ImageStyle, StyleProp, TextStyle, View, ViewStyle } from "react-native"
 
-import { translate } from "@/i18n/translate"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
@@ -35,10 +34,6 @@ interface EmptyStateProps {
    */
   heading?: TextProps["text"]
   /**
-   * Heading text which is looked up via i18n.
-   */
-  headingTx?: TextProps["tx"]
-  /**
    * Optional heading options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
@@ -56,10 +51,6 @@ interface EmptyStateProps {
    */
   content?: TextProps["text"]
   /**
-   * Content text which is looked up via i18n.
-   */
-  contentTx?: TextProps["tx"]
-  /**
    * Optional content options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
@@ -76,10 +67,6 @@ interface EmptyStateProps {
    * The button text to display if not using `buttonTx`.
    */
   button?: TextProps["text"]
-  /**
-   * Button text which is looked up via i18n.
-   */
-  buttonTx?: TextProps["tx"]
   /**
    * Optional button options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
@@ -126,9 +113,9 @@ export function EmptyState(props: EmptyStateProps) {
   const EmptyStatePresets = {
     generic: {
       imageSource: sadFace,
-      heading: translate("emptyStateComponent:generic.heading"),
-      content: translate("emptyStateComponent:generic.content"),
-      button: translate("emptyStateComponent:generic.button"),
+      heading: "",
+      content: "",
+      button: "",
     } as EmptyStatePresetItem,
   } as const
 
@@ -136,14 +123,10 @@ export function EmptyState(props: EmptyStateProps) {
 
   const {
     button = preset.button,
-    buttonTx,
     buttonOnPress,
-    buttonTxOptions,
     content = preset.content,
-    contentTx,
     contentTxOptions,
     heading = preset.heading,
-    headingTx,
     headingTxOptions,
     imageSource = preset.imageSource,
     style: $containerStyleOverride,
@@ -159,9 +142,9 @@ export function EmptyState(props: EmptyStateProps) {
   } = props
 
   const isImagePresent = !!imageSource
-  const isHeadingPresent = !!(heading || headingTx)
-  const isContentPresent = !!(content || contentTx)
-  const isButtonPresent = !!(button || buttonTx)
+  const isHeadingPresent = !!heading
+  const isContentPresent = !!content
+  const isButtonPresent = !!button
 
   const $containerStyles = [$containerStyleOverride]
   const $imageStyles = [
@@ -205,7 +188,6 @@ export function EmptyState(props: EmptyStateProps) {
         <Text
           preset="subheading"
           text={heading}
-          tx={headingTx}
           txOptions={headingTxOptions}
           {...HeadingTextProps}
           style={$headingStyles}
@@ -215,7 +197,6 @@ export function EmptyState(props: EmptyStateProps) {
       {isContentPresent && (
         <Text
           text={content}
-          tx={contentTx}
           txOptions={contentTxOptions}
           {...ContentTextProps}
           style={$contentStyles}
@@ -225,9 +206,6 @@ export function EmptyState(props: EmptyStateProps) {
       {isButtonPresent && (
         <Button
           onPress={buttonOnPress}
-          text={button}
-          tx={buttonTx}
-          txOptions={buttonTxOptions}
           textStyle={$buttonTextStyleOverride}
           {...ButtonProps}
           style={$buttonStyles}

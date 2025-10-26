@@ -41,19 +41,6 @@ interface CardProps extends TouchableOpacityProps {
    */
   RightComponent?: ReactElement
   /**
-   * The heading text to display if not using `headingTx`.
-   */
-  heading?: TextProps["text"]
-  /**
-   * Heading text which is looked up via i18n.
-   */
-  headingTx?: TextProps["tx"]
-  /**
-   * Optional heading options to pass to i18n. Useful for interpolation
-   * as well as explicitly setting locale or translation fallbacks.
-   */
-  headingTxOptions?: TextProps["txOptions"]
-  /**
    * Style overrides for heading text.
    */
   headingStyle?: StyleProp<TextStyle>
@@ -66,19 +53,6 @@ interface CardProps extends TouchableOpacityProps {
    * Overrides all other `heading*` props.
    */
   HeadingComponent?: ReactElement
-  /**
-   * The content text to display if not using `contentTx`.
-   */
-  content?: TextProps["text"]
-  /**
-   * Content text which is looked up via i18n.
-   */
-  contentTx?: TextProps["tx"]
-  /**
-   * Optional content options to pass to i18n. Useful for interpolation
-   * as well as explicitly setting locale or translation fallbacks.
-   */
-  contentTxOptions?: TextProps["txOptions"]
   /**
    * Style overrides for content text.
    */
@@ -96,15 +70,6 @@ interface CardProps extends TouchableOpacityProps {
    * The footer text to display if not using `footerTx`.
    */
   footer?: TextProps["text"]
-  /**
-   * Footer text which is looked up via i18n.
-   */
-  footerTx?: TextProps["tx"]
-  /**
-   * Optional footer options to pass to i18n. Useful for interpolation
-   * as well as explicitly setting locale or translation fallbacks.
-   */
-  footerTxOptions?: TextProps["txOptions"]
   /**
    * Style overrides for footer text.
    */
@@ -129,15 +94,6 @@ interface CardProps extends TouchableOpacityProps {
  */
 export function Card(props: CardProps) {
   const {
-    content,
-    contentTx,
-    contentTxOptions,
-    footer,
-    footerTx,
-    footerTxOptions,
-    heading,
-    headingTx,
-    headingTxOptions,
     ContentComponent,
     HeadingComponent,
     FooterComponent,
@@ -161,9 +117,9 @@ export function Card(props: CardProps) {
 
   const preset: Presets = props.preset ?? "default"
   const isPressable = !!WrapperProps.onPress
-  const isHeadingPresent = !!(HeadingComponent || heading || headingTx)
-  const isContentPresent = !!(ContentComponent || content || contentTx)
-  const isFooterPresent = !!(FooterComponent || footer || footerTx)
+  const isHeadingPresent = !!HeadingComponent
+  const isContentPresent = !!ContentComponent
+  const isFooterPresent = !!FooterComponent
 
   const Wrapper = (isPressable ? TouchableOpacity : View) as ComponentType<
     TouchableOpacityProps | ViewProps
@@ -213,40 +169,18 @@ export function Card(props: CardProps) {
         <HeaderContentWrapper>
           {HeadingComponent ||
             (isHeadingPresent && (
-              <Text
-                weight="bold"
-                text={heading}
-                tx={headingTx}
-                txOptions={headingTxOptions}
-                {...HeadingTextProps}
-                style={$headingStyle}
-              />
+              <Text weight="bold" {...HeadingTextProps} style={$headingStyle} />
             ))}
 
           {ContentComponent ||
             (isContentPresent && (
-              <Text
-                weight="regular"
-                text={content}
-                tx={contentTx}
-                txOptions={contentTxOptions}
-                {...ContentTextProps}
-                style={$contentStyle}
-              />
+              <Text weight="regular" {...ContentTextProps} style={$contentStyle} />
             ))}
         </HeaderContentWrapper>
 
         {FooterComponent ||
           (isFooterPresent && (
-            <Text
-              weight="regular"
-              size="xs"
-              text={footer}
-              tx={footerTx}
-              txOptions={footerTxOptions}
-              {...FooterTextProps}
-              style={$footerStyle}
-            />
+            <Text weight="regular" size="xs" {...FooterTextProps} style={$footerStyle} />
           ))}
       </View>
 

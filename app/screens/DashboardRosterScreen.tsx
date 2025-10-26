@@ -13,8 +13,8 @@ export const DashboardRosterScreen: FC<DashboardTabScreenProps<"DashboardRoster"
 
     return (
       <Screen preset="scroll">
-        <Text preset="heading" tx="dashboardRosterScreen:title" style={themed($title)} />
-        <Text tx="dashboardRosterScreen:externalLinkText" style={themed($description)} />
+        <Text preset="heading" style={themed($title)} />
+        <Text style={themed($description)} />
       </Screen>
     )
   }
