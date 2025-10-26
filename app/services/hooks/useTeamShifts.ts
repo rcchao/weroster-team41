@@ -3,7 +3,12 @@ import { getDate, getMonth, getYear } from "date-fns"
 
 import { eventApi } from "../api/eventsApi"
 
-export const useTeamShifts = (date: Date, session: string) => {
+export const useTeamShifts = (
+  date: Date,
+  session: string,
+  selectedCampuses: string[],
+  selectedShowLocWithShifts: boolean,
+) => {
   const day = getDate(date)
   const month = getMonth(date)
   const year = getYear(date)
@@ -14,8 +19,24 @@ export const useTeamShifts = (date: Date, session: string) => {
     isPending,
     isFetching,
   } = useQuery({
-    queryKey: ["team-shifts", year, month, day, session],
-    queryFn: () => eventApi.getTeamShifts(day, month, year, session),
+    queryKey: [
+      "team-shifts",
+      year,
+      month,
+      day,
+      session,
+      selectedCampuses,
+      selectedShowLocWithShifts,
+    ],
+    queryFn: () =>
+      eventApi.getTeamShifts(
+        day,
+        month,
+        year,
+        session,
+        selectedCampuses,
+        selectedShowLocWithShifts,
+      ),
     select: (result) => result.data,
     refetchOnMount: false,
   })

@@ -3,6 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack"
 
 import { DateSelectorBar } from "@/components/DateSelectorBar"
 import type { Session } from "@/components/ShiftDetailsSubheader"
+import { TeamRosterFilterBottomSheet } from "@/components/TeamRosterFilterBottomSheet"
 import { TeamRosterShiftTabBar } from "@/components/TeamRosterShiftTabBar"
 import { TeamRosterTableView } from "@/components/TeamRosterTableView"
 import type { RosterStackParamList } from "@/navigators/DashboardNavigator"
@@ -13,14 +14,42 @@ type Props = NativeStackScreenProps<RosterStackParamList, "TeamRoster">
 export function TeamRosterScreen(_props: Props) {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [session, setSession] = useState("AM" as Session)
+  const [filterBottomSheet, setFilterBottomSheet] = useState(false)
 
-  const { teamShifts } = useTeamShifts(selectedDate, session)
+  const [selectedCampuses, setSelectedCampuses] = useState<string[]>([])
+  const [selectedShowLocWithShifts, setSelectedShowLocWithShifts] = useState(false)
+
+  const { teamShifts: allCampusShifts } = useTeamShifts(selectedDate, session, [], false)
+  const { teamShifts } = useTeamShifts(
+    selectedDate,
+    session,
+    selectedCampuses,
+    selectedShowLocWithShifts,
+  )
 
   return (
     <>
-      <DateSelectorBar mode="day" selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+      <DateSelectorBar
+        mode="day"
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        setFilterSheetOpen={setFilterBottomSheet}
+      />
       <TeamRosterShiftTabBar timeSection={session} setTimeSection={setSession} />
-      {teamShifts && <TeamRosterTableView campusShifts={teamShifts} />}
+      {teamShifts && allCampusShifts && (
+        <>
+          <TeamRosterTableView campusShifts={teamShifts} />
+          <TeamRosterFilterBottomSheet
+            open={filterBottomSheet}
+            onOpenChange={setFilterBottomSheet}
+            campusShifts={allCampusShifts}
+            selectedCampuses={selectedCampuses}
+            setSelectedCampuses={setSelectedCampuses}
+            selectedShowLocWithShifts={selectedShowLocWithShifts}
+            setSelectedShowLocWithShifts={setSelectedShowLocWithShifts}
+          />
+        </>
+      )}
     </>
   )
 }
