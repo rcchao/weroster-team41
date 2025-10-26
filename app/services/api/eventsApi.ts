@@ -48,10 +48,22 @@ export const eventApi = {
     } as ApiResponse<ShiftWithNumUsers>
   },
 
-  getTeamShifts: async (day: number, month: number, year: number, session: string) => {
-    const response = await api.get<ApiResponse<TeamShift[]>>(
-      `/events/team-shifts?day=${day}&month=${month}&year=${year}&session=${session}`,
-    )
+  getTeamShifts: async (
+    day: number,
+    month: number,
+    year: number,
+    session: string,
+    selectedCampuses: string[],
+    selectedShowLocWithShifts: boolean,
+  ) => {
+    const response = await api.get<ApiResponse<TeamShift[]>>("/events/team-shifts", {
+      day,
+      month,
+      year,
+      session,
+      selectedCampuses: selectedCampuses.join(","),
+      selectedShowLocWithShifts,
+    })
     console.log("\n\n[eventApi.getTeamShifts] response:", response.data)
 
     if (response.ok && response.data) {
