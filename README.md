@@ -6,7 +6,17 @@
 
 ## Demo
 
-**Insert Demo Video**
+**App Overview**
+
+https://github.com/user-attachments/assets/38068a06-e633-46ed-a216-e17da74baa58
+
+**Applying for an open shift**
+
+https://github.com/user-attachments/assets/761e288e-f219-4ca1-9387-e7a2409dfa9d
+
+**Swapping shifts with another user**
+
+https://github.com/user-attachments/assets/042f1813-e767-4500-8f98-e911b06dedae
 
 ---
 
