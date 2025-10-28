@@ -1,4 +1,4 @@
-import type { Prisma, User } from ".prisma/client"
+import type { Prisma } from ".prisma/client"
 
 export interface LoginRequest {
   email: string
@@ -7,7 +7,7 @@ export interface LoginRequest {
 
 export interface AuthResult {
   token: string
-  user: Omit<User, "password">
+  user: ProfileData
 }
 
 export type ProfileData = Prisma.UserGetPayload<{
@@ -18,20 +18,6 @@ export type ProfileData = Prisma.UserGetPayload<{
     last_name: true
     phone: true
     role: true
-    campus: {
-      select: {
-        id: true
-        name: true
-        hospital_id: true
-      }
-    }
-    hospital: {
-      select: {
-        id: true
-        name: true
-        address: true
-      }
-    }
     designation: {
       select: {
         id: true

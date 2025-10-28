@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client"
 import type { User } from ".prisma/client"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { AuthResult, LoginRequest, UpdateProfileData } from "../types/auth.types"
+import { AuthResult, LoginRequest, ProfileData, UpdateProfileData } from "../types/auth.types"
 
 export class AuthService {
   constructor(private prisma: PrismaClient) {}
@@ -62,12 +62,10 @@ export class AuthService {
     }
   }
 
-  async getProfile(userId: number): Promise<Omit<User, "password">> {
+  async getProfile(userId: number): Promise<ProfileData> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       include: {
-        campus: true,
-        hospital: true,
         designation: true,
       },
     })
@@ -79,7 +77,7 @@ export class AuthService {
     return this.sanitizeUser(user)
   }
 
-  async updateProfile(userId: number, data: UpdateProfileData): Promise<Omit<User, "password">> {
+  async updateProfile(userId: number, data: UpdateProfileData): Promise<ProfileData> {
     const user = await this.prisma.user.update({
       where: { id: userId },
       data: {
@@ -88,8 +86,6 @@ export class AuthService {
         ...(data.phone !== undefined && { phone: data.phone }),
       },
       include: {
-        campus: true,
-        hospital: true,
         designation: true,
       },
     })
