@@ -107,38 +107,99 @@ const postProcessSchemas = (outputPath: string): void => {
       const definitions = schemas.definitions
       console.log(`📋 Processing ${Object.keys(definitions).length} schema definitions...`)
 
+      // First, collect all enum definitions
+      const enumDefinitions: Record<string, JSONSchemaDefinition> = {}
       Object.entries(definitions).forEach(([key, schema]) => {
-        if (schema.properties) {
-          Object.entries(schema.properties).forEach(([propName, property]) => {
-            if (
-              property.type === "string" &&
-              (propName.toLowerCase().includes("time") ||
-                propName.toLowerCase().includes("date") ||
-                propName.toLowerCase().includes("_at"))
-            ) {
-              property.format = "date-time"
-            }
+        if (key.startsWith("$Enums.") && schema.enum) {
+          enumDefinitions[key] = schema
+        }
+      })
 
-            if (property.anyOf) {
-              const nonNullTypes = property.anyOf.filter((t) => t.type !== "null")
-              if (nonNullTypes.length === 1) {
-                Object.assign(property, nonNullTypes[0])
+      // Recursive function to process properties at any level
+      const processProperties = (properties: Record<string, JSONSchemaProperty>) => {
+        Object.entries(properties).forEach(([propName, property]) => {
+          // Add date-time format
+          if (
+            property.type === "string" &&
+            (propName.toLowerCase().includes("time") ||
+              propName.toLowerCase().includes("date") ||
+              propName.toLowerCase().includes("_at"))
+          ) {
+            property.format = "date-time"
+          }
+
+          // Inline enum references
+          const ref = property.$ref as string | undefined
+          if (ref && typeof ref === "string" && ref.startsWith("#/definitions/$Enums.")) {
+            const enumKey = ref.replace("#/definitions/", "")
+            const enumDef = enumDefinitions[enumKey]
+            if (enumDef && enumDef.enum) {
+              delete property.$ref
+              property.type = "string"
+              property.enum = enumDef.enum as (string | number)[]
+            }
+          }
+
+          // Handle anyOf with nullable
+          if (property.anyOf) {
+            const nonNullTypes = property.anyOf.filter((t) => t.type !== "null")
+            const hasNull = property.anyOf.some((t) => t.type !== "null")
+
+            if (nonNullTypes.length === 1 && hasNull) {
+              const type = nonNullTypes[0]
+
+              const typeRef = type.$ref as string | undefined
+              if (
+                typeRef &&
+                typeof typeRef === "string" &&
+                typeRef.startsWith("#/definitions/$Enums.")
+              ) {
+                const enumKey = typeRef.replace("#/definitions/", "")
+                const enumDef = enumDefinitions[enumKey]
+                if (enumDef && enumDef.enum) {
+                  delete property.anyOf
+                  property.type = "string"
+                  property.enum = enumDef.enum as (string | number)[]
+                  property.nullable = true
+                }
+              } else {
+                Object.assign(property, type)
                 property.nullable = true
                 delete property.anyOf
               }
             }
-          })
+          }
+        })
+      }
+
+      // Process all schemas (including anonymous ones)
+      Object.entries(definitions).forEach(([key, schema]) => {
+        // Skip only the enum definitions
+        if (key.startsWith("$Enums.")) {
+          return
+        }
+
+        // Process properties at the top level
+        if (schema.properties) {
+          processProperties(schema.properties)
         }
 
         delete schema.$schema
       })
 
+      // Only remove enum definitions, keep anonymous types
+      Object.keys(enumDefinitions).forEach((key) => {
+        delete definitions[key]
+      })
+
       console.log("📝 Generated schemas for:")
-      Object.keys(definitions).forEach((key) => console.log(`   - ${key}`))
+      Object.keys(definitions)
+        .filter((key) => !key.startsWith("$Enums."))
+        .forEach((key) => console.log(`   - ${key}`))
     }
 
     fs.writeFileSync(outputPath, JSON.stringify(schemas, null, 2))
-    console.log("✨ Schemas post-processed for Swagger compatibility")
+    console.log("✨ Schemas post-processed for OpenAPI 3.0 compatibility")
     console.log(
       `✅ Successfully generated schemas.json with ${Object.keys(schemas.definitions || {}).length} definitions`,
     )

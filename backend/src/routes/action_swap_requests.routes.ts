@@ -43,7 +43,7 @@ const router = Router()
  *                   type: object
  *                   properties:
  *                     updated_notification: {$ref: '#/components/schemas/SwapNotification'}
- *                     swap: {$ref: '#/components/schemas/SwapRequest'}
+ *                     swap: {$ref: '#/components/schemas/Swap'}
  *                     send_notification: {$ref: '#/components/schemas/SwapNotification'}
  *                     swapped_event_assignment: {$ref: '#/components/schemas/EventAssignmentUpdateResponse'}
  */
