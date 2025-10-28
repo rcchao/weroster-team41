@@ -35,8 +35,7 @@ const router = Router()
  *             schema:
  *               properties:
  *                 success: {type: boolean}
- *                 token: {type: string}
- *                 user: {$ref: '#/components/schemas/User'}
+ *                 data: {$ref: '#/components/schemas/AuthResult'}
  */
 router.post("/login", async (req, res) => {
   try {
@@ -66,7 +65,7 @@ router.post("/login", async (req, res) => {
  *             schema:
  *               properties:
  *                 success: {type: boolean}
- *                 data: {$ref: '#/components/schemas/UserProfile'}
+ *                 data: {$ref: '#/components/schemas/ProfileData'}
  */
 router.get("/profile/:userId", authenticate, async (req, res) => {
   try {
@@ -121,7 +120,7 @@ router.get("/profile/:userId", authenticate, async (req, res) => {
  *             schema:
  *               properties:
  *                 success: {type: boolean}
- *                 data: {$ref: '#/components/schemas/UserProfile'}
+ *                 data: {$ref: '#/components/schemas/ProfileData'}
  */
 router.patch("/profile", authenticate, async (req, res) => {
   try {

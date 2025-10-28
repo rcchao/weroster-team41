@@ -14,7 +14,7 @@ const router = Router()
 
 /**
  * @swagger
- * /users/team:
+ * /user/team:
  *   get:
  *     summary: Get team member data for user's hospital
  *     tags: [Users]
@@ -26,7 +26,7 @@ const router = Router()
  *             schema:
  *               properties:
  *                 success: {type: boolean}
- *                 data: {type: array, items: {$ref: '#/components/schemas/TeamMember'}}
+ *                 data: {type: array, items: {$ref: '#/components/schemas/TeamMemberData'}}
  */
 router.get("/team", authenticate, async (req, res) => {
   try {

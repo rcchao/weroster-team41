@@ -26,7 +26,7 @@ const router = Router()
  *             schema:
  *               properties:
  *                 success: {type: boolean}
- *                 data: {type: array, items: {$ref: '#/components/schemas/CampusEvent'}}
+ *                 data: {type: array, items: {$ref: '#/components/schemas/UpcomingCampusEvent'}}
  */
 router.get("/next-shift", authenticate, async (req, res) => {
   try {

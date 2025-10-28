@@ -32,7 +32,7 @@ const router = Router()
  *             schema:
  *               properties:
  *                 success: {type: boolean}
- *                 data: {type: array, items: {$ref: '#/components/schemas/LeaveRequest'}}
+ *                 data: {type: array, items: {$ref: '#/components/schemas/Leave'}}
  */
 router.get("/leave", authenticate, async (req, res) => {
   try {
@@ -73,7 +73,7 @@ router.get("/leave", authenticate, async (req, res) => {
  *             schema:
  *               properties:
  *                 success: {type: boolean}
- *                 data: {type: array, items: {$ref: '#/components/schemas/AssignmentRequest'}}
+ *                 data: {type: array, items: {$ref: '#/components/schemas/Assignment'}}
  */
 router.get("/assignment", authenticate, async (req, res) => {
   try {
@@ -120,7 +120,7 @@ router.get("/assignment", authenticate, async (req, res) => {
  *             schema:
  *               properties:
  *                 success: {type: boolean}
- *                 data: {$ref: '#/components/schemas/AssignmentRequest'}
+ *                 data: {$ref: '#/components/schemas/AssignmentPostResponse'}
  */
 router.post("/assignment", authenticate, async (req, res) => {
   try {
@@ -184,7 +184,7 @@ router.post("/assignment", authenticate, async (req, res) => {
  *             schema:
  *               properties:
  *                 success: {type: boolean}
- *                 data: {type: array, items: {$ref: '#/components/schemas/SwapRequest'}}
+ *                 data: {type: array, items: {$ref: '#/components/schemas/Swap'}}
  */
 router.get("/swap", authenticate, async (req, res) => {
   try {
@@ -331,7 +331,7 @@ router.post("/swap", authenticate, async (req, res) => {
  *             schema:
  *               properties:
  *                 success: {type: boolean}
- *                 data: {$ref: '#/components/schemas/SwapRequest'}
+ *                 data: {$ref: '#/components/schemas/SwapUpdateResponsePayload'}
  */
 router.patch("/swap/:id", authenticate, async (req, res) => {
   try {

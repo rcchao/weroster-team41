@@ -61,12 +61,7 @@ router.get("/dashboard-preferences", authenticate, async (req, res) => {
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               theme: {type: string, enum: [light, dark]}
- *               layout: {type: string}
- *               notifications_enabled: {type: boolean}
- *               widgets: {type: array, items: {type: string}}
+ *             $ref: '#/components/schemas/DashboardPreferences'
  *     responses:
  *       200:
  *         content:
