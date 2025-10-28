@@ -7,7 +7,6 @@ export const settingsApi = {
     const response = await api.get<ApiResponse<DashboardPreferences>>(
       "/settings/dashboard-preferences",
     )
-    console.log("\n\n[settingsApi.getDashboardPreferences] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }
@@ -23,7 +22,6 @@ export const settingsApi = {
       "/settings/dashboard-preferences",
       preferences,
     )
-    console.log("\n\n[settingsApi.setDashboardPreferences] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }

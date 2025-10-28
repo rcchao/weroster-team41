@@ -5,7 +5,6 @@ import { TeamMemberData } from "../../../backend/src/types/users.types"
 export const usersApi = {
   getTeamMemberData: async () => {
     const response = await api.get<ApiResponse<TeamMemberData[]>>("/user/team")
-    console.log("\n\n[usersApi.getTeamMemberData] response:", JSON.stringify(response.data))
     if (response.ok && response.data) {
       return response.data
     }

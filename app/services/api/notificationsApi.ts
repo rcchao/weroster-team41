@@ -16,10 +16,6 @@ import {
 export const notificationsApi = {
   getSwapNotifications: async () => {
     const response = await api.get<ApiResponse<SwapNotification[]>>("/notifications/swap")
-    console.log(
-      "\n\n[notificationsApi.getSwapNotifications] response:",
-      JSON.stringify(response.data),
-    )
     if (response.ok && response.data) {
       return response.data
     }
@@ -30,10 +26,6 @@ export const notificationsApi = {
   },
   getLeaveNotifications: async () => {
     const response = await api.get<ApiResponse<LeaveNotification[]>>("/notifications/leave")
-    console.log(
-      "\n\n[notificationsApi.getLeaveNotifications] response:",
-      JSON.stringify(response.data),
-    )
     if (response.ok && response.data) {
       return response.data
     }
@@ -45,10 +37,6 @@ export const notificationsApi = {
   getAssignmentRequestNotifications: async () => {
     const response = await api.get<ApiResponse<AssignmentRequestNotification[]>>(
       "/notifications/assignment-request",
-    )
-    console.log(
-      "\n\n[notificationsApi.getAssignmentRequestNotifications] response:",
-      JSON.stringify(response.data),
     )
     if (response.ok && response.data) {
       return response.data
@@ -64,7 +52,6 @@ export const notificationsApi = {
       `/notifications/swap`,
       assignmentRequest,
     )
-    console.log("\n\n[notificationsApi.setSwapNotifications] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }
@@ -79,7 +66,6 @@ export const notificationsApi = {
       `/notifications/swap/${swapRequestUpdate.id}`,
       swapRequestUpdate,
     )
-    console.log("\n\n[notificationsApi.updateSwapNotifications] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }
@@ -94,7 +80,6 @@ export const notificationsApi = {
       `/action-swap-request`,
       swapNotificationAction,
     )
-    console.log("\n\n[notificationsApi.actionSwapNotifications] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }

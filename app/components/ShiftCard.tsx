@@ -43,7 +43,6 @@ const ShiftCard = memo(({ shift, clashes }: ShiftCardProps) => {
     try {
       const data = await mutation.mutateAsync({ event_id: shift.id })
       if (data.success) {
-        console.log("Posted successfully", data)
         Toast.show({
           type: "success",
           text1: "Successfully applied to an open shift",
@@ -53,7 +52,6 @@ const ShiftCard = memo(({ shift, clashes }: ShiftCardProps) => {
         // and "Event not found". If either of these are the case, the frontend
         // shouldn't even allow a user to apply to the open shift so don't
         // worry about bubbling these errors up to the frontend
-        console.log("Post failed", data.error)
         Toast.show({
           type: "failure",
           text1: "Error! Could not apply for this shift",

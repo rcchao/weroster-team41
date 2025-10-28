@@ -5,7 +5,6 @@ import { Campus, UpcomingCampusEvent } from "../../../backend/src/types/campus.t
 export const campusApi = {
   getUpcomingCampusEvents: async () => {
     const response = await api.get<ApiResponse<UpcomingCampusEvent[]>>(`/campus/next-shift`)
-    console.log("\n\n[campusApi.getUpcomingCampusEvents] response:", response.data)
 
     if (response.ok && response.data) {
       return response.data
@@ -18,7 +17,6 @@ export const campusApi = {
 
   getCampusByLocationId: async (locationId: number) => {
     const response = await api.get<ApiResponse<Campus>>(`/campus/${locationId}`)
-    console.log("\n\n[campusApi.getCampusByLocationId] response:", response.data)
 
     if (response.ok && response.data) {
       return response.data

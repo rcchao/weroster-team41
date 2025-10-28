@@ -14,7 +14,6 @@ const TeamRosterShiftTabBar = ({ timeSection, setTimeSection }: TeamRosterShiftT
   const theme = useTheme()
 
   const handlePress = (section: TimeSection) => {
-    console.log(section)
     setTimeSection(section)
   }
 

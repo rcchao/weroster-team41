@@ -126,16 +126,8 @@ export function useNavigationPersistence(storage: Storage, persistenceKey: strin
   const routeNameRef = useRef<keyof AppStackParamList | undefined>(undefined)
 
   const onNavigationStateChange = (state: NavigationState | undefined) => {
-    const previousRouteName = routeNameRef.current
     if (state !== undefined) {
       const currentRouteName = getActiveRouteName(state)
-
-      if (previousRouteName !== currentRouteName) {
-        // track screens.
-        if (__DEV__) {
-          console.log(currentRouteName)
-        }
-      }
 
       // Save the current route name for later comparison
       routeNameRef.current = currentRouteName as keyof AppStackParamList
