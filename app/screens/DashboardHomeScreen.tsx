@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { FC, ReactElement } from "react"
 import { View } from "react-native"
-import { YStack } from "tamagui"
+import { YStack, Button } from "tamagui"
 
-import { Button } from "@/components/Button"
 import { AllocatedShiftDashboardCard } from "@/components/DashboardCards/AllocatedShiftDashboardCard"
 import { LeaveRequestDashboardCard } from "@/components/DashboardCards/LeaveRequestDashboardCard"
 import { OpenShiftDashboardCard } from "@/components/DashboardCards/OpenShiftDashboardCard"
@@ -168,7 +167,7 @@ export const DashboardHomeScreen: FC<DashboardTabScreenProps<"DashboardHome">> =
         {/* FAB positioned relative to the outer View */}
         <Button
           style={themed($fabButton)}
-          // navigates to blank edit screen for now
+          borderRadius="$6"
           onPress={() => navigation.getParent()?.navigate("EditDashboard")}
         >
           <Icon icon="edit" size={18} color="black" />
