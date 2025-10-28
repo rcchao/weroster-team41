@@ -8,7 +8,7 @@
     "build": "tsc",
     "start": "node dist/app.js",
     "dev": "nodemon --watch src --exec ts-node src/app.ts",
-    "generate-schemas": "node src/scripts/generate-schemas.js"
+    "generate-schemas": "node dist/scripts/generate-schemas.js"
   },
   "keywords": [],
   "author": "",

@@ -64,7 +64,7 @@
     "AssignmentRequestNotification": {
       "properties": {
         "assignmentRequest": {
-          "$ref": "#/definitions/{id:number;event:{id:number;start_time:Date;end_time:Date;activity:{name:string;}|null;location:{name:string;};};status:$Enums.RequestStatus;}"
+          "$ref": "#/definitions/{id:number;status:$Enums.RequestStatus;event:{id:number;activity:{name:string;}|null;start_time:Date;end_time:Date;location:{name:string;};};}"
         },
         "created_at": {
           "format": "date-time",
@@ -98,7 +98,7 @@
           "type": "string"
         },
         "user": {
-          "$ref": "#/definitions/Omit<{id:number;campus_id:number|null;hospital_id:number;designation_id:number|null;first_name:string;last_name:string;email:string;password:string;phone:string|null;role:string|null;preference:$Enums.Preference|null;},\"password\">"
+          "$ref": "#/definitions/Omit<{id:number;hospital_id:number;designation_id:number|null;campus_id:number|null;first_name:string;last_name:string;email:string;password:string;phone:string|null;role:string|null;preference:$Enums.Preference|null;},\"password\">"
         }
       },
       "required": ["token", "user"],
@@ -126,7 +126,7 @@
         },
         "locations": {
           "items": {
-            "$ref": "#/definitions/{id:number;name:string;events:{id:number;start_time:Date;end_time:Date;on_call:boolean;activity:{id:number;name:string;activityGroup:{id:number;name:string|null;}|null;}|null;eventAssignments:{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}[];eventSessions:{id:number;session:$Enums.Session;}[];}[];}"
+            "$ref": "#/definitions/{name:string;id:number;events:{id:number;activity:{name:string;id:number;activityGroup:{name:string|null;id:number;}|null;}|null;start_time:Date;end_time:Date;on_call:boolean;eventAssignments:{id:number;designation:{id:number;title:string;description:string|null;}|null;user:{id:number;first_name:string;last_name:string;};}[];eventSessions:{id:number;session:$Enums.Session;}[];}[];}"
           },
           "type": "array"
         },
@@ -230,7 +230,7 @@
           "type": "boolean"
         },
         "leave": {
-          "$ref": "#/definitions/{id:number;start_date:Date;end_date:Date;status:$Enums.RequestStatus;leaveType:$Enums.LeaveType;}"
+          "$ref": "#/definitions/{id:number;status:$Enums.RequestStatus;start_date:Date;end_date:Date;leaveType:$Enums.LeaveType;}"
         },
         "requires_action": {
           "type": "boolean"
@@ -251,7 +251,7 @@
       "required": ["email", "password"],
       "type": "object"
     },
-    "Omit<{id:number;campus_id:number|null;hospital_id:number;designation_id:number|null;first_name:string;last_name:string;email:string;password:string;phone:string|null;role:string|null;preference:$Enums.Preference|null;},\"password\">": {
+    "Omit<{id:number;hospital_id:number;designation_id:number|null;campus_id:number|null;first_name:string;last_name:string;email:string;password:string;phone:string|null;role:string|null;preference:$Enums.Preference|null;},\"password\">": {
       "properties": {
         "campus_id": {
           "type": ["null", "number"]
@@ -412,7 +412,7 @@
     "ProfileData": {
       "properties": {
         "campus": {
-          "$ref": "#/definitions/{id:number;name:string;hospital_id:number|null;}",
+          "$ref": "#/definitions/{name:string;id:number;hospital_id:number|null;}",
           "nullable": true
         },
         "designation": {
@@ -426,7 +426,7 @@
           "type": "string"
         },
         "hospital": {
-          "$ref": "#/definitions/{id:number;name:string;address:string|null;}_1"
+          "$ref": "#/definitions/{name:string;id:number;address:string|null;}_1"
         },
         "id": {
           "type": "number"
@@ -465,7 +465,7 @@
     "ShiftDetails": {
       "properties": {
         "activity": {
-          "$ref": "#/definitions/{id:number;location_id:number|null;name:string;group_id:number|null;}",
+          "$ref": "#/definitions/{name:string;id:number;group_id:number|null;location_id:number|null;}",
           "nullable": true
         },
         "end_time": {
@@ -474,7 +474,7 @@
         },
         "eventAssignments": {
           "items": {
-            "$ref": "#/definitions/{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}"
+            "$ref": "#/definitions/{id:number;designation:{id:number;title:string;description:string|null;}|null;user:{id:number;first_name:string;last_name:string;};}"
           },
           "type": "array"
         },
@@ -488,7 +488,7 @@
           "type": "number"
         },
         "location": {
-          "$ref": "#/definitions/{id:number;name:string;campus:{id:number;name:string;address:string|null;};}"
+          "$ref": "#/definitions/{name:string;id:number;campus:{name:string;id:number;address:string|null;};}"
         },
         "on_call": {
           "type": "boolean"
@@ -517,7 +517,7 @@
     "ShiftWithLocation": {
       "properties": {
         "activity": {
-          "$ref": "#/definitions/{id:number;name:string;}",
+          "$ref": "#/definitions/{name:string;id:number;}",
           "nullable": true
         },
         "end_time": {
@@ -534,7 +534,7 @@
           "type": "number"
         },
         "location": {
-          "$ref": "#/definitions/{id:number;name:string;campus:{id:number;name:string;};}"
+          "$ref": "#/definitions/{name:string;id:number;campus:{name:string;id:number;};}"
         },
         "on_call": {
           "type": "boolean"
@@ -865,10 +865,10 @@
           "type": "object"
         },
         "swap": {
-          "$ref": "#/definitions/{id:number;event_id:number;status:$Enums.RequestStatus;to_user:number;from_user:number;message:string|null;}"
+          "$ref": "#/definitions/{id:number;status:$Enums.RequestStatus;event_id:number;message:string|null;from_user:number;to_user:number;}"
         },
         "swapped_event_assignment": {
-          "$ref": "#/definitions/{id:number;event_id:number;user_id:number;}"
+          "$ref": "#/definitions/{id:number;user_id:number;event_id:number;}"
         },
         "updated_notification": {
           "properties": {
@@ -1069,10 +1069,10 @@
     "SwapWithNotificationPostResponse": {
       "properties": {
         "notification": {
-          "$ref": "#/definitions/{id:number;created_at:Date;is_read:boolean;requires_action:boolean;to_user:number;from_user:number;swap_request:number;}"
+          "$ref": "#/definitions/{id:number;created_at:Date;is_read:boolean;requires_action:boolean;from_user:number;to_user:number;swap_request:number;}"
         },
         "swap": {
-          "$ref": "#/definitions/{id:number;event_id:number;status:$Enums.RequestStatus;to_user:number;from_user:number;message:string|null;}"
+          "$ref": "#/definitions/{id:number;status:$Enums.RequestStatus;event_id:number;message:string|null;from_user:number;to_user:number;}"
         }
       },
       "required": ["notification", "swap"],
@@ -1091,7 +1091,7 @@
           "type": ["null", "number"]
         },
         "event": {
-          "$ref": "#/definitions/{start_time:Date;end_time:Date;location:{id:number;name:string;campus:{id:number;name:string;};};}"
+          "$ref": "#/definitions/{start_time:Date;end_time:Date;location:{name:string;id:number;campus:{name:string;id:number;};};}"
         },
         "event_id": {
           "type": "number"
@@ -1232,7 +1232,75 @@
       "required": ["first_name", "last_name"],
       "type": "object"
     },
-    "{id:number;created_at:Date;is_read:boolean;requires_action:boolean;to_user:number;from_user:number;swap_request:number;}": {
+    "{id:number;activity:{name:string;id:number;activityGroup:{name:string|null;id:number;}|null;}|null;start_time:Date;end_time:Date;on_call:boolean;eventAssignments:{id:number;designation:{id:number;title:string;description:string|null;}|null;user:{id:number;first_name:string;last_name:string;};}[];eventSessions:{id:number;session:$Enums.Session;}[];}": {
+      "properties": {
+        "activity": {
+          "$ref": "#/definitions/{name:string;id:number;activityGroup:{name:string|null;id:number;}|null;}",
+          "nullable": true
+        },
+        "end_time": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "eventAssignments": {
+          "items": {
+            "$ref": "#/definitions/{id:number;designation:{id:number;title:string;description:string|null;}|null;user:{id:number;first_name:string;last_name:string;};}_1"
+          },
+          "type": "array"
+        },
+        "eventSessions": {
+          "items": {
+            "$ref": "#/definitions/{id:number;session:$Enums.Session;}"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "number"
+        },
+        "on_call": {
+          "type": "boolean"
+        },
+        "start_time": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "activity",
+        "end_time",
+        "eventAssignments",
+        "eventSessions",
+        "id",
+        "on_call",
+        "start_time"
+      ],
+      "type": "object"
+    },
+    "{id:number;activity:{name:string;}|null;start_time:Date;end_time:Date;location:{name:string;};}": {
+      "properties": {
+        "activity": {
+          "$ref": "#/definitions/{name:string;}",
+          "nullable": true
+        },
+        "end_time": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "location": {
+          "$ref": "#/definitions/{name:string;}_1"
+        },
+        "start_time": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": ["activity", "end_time", "id", "location", "start_time"],
+      "type": "object"
+    },
+    "{id:number;created_at:Date;is_read:boolean;requires_action:boolean;from_user:number;to_user:number;swap_request:number;}": {
       "properties": {
         "created_at": {
           "format": "date-time",
@@ -1268,58 +1336,36 @@
       ],
       "type": "object"
     },
-    "{id:number;event:{id:number;start_time:Date;end_time:Date;activity:{name:string;}|null;location:{name:string;};};status:$Enums.RequestStatus;}": {
+    "{id:number;designation:{id:number;title:string;description:string|null;}|null;user:{id:number;first_name:string;last_name:string;};}": {
       "properties": {
-        "event": {
-          "$ref": "#/definitions/{id:number;start_time:Date;end_time:Date;activity:{name:string;}|null;location:{name:string;};}"
+        "designation": {
+          "$ref": "#/definitions/{id:number;title:string;description:string|null;}",
+          "nullable": true
         },
         "id": {
           "type": "number"
         },
-        "status": {
-          "$ref": "#/definitions/$Enums.RequestStatus"
+        "user": {
+          "$ref": "#/definitions/{id:number;first_name:string;last_name:string;}"
         }
       },
-      "required": ["event", "id", "status"],
+      "required": ["designation", "id", "user"],
       "type": "object"
     },
-    "{id:number;event_id:number;status:$Enums.RequestStatus;to_user:number;from_user:number;message:string|null;}": {
+    "{id:number;designation:{id:number;title:string;description:string|null;}|null;user:{id:number;first_name:string;last_name:string;};}_1": {
       "properties": {
-        "event_id": {
-          "type": "number"
-        },
-        "from_user": {
-          "type": "number"
+        "designation": {
+          "$ref": "#/definitions/{id:number;title:string;description:string|null;}_1",
+          "nullable": true
         },
         "id": {
           "type": "number"
         },
-        "message": {
-          "type": ["null", "string"]
-        },
-        "status": {
-          "$ref": "#/definitions/$Enums.RequestStatus"
-        },
-        "to_user": {
-          "type": "number"
+        "user": {
+          "$ref": "#/definitions/{id:number;first_name:string;last_name:string;}_1"
         }
       },
-      "required": ["event_id", "from_user", "id", "message", "status", "to_user"],
-      "type": "object"
-    },
-    "{id:number;event_id:number;user_id:number;}": {
-      "properties": {
-        "event_id": {
-          "type": "number"
-        },
-        "id": {
-          "type": "number"
-        },
-        "user_id": {
-          "type": "number"
-        }
-      },
-      "required": ["event_id", "id", "user_id"],
+      "required": ["designation", "id", "user"],
       "type": "object"
     },
     "{id:number;first_name:string;last_name:string;}": {
@@ -1367,196 +1413,6 @@
       "required": ["first_name", "id", "last_name"],
       "type": "object"
     },
-    "{id:number;location_id:number|null;name:string;group_id:number|null;}": {
-      "properties": {
-        "group_id": {
-          "type": ["null", "number"]
-        },
-        "id": {
-          "type": "number"
-        },
-        "location_id": {
-          "type": ["null", "number"]
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["group_id", "id", "location_id", "name"],
-      "type": "object"
-    },
-    "{id:number;name:string;activityGroup:{id:number;name:string|null;}|null;}": {
-      "properties": {
-        "activityGroup": {
-          "$ref": "#/definitions/{id:number;name:string|null;}",
-          "nullable": true
-        },
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["activityGroup", "id", "name"],
-      "type": "object"
-    },
-    "{id:number;name:string;address:string|null;}": {
-      "properties": {
-        "address": {
-          "type": ["null", "string"]
-        },
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["address", "id", "name"],
-      "type": "object"
-    },
-    "{id:number;name:string;address:string|null;}_1": {
-      "properties": {
-        "address": {
-          "type": ["null", "string"]
-        },
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["address", "id", "name"],
-      "type": "object"
-    },
-    "{id:number;name:string;campus:{id:number;name:string;address:string|null;};}": {
-      "properties": {
-        "campus": {
-          "$ref": "#/definitions/{id:number;name:string;address:string|null;}"
-        },
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["campus", "id", "name"],
-      "type": "object"
-    },
-    "{id:number;name:string;campus:{id:number;name:string;};}": {
-      "properties": {
-        "campus": {
-          "$ref": "#/definitions/{id:number;name:string;}_1"
-        },
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["campus", "id", "name"],
-      "type": "object"
-    },
-    "{id:number;name:string;campus:{id:number;name:string;};}_1": {
-      "properties": {
-        "campus": {
-          "$ref": "#/definitions/{id:number;name:string;}_2"
-        },
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["campus", "id", "name"],
-      "type": "object"
-    },
-    "{id:number;name:string;events:{id:number;start_time:Date;end_time:Date;on_call:boolean;activity:{id:number;name:string;activityGroup:{id:number;name:string|null;}|null;}|null;eventAssignments:{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}[];eventSessions:{id:number;session:$Enums.Session;}[];}[];}": {
-      "properties": {
-        "events": {
-          "items": {
-            "$ref": "#/definitions/{id:number;start_time:Date;end_time:Date;on_call:boolean;activity:{id:number;name:string;activityGroup:{id:number;name:string|null;}|null;}|null;eventAssignments:{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}[];eventSessions:{id:number;session:$Enums.Session;}[];}"
-          },
-          "type": "array"
-        },
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["events", "id", "name"],
-      "type": "object"
-    },
-    "{id:number;name:string;hospital_id:number|null;}": {
-      "properties": {
-        "hospital_id": {
-          "type": ["null", "number"]
-        },
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["hospital_id", "id", "name"],
-      "type": "object"
-    },
-    "{id:number;name:string;}": {
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["id", "name"],
-      "type": "object"
-    },
-    "{id:number;name:string;}_1": {
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["id", "name"],
-      "type": "object"
-    },
-    "{id:number;name:string;}_2": {
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": ["id", "name"],
-      "type": "object"
-    },
-    "{id:number;name:string|null;}": {
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": ["null", "string"]
-        }
-      },
-      "required": ["id", "name"],
-      "type": "object"
-    },
     "{id:number;session:$Enums.Session;}": {
       "properties": {
         "id": {
@@ -1567,97 +1423,6 @@
         }
       },
       "required": ["id", "session"],
-      "type": "object"
-    },
-    "{id:number;start_date:Date;end_date:Date;status:$Enums.RequestStatus;leaveType:$Enums.LeaveType;}": {
-      "properties": {
-        "end_date": {
-          "format": "date-time",
-          "type": "string"
-        },
-        "id": {
-          "type": "number"
-        },
-        "leaveType": {
-          "$ref": "#/definitions/$Enums.LeaveType"
-        },
-        "start_date": {
-          "format": "date-time",
-          "type": "string"
-        },
-        "status": {
-          "$ref": "#/definitions/$Enums.RequestStatus"
-        }
-      },
-      "required": ["end_date", "id", "leaveType", "start_date", "status"],
-      "type": "object"
-    },
-    "{id:number;start_time:Date;end_time:Date;activity:{name:string;}|null;location:{name:string;};}": {
-      "properties": {
-        "activity": {
-          "$ref": "#/definitions/{name:string;}",
-          "nullable": true
-        },
-        "end_time": {
-          "format": "date-time",
-          "type": "string"
-        },
-        "id": {
-          "type": "number"
-        },
-        "location": {
-          "$ref": "#/definitions/{name:string;}_1"
-        },
-        "start_time": {
-          "format": "date-time",
-          "type": "string"
-        }
-      },
-      "required": ["activity", "end_time", "id", "location", "start_time"],
-      "type": "object"
-    },
-    "{id:number;start_time:Date;end_time:Date;on_call:boolean;activity:{id:number;name:string;activityGroup:{id:number;name:string|null;}|null;}|null;eventAssignments:{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}[];eventSessions:{id:number;session:$Enums.Session;}[];}": {
-      "properties": {
-        "activity": {
-          "$ref": "#/definitions/{id:number;name:string;activityGroup:{id:number;name:string|null;}|null;}",
-          "nullable": true
-        },
-        "end_time": {
-          "format": "date-time",
-          "type": "string"
-        },
-        "eventAssignments": {
-          "items": {
-            "$ref": "#/definitions/{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}_1"
-          },
-          "type": "array"
-        },
-        "eventSessions": {
-          "items": {
-            "$ref": "#/definitions/{id:number;session:$Enums.Session;}"
-          },
-          "type": "array"
-        },
-        "id": {
-          "type": "number"
-        },
-        "on_call": {
-          "type": "boolean"
-        },
-        "start_time": {
-          "format": "date-time",
-          "type": "string"
-        }
-      },
-      "required": [
-        "activity",
-        "end_time",
-        "eventAssignments",
-        "eventSessions",
-        "id",
-        "on_call",
-        "start_time"
-      ],
       "type": "object"
     },
     "{id:number;start_time:Date;end_time:Date;}": {
@@ -1692,6 +1457,68 @@
         }
       },
       "required": ["end_time", "id", "start_time"],
+      "type": "object"
+    },
+    "{id:number;status:$Enums.RequestStatus;event:{id:number;activity:{name:string;}|null;start_time:Date;end_time:Date;location:{name:string;};};}": {
+      "properties": {
+        "event": {
+          "$ref": "#/definitions/{id:number;activity:{name:string;}|null;start_time:Date;end_time:Date;location:{name:string;};}"
+        },
+        "id": {
+          "type": "number"
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        }
+      },
+      "required": ["event", "id", "status"],
+      "type": "object"
+    },
+    "{id:number;status:$Enums.RequestStatus;event_id:number;message:string|null;from_user:number;to_user:number;}": {
+      "properties": {
+        "event_id": {
+          "type": "number"
+        },
+        "from_user": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "message": {
+          "type": ["null", "string"]
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        },
+        "to_user": {
+          "type": "number"
+        }
+      },
+      "required": ["event_id", "from_user", "id", "message", "status", "to_user"],
+      "type": "object"
+    },
+    "{id:number;status:$Enums.RequestStatus;start_date:Date;end_date:Date;leaveType:$Enums.LeaveType;}": {
+      "properties": {
+        "end_date": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "leaveType": {
+          "$ref": "#/definitions/$Enums.LeaveType"
+        },
+        "start_date": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/$Enums.RequestStatus"
+        }
+      },
+      "required": ["end_date", "id", "leaveType", "start_date", "status"],
       "type": "object"
     },
     "{id:number;title:string;description:string|null;}": {
@@ -1739,38 +1566,6 @@
       "required": ["description", "id", "title"],
       "type": "object"
     },
-    "{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}": {
-      "properties": {
-        "designation": {
-          "$ref": "#/definitions/{id:number;title:string;description:string|null;}",
-          "nullable": true
-        },
-        "id": {
-          "type": "number"
-        },
-        "user": {
-          "$ref": "#/definitions/{id:number;first_name:string;last_name:string;}"
-        }
-      },
-      "required": ["designation", "id", "user"],
-      "type": "object"
-    },
-    "{id:number;user:{id:number;first_name:string;last_name:string;};designation:{id:number;title:string;description:string|null;}|null;}_1": {
-      "properties": {
-        "designation": {
-          "$ref": "#/definitions/{id:number;title:string;description:string|null;}_1",
-          "nullable": true
-        },
-        "id": {
-          "type": "number"
-        },
-        "user": {
-          "$ref": "#/definitions/{id:number;first_name:string;last_name:string;}_1"
-        }
-      },
-      "required": ["designation", "id", "user"],
-      "type": "object"
-    },
     "{id:number;user:{id:number;first_name:string;last_name:string;};}": {
       "properties": {
         "id": {
@@ -1781,6 +1576,199 @@
         }
       },
       "required": ["id", "user"],
+      "type": "object"
+    },
+    "{id:number;user_id:number;event_id:number;}": {
+      "properties": {
+        "event_id": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "user_id": {
+          "type": "number"
+        }
+      },
+      "required": ["event_id", "id", "user_id"],
+      "type": "object"
+    },
+    "{name:string;id:number;activityGroup:{name:string|null;id:number;}|null;}": {
+      "properties": {
+        "activityGroup": {
+          "$ref": "#/definitions/{name:string|null;id:number;}",
+          "nullable": true
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["activityGroup", "id", "name"],
+      "type": "object"
+    },
+    "{name:string;id:number;address:string|null;}": {
+      "properties": {
+        "address": {
+          "type": ["null", "string"]
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["address", "id", "name"],
+      "type": "object"
+    },
+    "{name:string;id:number;address:string|null;}_1": {
+      "properties": {
+        "address": {
+          "type": ["null", "string"]
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["address", "id", "name"],
+      "type": "object"
+    },
+    "{name:string;id:number;campus:{name:string;id:number;address:string|null;};}": {
+      "properties": {
+        "campus": {
+          "$ref": "#/definitions/{name:string;id:number;address:string|null;}"
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["campus", "id", "name"],
+      "type": "object"
+    },
+    "{name:string;id:number;campus:{name:string;id:number;};}": {
+      "properties": {
+        "campus": {
+          "$ref": "#/definitions/{name:string;id:number;}_1"
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["campus", "id", "name"],
+      "type": "object"
+    },
+    "{name:string;id:number;campus:{name:string;id:number;};}_1": {
+      "properties": {
+        "campus": {
+          "$ref": "#/definitions/{name:string;id:number;}_2"
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["campus", "id", "name"],
+      "type": "object"
+    },
+    "{name:string;id:number;events:{id:number;activity:{name:string;id:number;activityGroup:{name:string|null;id:number;}|null;}|null;start_time:Date;end_time:Date;on_call:boolean;eventAssignments:{id:number;designation:{id:number;title:string;description:string|null;}|null;user:{id:number;first_name:string;last_name:string;};}[];eventSessions:{id:number;session:$Enums.Session;}[];}[];}": {
+      "properties": {
+        "events": {
+          "items": {
+            "$ref": "#/definitions/{id:number;activity:{name:string;id:number;activityGroup:{name:string|null;id:number;}|null;}|null;start_time:Date;end_time:Date;on_call:boolean;eventAssignments:{id:number;designation:{id:number;title:string;description:string|null;}|null;user:{id:number;first_name:string;last_name:string;};}[];eventSessions:{id:number;session:$Enums.Session;}[];}"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["events", "id", "name"],
+      "type": "object"
+    },
+    "{name:string;id:number;group_id:number|null;location_id:number|null;}": {
+      "properties": {
+        "group_id": {
+          "type": ["null", "number"]
+        },
+        "id": {
+          "type": "number"
+        },
+        "location_id": {
+          "type": ["null", "number"]
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["group_id", "id", "location_id", "name"],
+      "type": "object"
+    },
+    "{name:string;id:number;hospital_id:number|null;}": {
+      "properties": {
+        "hospital_id": {
+          "type": ["null", "number"]
+        },
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["hospital_id", "id", "name"],
+      "type": "object"
+    },
+    "{name:string;id:number;}": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "name"],
+      "type": "object"
+    },
+    "{name:string;id:number;}_1": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "name"],
+      "type": "object"
+    },
+    "{name:string;id:number;}_2": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "name"],
       "type": "object"
     },
     "{name:string;}": {
@@ -1801,6 +1789,18 @@
       "required": ["name"],
       "type": "object"
     },
+    "{name:string|null;id:number;}": {
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": ["null", "string"]
+        }
+      },
+      "required": ["id", "name"],
+      "type": "object"
+    },
     "{session:$Enums.Session;}": {
       "properties": {
         "session": {
@@ -1810,14 +1810,14 @@
       "required": ["session"],
       "type": "object"
     },
-    "{start_time:Date;end_time:Date;location:{id:number;name:string;campus:{id:number;name:string;};};}": {
+    "{start_time:Date;end_time:Date;location:{name:string;id:number;campus:{name:string;id:number;};};}": {
       "properties": {
         "end_time": {
           "format": "date-time",
           "type": "string"
         },
         "location": {
-          "$ref": "#/definitions/{id:number;name:string;campus:{id:number;name:string;};}_1"
+          "$ref": "#/definitions/{name:string;id:number;campus:{name:string;id:number;};}_1"
         },
         "start_time": {
           "format": "date-time",
