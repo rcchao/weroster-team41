@@ -3,8 +3,6 @@ import { ReactNode, forwardRef, ForwardedRef } from "react"
 import { StyleProp, Text as RNText, TextProps as RNTextProps, TextStyle } from "react-native"
 import { TOptions } from "i18next"
 
-import { isRTL, TxKeyPath } from "@/i18n"
-import { translate } from "@/i18n/translate"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle, ThemedStyleArray } from "@/theme/types"
 import { typography } from "@/theme/typography"
@@ -14,10 +12,6 @@ type Weights = keyof typeof typography.primary
 type Presets = "default" | "bold" | "heading" | "subheading" | "formLabel" | "formHelper"
 
 export interface TextProps extends RNTextProps {
-  /**
-   * Text which is looked up via i18n.
-   */
-  tx?: TxKeyPath
   /**
    * The text to display if not using `tx` or nested components.
    */
@@ -57,11 +51,10 @@ export interface TextProps extends RNTextProps {
  * @returns {JSX.Element} The rendered `Text` component.
  */
 export const Text = forwardRef(function Text(props: TextProps, ref: ForwardedRef<RNText>) {
-  const { weight, size, tx, txOptions, text, children, style: $styleOverride, ...rest } = props
+  const { weight, size, text, children, style: $styleOverride, ...rest } = props
   const { themed } = useAppTheme()
 
-  const i18nText = tx && translate(tx, txOptions)
-  const content = i18nText || text || children
+  const content = text || children
 
   const preset: Presets = props.preset ?? "default"
   const $styles: StyleProp<TextStyle> = [
@@ -113,4 +106,4 @@ const $presets: Record<Presets, ThemedStyleArray<TextStyle>> = {
   formLabel: [$baseStyle, { ...$fontWeightStyles.regular }],
   formHelper: [$baseStyle, { ...$sizeStyles.sm, ...$fontWeightStyles.regular }],
 }
-const $rtlStyle: TextStyle = isRTL ? { writingDirection: "rtl" } : {}
+const $rtlStyle: TextStyle = {}

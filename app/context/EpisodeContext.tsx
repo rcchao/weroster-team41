@@ -8,7 +8,6 @@ import {
   useState,
 } from "react"
 
-import { translate } from "@/i18n/translate"
 import { api } from "@/services/api"
 import type { EpisodeItem } from "@/services/api/types"
 import { formatDate } from "@/utils/formatDate"
@@ -97,9 +96,7 @@ export const useEpisode = (episode: EpisodeItem) => {
     const formatted = formatDate(episode.pubDate)
     datePublished = {
       textLabel: formatted,
-      accessibilityLabel: translate("dashboardRequestsScreen:accessibility.publishLabel", {
-        date: formatted,
-      }),
+      accessibilityLabel: "",
     }
   } catch {
     datePublished = { textLabel: "", accessibilityLabel: "" }
@@ -111,11 +108,7 @@ export const useEpisode = (episode: EpisodeItem) => {
   const s = Math.floor((seconds % 3600) % 60)
   const duration = {
     textLabel: `${h > 0 ? `${h}:` : ""}${m > 0 ? `${m}:` : ""}${s}`,
-    accessibilityLabel: translate("dashboardRequestsScreen:accessibility.durationLabel", {
-      hours: h,
-      minutes: m,
-      seconds: s,
-    }),
+    accessibilityLabel: "",
   }
 
   const trimmedTitle = episode.title?.trim()

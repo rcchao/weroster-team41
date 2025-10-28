@@ -29,8 +29,7 @@ export function ErrorDetails(props: ErrorDetailsProps) {
     >
       <View style={$topSection}>
         <Icon icon="anchor" size={64} />
-        <Text style={themed($heading)} preset="subheading" tx="errorScreen:title" />
-        <Text tx="errorScreen:friendlySubtitle" />
+        <Text style={themed($heading)} preset="subheading" />
       </View>
 
       <ScrollView
@@ -45,12 +44,7 @@ export function ErrorDetails(props: ErrorDetailsProps) {
         />
       </ScrollView>
 
-      <Button
-        preset="reversed"
-        style={themed($resetButton)}
-        onPress={props.onReset}
-        tx="errorScreen:reset"
-      />
+      <Button preset="reversed" style={themed($resetButton)} onPress={props.onReset} />
     </Screen>
   )
 }

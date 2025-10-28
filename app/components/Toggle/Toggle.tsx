@@ -69,10 +69,6 @@ export interface ToggleProps<T> extends Omit<TouchableOpacityProps, "style"> {
    */
   label?: TextProps["text"]
   /**
-   * Label text which is looked up via i18n.
-   */
-  labelTx?: TextProps["tx"]
-  /**
    * Optional label options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
    */
@@ -89,10 +85,6 @@ export interface ToggleProps<T> extends Omit<TouchableOpacityProps, "style"> {
    * The helper text to display if not using `helperTx`.
    */
   helper?: TextProps["text"]
-  /**
-   * Helper text which is looked up via i18n.
-   */
-  helperTx?: TextProps["tx"]
   /**
    * Optional helper options to pass to i18n. Useful for interpolation
    * as well as explicitly setting locale or translation fallbacks.
@@ -132,7 +124,6 @@ export function Toggle<T>(props: ToggleProps<T>) {
     onValueChange,
     labelPosition = "right",
     helper,
-    helperTx,
     helperTxOptions,
     HelperTextProps,
     containerStyle: $containerStyleOverride,
@@ -195,11 +186,10 @@ export function Toggle<T>(props: ToggleProps<T>) {
         {labelPosition === "right" && <FieldLabel<T> {...props} labelPosition={labelPosition} />}
       </View>
 
-      {!!(helper || helperTx) && (
+      {!!helper && (
         <Text
           preset="formHelper"
           text={helper}
-          tx={helperTx}
           txOptions={helperTxOptions}
           {...HelperTextProps}
           style={$helperStyles}
@@ -217,7 +207,6 @@ function FieldLabel<T>(props: ToggleProps<T>) {
   const {
     status,
     label,
-    labelTx,
     labelTxOptions,
     LabelTextProps,
     labelPosition,
@@ -229,7 +218,7 @@ function FieldLabel<T>(props: ToggleProps<T>) {
     themed,
   } = useAppTheme()
 
-  if (!label && !labelTx && !LabelTextProps?.children) return null
+  if (!label && !LabelTextProps?.children) return null
 
   const $labelStyle = themed([
     $label,
@@ -244,7 +233,6 @@ function FieldLabel<T>(props: ToggleProps<T>) {
     <Text
       preset="formLabel"
       text={label}
-      tx={labelTx}
       txOptions={labelTxOptions}
       {...LabelTextProps}
       style={$labelStyle}
