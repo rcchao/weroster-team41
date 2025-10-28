@@ -52,7 +52,6 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
         type: "server",
         message: "Incorrect email or password.",
       })
-      console.log("Authentication failed.")
       passwordInput.current?.focus()
     }
   }

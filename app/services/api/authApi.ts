@@ -45,7 +45,6 @@ export const authApi = {
 
   getProfile: async (userId: number) => {
     const response = await api.get<ApiResponse<ProfileData>>(`/auth/profile/${userId}`)
-    console.log("\n\n[authApi.getProfile] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }
@@ -57,7 +56,6 @@ export const authApi = {
 
   updateProfile: async (profileUpdate: UpdateProfileData) => {
     const response = await api.patch<ApiResponse<ProfileData>>(`/auth/profile`, profileUpdate)
-    console.log("\n\n[authApi.updateProfile] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }

@@ -11,7 +11,6 @@ import {
 export const eventApi = {
   getMyShifts: async () => {
     const response = await api.get<ApiResponse<ShiftWithNumUsers[]>>("/events/my-shifts")
-    console.log("\n\n[eventApi.getMyShifts] response:", response.data)
 
     if (response.ok && response.data) {
       return response.data
@@ -24,7 +23,6 @@ export const eventApi = {
 
   getOpenShifts: async () => {
     const response = await api.get<ApiResponse<OpenShift[]>>("/events/open-shifts")
-    console.log("\n\n[eventApi.getOpenShifts] response:", response.data)
 
     if (response.ok && response.data) {
       return response.data
@@ -37,7 +35,6 @@ export const eventApi = {
 
   getShiftById: async (shiftId: number) => {
     const response = await api.get<ApiResponse<ShiftWithNumUsers>>(`/events/${shiftId}`)
-    console.log("\n\n[eventApi.getShiftById] response:", response.data)
 
     if (response.ok && response.data) {
       return response.data
@@ -64,7 +61,6 @@ export const eventApi = {
       selectedCampuses: selectedCampuses.join(","),
       selectedShowLocWithShifts,
     })
-    console.log("\n\n[eventApi.getTeamShifts] response:", response.data)
 
     if (response.ok && response.data) {
       return response.data
@@ -80,7 +76,6 @@ export const eventApi = {
       `/events/event-assignment/${eventAssignmentUpdate.event_id}`,
       eventAssignmentUpdate,
     )
-    console.log("\n\n[eventsApi.updateEventAssignment] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }

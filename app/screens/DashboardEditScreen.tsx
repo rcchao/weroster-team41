@@ -1,6 +1,7 @@
 import { FC } from "react"
 import { useState } from "react"
 import DraggableFlatList, { RenderItemParams } from "react-native-draggable-flatlist"
+import Toast from "react-native-toast-message"
 import { YStack } from "tamagui"
 import { Separator } from "tamagui"
 
@@ -94,16 +95,29 @@ export const DashboardEditScreen: FC<AppStackScreenProps<"EditDashboard">> =
     }
 
     const handleSavePress = async () => {
-      console.log(checkedStates)
       const payload: DashboardPreferences = DASHBOARD_CARDS.reduce((acc, card) => {
         acc[card.id] = !!checkedStates[card.id]
         return acc
       }, {} as DashboardPreferences)
       try {
         const data = await mutation.mutateAsync(payload)
-        console.log("Posted successfully:", data)
+        if (data.success) {
+          Toast.show({
+            type: "success",
+            text1: "Successfully updated dashboard preferences",
+          })
+        } else {
+          Toast.show({
+            type: "failure",
+            text1: "Error! Failed to update dashboard preferences",
+          })
+        }
       } catch (error) {
         console.error("Error posting:", error)
+        Toast.show({
+          type: "failure",
+          text1: "Error! Something went wrong",
+        })
       }
     }
 

@@ -22,7 +22,6 @@ export const requestsApi = {
     const url = `/requests/leave${queryString ? `?${queryString}` : ""}`
 
     const response = await api.get<ApiResponse<Leave[]>>(url)
-    console.log("\n\n[requestsApi.getLeaveRequests] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }
@@ -36,7 +35,6 @@ export const requestsApi = {
     const response = await api.get<ApiResponse<Assignment[]>>(
       `/requests/assignment?month=${month}&year=${year}`,
     )
-    console.log("\n\n[requestsApi.getAssignmentRequests] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }
@@ -51,7 +49,6 @@ export const requestsApi = {
       `/requests/assignment`,
       assignmentRequest,
     )
-    console.log("\n\n[requestsApi.setAssignmentRequests] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }
@@ -65,7 +62,6 @@ export const requestsApi = {
     const response = await api.get<ApiResponse<Swap[]>>(
       `/requests/swap?month=${month}&year=${year}`,
     )
-    console.log("\n\n[requestsApi.getSwapRequests] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }
@@ -80,7 +76,6 @@ export const requestsApi = {
       `/requests/swap`,
       swapRequest,
     )
-    console.log("\n\n[requestsApi.setSwapRequests] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }
@@ -95,7 +90,6 @@ export const requestsApi = {
       `/requests/swap/${swapRequestUpdate.id}`,
       swapRequestUpdate,
     )
-    console.log("\n\n[requestsApi.updateSwapRequests] response:", response.data)
     if (response.ok && response.data) {
       return response.data
     }

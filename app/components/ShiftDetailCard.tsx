@@ -142,13 +142,11 @@ const AcceptButton = ({ disabled, swapNotifId }: { disabled: boolean; swapNotifI
     try {
       const data = await mutation.mutateAsync(actionNotifPayload)
       if (data.success) {
-        console.log("Posted successfully", data)
         Toast.show({
           type: "success",
           text1: "Successfully accepted swap request",
         })
       } else {
-        console.log("Post failed", data.error)
         Toast.show({
           type: "failure",
           text1: "Error! Failed to accept swap request",
@@ -194,13 +192,11 @@ const DeclineButton = ({ disabled, swapNotifId }: { disabled: boolean; swapNotif
     try {
       const data = await mutation.mutateAsync(actionNotifPayload)
       if (data.success) {
-        console.log("Posted successfully", data)
         Toast.show({
           type: "success",
           text1: "Successfully declined swap request",
         })
       } else {
-        console.log("Post failed", data.error)
         Toast.show({
           type: "failure",
           text1: "Error! Failed to decline swap request",
