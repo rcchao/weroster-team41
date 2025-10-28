@@ -1,10 +1,10 @@
 import { ErrorInfo } from "react"
 import { ScrollView, TextStyle, View, ViewStyle } from "react-native"
+import { Button } from "tamagui"
 
-import { Button } from "@/components/Button"
+import { BodyText } from "@/components/BodyText"
 import { Icon } from "@/components/Icon"
 import { Screen } from "@/components/Screen"
-import { Text } from "@/components/Text"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
 
@@ -29,22 +29,21 @@ export function ErrorDetails(props: ErrorDetailsProps) {
     >
       <View style={$topSection}>
         <Icon icon="anchor" size={64} />
-        <Text style={themed($heading)} preset="subheading" />
+        <BodyText style={themed($heading)} />
       </View>
 
       <ScrollView
         style={themed($errorSection)}
         contentContainerStyle={themed($errorSectionContentContainer)}
       >
-        <Text style={themed($errorContent)} weight="bold" text={`${props.error}`.trim()} />
-        <Text
-          selectable
-          style={themed($errorBacktrace)}
-          text={`${props.errorInfo?.componentStack ?? ""}`.trim()}
-        />
+        <BodyText style={themed($errorContent)}>{props.error} </BodyText>
+        <BodyText selectable style={themed($errorBacktrace)}>
+          {" "}
+          {props.errorInfo}
+        </BodyText>
       </ScrollView>
 
-      <Button preset="reversed" style={themed($resetButton)} onPress={props.onReset} />
+      <Button style={themed($resetButton)} onPress={props.onReset} />
     </Screen>
   )
 }

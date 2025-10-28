@@ -29,7 +29,7 @@ import Toast, { ToastConfig } from "react-native-toast-message"
 import { TamaguiProvider, XStack } from "tamagui"
 
 import { BodyText } from "./components/BodyText"
-import { StyledIcon } from "./components/common/StyledIcon"
+import { StyledIcon } from "./components/Common/StyledIcon"
 import { AuthProvider } from "./context/AuthContext"
 import { initI18n } from "./i18n"
 import { AppNavigator } from "./navigators/AppNavigator"
