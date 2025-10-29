@@ -6,7 +6,7 @@ import { Avatar, Card, useTheme, XStack, YStack } from "tamagui"
 import type { AppStackParamList } from "@/navigators/AppNavigator"
 
 import { BodyText } from "./BodyText"
-import { StyledIcon } from "./common/StyledIcon"
+import { StyledIcon } from "./Common/StyledIcon"
 import { HeaderText } from "./HeaderText"
 import { PressableIcon } from "./Icon"
 

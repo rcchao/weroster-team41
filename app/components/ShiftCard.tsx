@@ -11,7 +11,7 @@ import { usePostAssignmentRequest } from "@/services/hooks/useUserRequests"
 import { ThemeProvider } from "@/theme/context"
 
 import { BodyText } from "./BodyText"
-import { StyledIcon } from "./common/StyledIcon"
+import { StyledIcon } from "./Common/StyledIcon"
 import { Icon, IconTypes } from "./Icon"
 import { ShiftDetailCard } from "./ShiftDetailCard"
 import {

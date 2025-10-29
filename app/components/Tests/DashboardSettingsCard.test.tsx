@@ -12,8 +12,8 @@ jest.mock("@/components/Icon", () => ({
   },
 }))
 
-jest.mock("@/components/Text", () => ({
-  Text: ({ children, style, testID }: any) => {
+jest.mock("@/components/BodyText", () => ({
+  BodyText: ({ children, style, testID }: any) => {
     const MockText = require("react-native").Text
     return (
       <MockText style={style} testID={testID}>

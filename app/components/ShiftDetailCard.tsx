@@ -10,7 +10,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useActionSwapRequestNotif } from "@/services/hooks/useActionSwapRequestNotifs"
 
 import { BodyText } from "./BodyText"
-import { StyledIcon } from "./common/StyledIcon"
+import { StyledIcon } from "./Common/StyledIcon"
 import { HeaderText } from "./HeaderText"
 import { Icon } from "./Icon"
 

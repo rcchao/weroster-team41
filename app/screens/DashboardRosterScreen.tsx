@@ -1,8 +1,8 @@
 import { FC } from "react"
 import { TextStyle } from "react-native"
 
+import { BodyText } from "@/components/BodyText"
 import { Screen } from "@/components/Screen"
-import { Text } from "@/components/Text"
 import { DashboardTabScreenProps } from "@/navigators/DashboardNavigator"
 import { useAppTheme } from "@/theme/context"
 import type { ThemedStyle } from "@/theme/types"
@@ -13,8 +13,8 @@ export const DashboardRosterScreen: FC<DashboardTabScreenProps<"DashboardRoster"
 
     return (
       <Screen preset="scroll">
-        <Text preset="heading" style={themed($title)} />
-        <Text style={themed($description)} />
+        <BodyText style={themed($title)} />
+        <BodyText style={themed($description)} />
       </Screen>
     )
   }

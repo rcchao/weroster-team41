@@ -3,7 +3,7 @@ import { differenceInHours, format } from "date-fns"
 import { Card, XStack, YStack } from "tamagui"
 
 import { BodyText } from "../BodyText"
-import { StyledIcon } from "../common/StyledIcon"
+import { StyledIcon } from "../Common/StyledIcon"
 import { HeaderText } from "../HeaderText"
 import { IconBadge } from "../IconBadge"
 import { Lozenge, LozengeType } from "../Lozenge"

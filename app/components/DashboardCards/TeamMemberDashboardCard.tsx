@@ -4,7 +4,7 @@ import { Avatar, Card, XStack, YStack } from "tamagui"
 import { getAbbreviatedName, getInitials } from "@/utils/nameFormatting"
 
 import { BodyText } from "../BodyText"
-import { StyledIcon } from "../common/StyledIcon"
+import { StyledIcon } from "../Common/StyledIcon"
 import { HeaderText } from "../HeaderText"
 
 interface TeamMemberDashboardCardProps {
