@@ -9,7 +9,6 @@ import { useTheme } from "tamagui"
 
 import { BottomDashboardNavBar } from "@/components/BottomDashboardNavBar"
 import { Icon } from "@/components/Icon"
-import { EpisodeProvider } from "@/context/EpisodeContext"
 import { DashboardHomeScreen } from "@/screens/DashboardHomeScreen"
 import { DashboardRequestsScreen } from "@/screens/DashboardRequestsScreen"
 import { DashboardTeamsScreen } from "@/screens/DashboardTeamsScreen"
@@ -63,80 +62,78 @@ export function DashboardNavigator() {
   )
 
   return (
-    <EpisodeProvider>
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-          tabBarHideOnKeyboard: true,
-          tabBarStyle: themed([$tabBar, { height: bottom + 70 }]),
-          tabBarActiveTintColor: colors.text,
-          tabBarInactiveTintColor: colors.text,
-          tabBarLabelStyle: themed($tabBarLabel),
-          tabBarItemStyle: themed($tabBarItem),
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarHideOnKeyboard: true,
+        tabBarStyle: themed([$tabBar, { height: bottom + 70 }]),
+        tabBarActiveTintColor: colors.text,
+        tabBarInactiveTintColor: colors.text,
+        tabBarLabelStyle: themed($tabBarLabel),
+        tabBarItemStyle: themed($tabBarItem),
+      }}
+      tabBar={(props) => <BottomDashboardNavBar {...props} />}
+    >
+      <Tab.Screen
+        name="DashboardHome"
+        component={DashboardHomeScreen}
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ focused }) => (
+            <Icon
+              icon="house"
+              color={focused ? theme.accent500.val : theme.white100.val}
+              size={24}
+            />
+          ),
         }}
-        tabBar={(props) => <BottomDashboardNavBar {...props} />}
-      >
-        <Tab.Screen
-          name="DashboardHome"
-          component={DashboardHomeScreen}
-          options={{
-            tabBarLabel: "Home",
-            tabBarIcon: ({ focused }) => (
-              <Icon
-                icon="house"
-                color={focused ? theme.accent500.val : theme.white100.val}
-                size={24}
-              />
-            ),
-          }}
-        />
+      />
 
-        <Tab.Screen
-          name="DashboardRoster"
-          component={DashboardRosterScreen}
-          options={{
-            tabBarLabel: "Roster",
-            tabBarIcon: ({ focused }) => (
-              <Icon
-                icon="roster"
-                color={focused ? theme.accent500.val : theme.white100.val}
-                size={24}
-              />
-            ),
-          }}
-        />
+      <Tab.Screen
+        name="DashboardRoster"
+        component={DashboardRosterScreen}
+        options={{
+          tabBarLabel: "Roster",
+          tabBarIcon: ({ focused }) => (
+            <Icon
+              icon="roster"
+              color={focused ? theme.accent500.val : theme.white100.val}
+              size={24}
+            />
+          ),
+        }}
+      />
 
-        <Tab.Screen
-          name="DashboardRequests"
-          component={DashboardRequestsScreen}
-          options={{
-            tabBarLabel: "Requests",
-            tabBarIcon: ({ focused }) => (
-              <Icon
-                icon="requests"
-                color={focused ? theme.accent500.val : theme.white100.val}
-                size={24}
-              />
-            ),
-          }}
-        />
+      <Tab.Screen
+        name="DashboardRequests"
+        component={DashboardRequestsScreen}
+        options={{
+          tabBarLabel: "Requests",
+          tabBarIcon: ({ focused }) => (
+            <Icon
+              icon="requests"
+              color={focused ? theme.accent500.val : theme.white100.val}
+              size={24}
+            />
+          ),
+        }}
+      />
 
-        <Tab.Screen
-          name="DashboardTeams"
-          component={DashboardTeamsScreen}
-          options={{
-            tabBarLabel: "Teams",
-            tabBarIcon: ({ focused }) => (
-              <Icon
-                icon="teams"
-                color={focused ? theme.accent500.val : theme.white100.val}
-                size={24}
-              />
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </EpisodeProvider>
+      <Tab.Screen
+        name="DashboardTeams"
+        component={DashboardTeamsScreen}
+        options={{
+          tabBarLabel: "Teams",
+          tabBarIcon: ({ focused }) => (
+            <Icon
+              icon="teams"
+              color={focused ? theme.accent500.val : theme.white100.val}
+              size={24}
+            />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   )
 }
 
