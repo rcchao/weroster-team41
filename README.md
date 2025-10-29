@@ -376,8 +376,50 @@ weroster-team41/
 
 ## 🧪 Testing
 
+First, ensure that jest and maestro are installed:
+
+```bash
+npx jest --version
+maestro --version
+```
+
+**Unit Tests:**
+To run all unit tests:
+In your terminal, run:
+
 ```bash
 npm test
+```
+
+To run unit tests individually:
+
+1. Navigate to the tests in app/component/Tests
+2. Copy the name of the test file (e.g., `Lozenge.test.tsx`)
+3. Run
+
+```bash
+#npm test [filename]
+npm test Lozenge.tst.tsx
+```
+
+**E2E Tests:**
+Note: E2E login flows require the login screen to be displayed; before each test starts, ensure that the login screen is displayed on your emulator.
+
+To run all E2E tests:
+In your terminal, run:
+
+```bash
+npm run maestro:e2e
+```
+
+To run E2E tests individually:
+
+1. Navigate to the tests in `.maestro/flows`
+2. Copy the path of the file (e.g., `.maestro/flows/LoginTest.yaml`)
+3. Run:
+
+```bash
+maestro test .maestro/flows/LoginTest.yaml
 ```
 
 ---
