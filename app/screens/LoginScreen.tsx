@@ -70,7 +70,6 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
             width={175}
             objectFit="contain"
           />
-          {/* TODO: Replace this Welcome text once typography is available */}
           <HeaderText variant="h2">Welcome</HeaderText>
         </YStack>
         <YStack gap={24}>
@@ -142,7 +141,6 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
                 onSubmitEditing={handleSubmit(onSubmit)}
                 borderColor={tamaguiConfig.tokens.color.mono400}
                 RightAccessory={() => (
-                  // TODO: Replace this with a Tamagui Button when icon is made available
                   <PressableIcon
                     icon={isPasswordHidden ? "view" : "hidden"}
                     color={colors.palette.neutral800}
