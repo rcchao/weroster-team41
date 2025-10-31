@@ -46,8 +46,6 @@ export type AppStackParamList = {
   TeamDetails: { userId: number }
   SwapShift: { shiftId: number; teamIds: number[] }
   EditProfileScreen: undefined
-  // 🔥 Your screens go here
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -117,8 +115,6 @@ const AppStack = () => {
         </>
       )}
 
-      {/** 🔥 Your screens go here */}
-
       <Stack.Screen
         name="Notifications"
         component={NotificationsScreen}
@@ -146,7 +142,6 @@ const AppStack = () => {
           animation: "slide_from_bottom",
         }}
       />
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 }

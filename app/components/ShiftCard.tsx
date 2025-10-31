@@ -48,10 +48,6 @@ const ShiftCard = memo(({ shift, clashes }: ShiftCardProps) => {
           text1: "Successfully applied to an open shift",
         })
       } else {
-        // Error messages here are "Not an open shift, cannot make assignment request"
-        // and "Event not found". If either of these are the case, the frontend
-        // shouldn't even allow a user to apply to the open shift so don't
-        // worry about bubbling these errors up to the frontend
         Toast.show({
           type: "failure",
           text1: "Error! Could not apply for this shift",

@@ -43,7 +43,7 @@ interface BaseScreenProps {
    */
   backgroundColor?: string
   /**
-   * System bar setting. Defaults to dark.
+   * System bar setting
    */
   systemBarStyle?: SystemBarStyle
   /**
@@ -242,7 +242,6 @@ function ScreenWithScrolling(props: ScreenProps) {
 export function Screen(props: ScreenProps) {
   const {
     theme: { colors },
-    themeContext,
   } = useAppTheme()
   const {
     backgroundColor,
@@ -263,10 +262,7 @@ export function Screen(props: ScreenProps) {
         $containerInsets,
       ]}
     >
-      <SystemBars
-        style={systemBarStyle || (themeContext === "dark" ? "light" : "dark")}
-        {...SystemBarsProps}
-      />
+      <SystemBars style={systemBarStyle} {...SystemBarsProps} />
 
       <GestureHandlerRootView style={$gestureRootStyle}>
         <KeyboardAvoidingView
