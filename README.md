@@ -370,7 +370,9 @@ weroster-team41/
 
 ## 📚 API Documentation
 
-[Link to API documentation]
+API Documentation was done using JSDoc and SwaggerUI, with all API response and request payloads typed using JSON generated scheamas.
+
+[Confluence: API Routes](https://comp30022weroster2025s2.atlassian.net/wiki/spaces/CWR2/pages/67928074/API+Route+Planning)
 
 ---
 
@@ -426,4 +428,4 @@ maestro test .maestro/flows/LoginTest.yaml
 
 ## 🙏 Acknowledgements
 
-[Add acknowledgements here]
+This project was built using the [Ignite](https://github.com/infinitered/ignite) boilerplate by Infinite Red.
